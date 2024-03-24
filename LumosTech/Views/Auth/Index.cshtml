@@ -1,0 +1,41 @@
+﻿@{
+    Layout = null;
+}
+
+@model Lumos.Mvc.Models.LoginVM
+
+<link rel="stylesheet" href="~/css/style.css">
+<link rel="stylesheet" href="~/css/cs-skin-elastic.css">
+
+<form id="loginForm">
+    <label for="UserOrEmail">Usuário ou Email:</label>
+    <input type="text" id="UserOrEmail" name="UserOrEmail" />
+
+    <label for="Password">Senha:</label>
+    <input type="password" id="Password" name="Password" />
+
+    <button type="submit">Entrar</button>
+</form>
+
+<script>
+    document.getElementById('loginForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var formData = new FormData(document.getElementById('loginForm'));
+
+        fetch('/Auth/Login', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao realizar login');
+                }
+                return response.json();
+            })
+            .then(data => {
+                sessionStorage.setItem('jwtToken', data.token);
+                window.location.href = data.redirectTo;
+            })
+            .catch(error => console.error('Erro:', error));
+    });
+</script>
