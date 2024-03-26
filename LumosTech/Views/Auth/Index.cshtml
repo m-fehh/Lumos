@@ -4,18 +4,28 @@
 
 @model Lumos.Mvc.Models.LoginVM
 
-<link rel="stylesheet" href="~/css/style.css">
-<link rel="stylesheet" href="~/css/cs-skin-elastic.css">
+<link rel="stylesheet" href="~/css/Auth/login.css">
 
-<form id="loginForm">
-    <label for="UserOrEmail">Usuário ou Email:</label>
-    <input type="text" id="UserOrEmail" name="UserOrEmail" />
+<div class="login-container">
+    <img src="~/images/Lumos.png" alt="Logo" class="logo">
+    <form id="loginForm">
+        <h2>Seja bem-vindo novamente</h2>
+        <p>Por gentileza, realize o login em sua conta</p>
 
-    <label for="Password">Senha:</label>
-    <input type="password" id="Password" name="Password" />
+        <div class="input-group">
+            <input type="text" id="username" name="UserOrEmail" placeholder="Username" required>
+        </div>
+        <div class="input-group">
+            <input type="password" id="password" name="Password" placeholder="Password" required>
+        </div>
 
-    <button type="submit">Entrar</button>
-</form>
+        <button type="submit">Entrar</button>
+        <div class="bottom-text">
+           @*  <p>Ainda não tem uma conta? <a href="#">Cadastre-se</a></p> *@
+            <p><a href="#">Esqueceu a senha?</a></p>
+        </div>
+    </form>
+</div>
 
 <script>
     document.getElementById('loginForm').addEventListener('submit', function (e) {

@@ -1,11 +1,10 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using LumosContext = Lumos.Application.Configurations.LumosContext;
-using Lumos.Application.Configurations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Lumos.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
