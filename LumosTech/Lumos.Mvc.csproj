@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Lumos.Data\Lumos.Data.csproj" />
+    <ProjectReference Include="..\Lumos.Application\Lumos.Application.csproj" />
   </ItemGroup>
 
 </Project>

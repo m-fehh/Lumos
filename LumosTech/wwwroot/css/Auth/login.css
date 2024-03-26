@@ -1,0 +1,113 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background: #4dd48f;
+}
+
+.login-container {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.logo {
+    width: 220px; 
+    height: auto; 
+}
+
+.loginForm {
+    display: flex;
+    flex-direction: column;
+}
+
+h2 {
+    margin: 10px 0;
+    color: #333;
+}
+
+    p {
+        margin-bottom: 20px;
+        color: #777;
+    }
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+    .input-group input {
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        width: 100%;
+        font-size: 16px;
+        transition: border-color 0.3s ease;
+    }
+
+        .input-group input:focus {
+            border-color: #4dd48f;
+            outline: none;
+        }
+
+button {
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    background: #4dd48f;
+    color: #fff;
+    font-weight: bold;
+    width: 50%;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; 
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); 
+}
+
+    button:hover {
+        box-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.2);
+    }
+
+.bottom-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    color: #777;
+}
+
+    .bottom-text p {
+        margin-bottom: 10px;
+    }
+
+    .bottom-text a {
+        color: #4dd48f;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+        .bottom-text a:hover {
+            color: #4dd48f;
+        }
+
+/* Responsive */
+@media screen and (max-width: 600px) {
+    .login-container {
+        width: 100%;
+        border-radius: 0;
+    }
+}

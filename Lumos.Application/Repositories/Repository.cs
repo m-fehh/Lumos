@@ -1,4 +1,4 @@
-﻿using Lumos.Application.Configurations;
+﻿using Lumos.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Lumos.Application.Repositories
