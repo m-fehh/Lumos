@@ -1,4 +1,6 @@
-﻿using Lumos.Mvc.Models;
+﻿using Lumos.Application.Interfaces.Management;
+using Lumos.Data.Models.Management;
+using Lumos.Mvc.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -11,10 +13,14 @@ namespace Lumos.Mvc.Controllers
     public class AuthController : Controller
     {
         private readonly IConfiguration _config;
+        private readonly LumosSession _session;
+        private readonly IUserAppService _userAppService;
 
-        public AuthController(IConfiguration config)
+        public AuthController(IConfiguration config, LumosSession session, IUserAppService userAppService)
         {
             _config = config;
+            _session = session;
+            _userAppService = userAppService;
         }
 
         public IActionResult Index()
@@ -24,9 +30,11 @@ namespace Lumos.Mvc.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public IActionResult Login(LoginVM model)
+        public async Task<IActionResult> Login(LoginVM model)
         {
-            if (model.UserOrEmail == "admin" && model.Password == "123")
+            var loggedInUser = await _userAppService.ValidateUserCredentials(model.UserOrEmail, model.Password);
+
+            if (loggedInUser != null)
             {
                 var token = GenerateJwtToken(model.UserOrEmail);
 
@@ -35,6 +43,9 @@ namespace Lumos.Mvc.Controllers
                     token = token,
                     redirectTo = Url.Action("Index", "Home")
                 };
+
+                _session.SetUserId(loggedInUser.Id);
+                _session.SetTenantId(loggedInUser.TenantId);
 
                 // Retorna a resposta JSON
                 return Ok(response);
