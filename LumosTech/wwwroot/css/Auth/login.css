@@ -1,33 +1,18 @@
-﻿* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background: #4dd48f;
-}
-
-.login-container {
+﻿.login-container {
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     padding: 40px;
-    max-width: 400px;
-    width: 90%;
+    max-width: 650px;
+    width: 100%;
     text-align: center;
     margin: 0 auto;
 }
 
 .logo {
-    width: 220px; 
+    width: 280px; 
     height: auto; 
+    margin-left: -10px;
 }
 
 .loginForm {
@@ -35,22 +20,20 @@ body {
     flex-direction: column;
 }
 
-h2 {
-    margin: 10px 0;
-    color: #333;
+.input-icon {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    opacity: 0.2;
+    transform: translateY(-50%);
 }
-
-    p {
-        margin-bottom: 20px;
-        color: #777;
-    }
 
 .input-group {
     margin-bottom: 20px;
 }
 
     .input-group input {
-        padding: 15px;
+        padding: 12px;
         border-radius: 8px;
         border: 1px solid #ddd;
         width: 100%;
@@ -63,24 +46,6 @@ h2 {
             outline: none;
         }
 
-button {
-    padding: 15px;
-    border: none;
-    border-radius: 8px;
-    background: #4dd48f;
-    color: #fff;
-    font-weight: bold;
-    width: 50%;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease; 
-    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); 
-}
-
-    button:hover {
-        box-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.2);
-    }
 
 .bottom-text {
     display: flex;

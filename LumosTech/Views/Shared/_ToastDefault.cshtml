@@ -1,0 +1,73 @@
+﻿@{
+    Layout = null;
+}
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <style>
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      min-width: 350px;
+    }
+    .toast-body {
+      background-color: #f1f1f1;
+    }
+    #toastError {
+      border-left: 2px solid red;
+    }
+    #toastInfo {
+      border-left: 2px solid yellow;
+    }
+    #toastSuccess {
+      border-left: 2px solid green;
+    }
+  </style>
+
+
+<div class="toast" id="toastError" data-autohide="true" data-delay="5000">
+    <div class="toast-header">
+        <strong class="mr-auto">Falha!</strong>
+        <small class="text-muted">Agora mesmo</small>
+    </div>
+    <div class="toast-body">
+        Algo deu errado!
+    </div>
+</div>
+
+<div class="toast" id="toastInfo" data-autohide="true" data-delay="5000">
+    <div class="toast-header">
+        <strong class="mr-auto text-info">Informativo!</strong>
+        <small class="text-muted">Agora mesmo</small>
+    </div>
+    <div class="toast-body">
+        Esta é uma informação importante.
+    </div>
+</div>
+
+<div class="toast" id="toastSuccess" data-autohide="true" data-delay="5000">
+    <div class="toast-header">
+        <strong class="mr-auto text-success">Êxito!</strong>
+        <small class="text-muted">Agora mesmo</small>
+    </div>
+    <div class="toast-body">
+        Ação concluída com sucesso!
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<script>
+    // document.getElementById('toastButtonError').onclick = function () {
+    //     $('#toastError').toast('show');
+    // };
+    // document.getElementById('toastButtonInfo').onclick = function () {
+    //     $('#toastInfo').toast('show');
+    // };
+    // document.getElementById('toastButtonSuccess').onclick = function () {
+    //     $('#toastSuccess').toast('show');
+    // };
+</script>

@@ -1,4 +1,5 @@
-﻿using Lumos.Application.Interfaces.Management;
+﻿using Lumos.Application.Consts;
+using Lumos.Application.Interfaces.Management;
 using Lumos.Application.Repositories;
 using Lumos.Data.Models.Management;
 
@@ -12,13 +13,22 @@ namespace Lumos.Application.Services.Management
 
         public async Task<User?> ValidateUserCredentials(string email, string password)
         {
-            var user = (await _repository.GetAllAsync()).FirstOrDefault(u => u.Email == email);
-
-            if (user != null && VerifyPassword(password, user.PasswordHash))
+            if (HostConfigurationConst.HostLogin.Equals(email) && HostConfigurationConst.HostPassword.Equals(password)) 
             {
-                return user;
+                return new User
+                {
+                    Username = "HOST_ACCESS"
+                };
             }
+            else
+            {
+                var user = (await _repository.GetAllAsync()).FirstOrDefault(u => u.Email == email);
 
+                if (user != null && VerifyPassword(password, user.PasswordHash))
+                {
+                    return user;
+                }
+            }
             // Retorna null se as credenciais forem inválidas
             return null;
         }

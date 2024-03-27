@@ -44,14 +44,21 @@ namespace Lumos.Mvc.Controllers
                     redirectTo = Url.Action("Index", "Home")
                 };
 
-                _session.SetUserId(loggedInUser.Id);
-                _session.SetTenantId(loggedInUser.TenantId);
+                if (loggedInUser.Username == "HOST_ACCESS")
+                {
+                    _session.SetHostMode(); 
+                }
+                else
+                {
+                    _session.SetUserId(loggedInUser.Id);
+                    _session.SetTenantId(loggedInUser.TenantId);
+                }
 
                 // Retorna a resposta JSON
                 return Ok(response);
             }
 
-            return BadRequest("Credenciais inválidas");
+            return BadRequest(new { errorMessage = "Credenciais inválidas. Verifique seus dados e tente novamente." });
         }
 
         private string GenerateJwtToken(string email)
