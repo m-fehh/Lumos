@@ -5,47 +5,148 @@
 @model Lumos.Mvc.Models.LoginVM
 
 <link rel="stylesheet" href="~/css/Auth/login.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
-<div class="login-container">
-    <img src="~/images/Lumos.png" alt="Logo" class="logo">
-    <form id="loginForm">
-        <h2>Seja bem-vindo novamente</h2>
-        <p>Por gentileza, realize o login em sua conta</p>
 
-        <div class="input-group">
-            <input type="text" id="username" name="UserOrEmail" placeholder="Username" required>
-        </div>
-        <div class="input-group">
-            <input type="password" id="password" name="Password" placeholder="Password" required>
-        </div>
 
-        <button type="submit">Entrar</button>
-        <div class="bottom-text">
-           @*  <p>Ainda não tem uma conta? <a href="#">Cadastre-se</a></p> *@
-            <p><a href="#">Esqueceu a senha?</a></p>
-        </div>
-    </form>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background: #4dd48f !important;
+    }
+
+    .h3-text {
+        font-size: 24px;
+        color: #333;
+        text-align: center;
+        margin: 20px 0;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    .p-text {
+        margin-bottom: 20px;
+        color: #777;
+    }
+
+    .bntAccess {
+        padding: 15px;
+        border: none;
+        border-radius: 8px;
+        background: #4dd48f;
+        color: #fff;
+        font-weight: bold;
+        width: 70%;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        outline: none !important;
+    }
+
+        .bntAccess:hover {
+            box-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.2);
+        }
+
+</style>
+
+@Html.Partial("~/Views/Shared/_ToastDefault.cshtml")
+@Html.Partial("~/Views/Shared/_LoaderDefault.cshtml")
+
+<div class="body">
+    <div class="login-container">
+        <img src="~/images/Lumos.png" alt="Logo" class="logo">
+        <form id="loginForm">
+            <h3 class="h3-text" style="color: #000;">
+                Inovação e Qualidade: Lumos em Ação
+            </h3>
+            <p class="p-text">Entre na sua conta com o login:</p>
+
+            <div class="input-group">
+                <input type="text" id="username" name="UserOrEmail" placeholder="Usuário/E-mail" required>
+                <span class="input-icon">
+                    <i class="fas fa-user"></i>
+                </span>
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" name="Password" placeholder="Senha" required>
+                <span class="input-icon">
+                    <i class="fas fa-lock"></i>
+                </span>
+            </div>
+
+
+            <button class="bntAccess" id="submitButton" type="submit">Entrar</button>
+            <div class="bottom-text">
+                <p><a href="#">Esqueceu a senha?</a></p>
+            </div>
+        </form>
+    </div>
 </div>
 
-<script>
-    document.getElementById('loginForm').addEventListener('submit', function (e) {
-        e.preventDefault();
-        var formData = new FormData(document.getElementById('loginForm'));
 
-        fetch('/Auth/Login', {
-            method: 'POST',
-            body: formData
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Erro ao realizar login');
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#preloader').hide();
+
+        $('#loginForm').on('submit', function (e) {
+            e.preventDefault();
+            var formData = new FormData($('#loginForm')[0]);
+
+            var submitButton = $('#submitButton');
+
+            // Desativa o botão
+            submitButton.prop('disabled', true);
+
+            // Mostra o loading
+            $('#preloader').show();
+
+
+            $.ajax({
+                url: '/Auth/Login',
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    sessionStorage.setItem('jwtToken', data.token);
+                    window.location.href = data.redirectTo;
+                },
+                error: function (xhr, status, error) {
+                    var errorMessage = "Ocorreu um erro ao processar a solicitação.";
+
+                    if (xhr.status === 400 && xhr.responseJSON && xhr.responseJSON.errorMessage) {
+                        errorMessage = xhr.responseJSON.errorMessage;
+                    }
+
+                    $('#toastError .toast-body').text(errorMessage);
+                    $('#toastError').toast('show');
+                },
+                complete: function () {
+                    // Reativa o botão após o término da requisição
+                    submitButton.prop('disabled', false);
+
+                    // Esconde o loading
+                    $('#preloader').hide();
                 }
-                return response.json();
-            })
-            .then(data => {
-                sessionStorage.setItem('jwtToken', data.token);
-                window.location.href = data.redirectTo;
-            })
-            .catch(error => console.error('Erro:', error));
+            });
+        });
     });
 </script>

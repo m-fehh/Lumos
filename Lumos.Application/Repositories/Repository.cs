@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Lumos.Application.Repositories
 {
-    public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : class
+    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         private readonly LumosContext _context;
 
@@ -17,11 +17,18 @@ namespace Lumos.Application.Repositories
             return await _context.Set<TEntity>().FindAsync(id);
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync()
+        public async Task<List<TEntity>> GetAllAsync()
         {
             return await _context.Set<TEntity>().ToListAsync();
         }
 
+        public async Task<List<TEntity>> GetAllPaginatedAsync(int pageNumber, int pageSize)
+        {
+            return await _context.Set<TEntity>()
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
         public async Task AddAsync(TEntity entity)
         {
             await _context.Set<TEntity>().AddAsync(entity);

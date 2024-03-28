@@ -1,0 +1,108 @@
+﻿@{
+    ViewData["Title"] = "Usuários";
+}
+
+<link rel="stylesheet" href="~/css/lumosDefault.css">
+
+<style>
+    .breadcrumb-item.active a {
+        font-weight: bold;
+        color: #88E105;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+
+</style>
+
+@* <h2>@ViewData["Title"]</h2> *@
+@* <p class="title">Acompanhe seus gastos e ganhos de forma clara e organizada, proporcionando o controle necessário sobre sua saúde financeira.</p> *@
+
+<div class="row">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active">
+                    <a href="@Url.Action("Index", "User")">Usuários</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="@Url.Action("Create", "User")">Adicionar</a>
+                </li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+
+
+
+@* 
+<div class="animated fadeIn">
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="icon-container">
+                        <span class="ti-user"></span> 
+                        <strong class="card-title" style="margin-left: 30px;">
+                            Usuários
+                        </strong>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <table id="usuariosTable" class="display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nome Completo</th>
+                                <th>CPF</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="assets/js/lib/data-table/datatables.min.js"></script>
+<script src="assets/js/lib/data-table/dataTables.bootstrap.min.js"></script>
+<script src="assets/js/lib/data-table/dataTables.buttons.min.js"></script>
+<script src="assets/js/lib/data-table/buttons.bootstrap.min.js"></script>
+<script src="assets/js/lib/data-table/jszip.min.js"></script>
+<script src="assets/js/lib/data-table/vfs_fonts.js"></script>
+<script src="assets/js/lib/data-table/buttons.html5.min.js"></script>
+<script src="assets/js/lib/data-table/buttons.print.min.js"></script>
+<script src="assets/js/lib/data-table/buttons.colVis.min.js"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#usuariosTable').DataTable({
+            "ajax": {
+                "url": "/User/GetAllUsers",
+                "type": "GET",
+                "datatype": "json",
+                "data": function (d) {
+                    d.page = Math.floor(d.start / d.length) + 1; // Número da página
+                    d.pageSize = d.length; // Tamanho da página
+                    return d;
+                }
+            },
+            "serverSide": true, // Habilita o processamento no lado do servidor
+            "paging": true, // Habilita a paginação
+            "lengthMenu": [10, 25, 50, 100], // Opções de tamanho de página
+            "pageLength": 10, // Número de registros por página padrão
+            "columns": [
+                { "data": "id" },
+                { "data": "fullName" },
+                { "data": "cpf" }
+            ]
+        });
+    });
+
+</script> *@

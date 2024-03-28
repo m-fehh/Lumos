@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Lumos.Data;
+using Lumos.Data.Models.Management;
+using Lumos.Application.Configurations;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +28,11 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Authentication:JwtBearer:SecurityKey"]))
     };
 });
+
+
+// Chamada para registrar as dependências padrão
+DependencyInjectionConfig.RegisterDependencies(builder.Services, builder.Configuration);
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

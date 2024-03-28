@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Lumos.Application.Dtos;
+using Lumos.Data.Models.Management;
 
 namespace Lumos.Application.Configurations
 {
@@ -6,7 +8,8 @@ namespace Lumos.Application.Configurations
     {
         public static void CreateMappings(IMapperConfigurationExpression configuration)
         {
-            //configuration.CreateMap<Produto, ProdutoViewModel>();
+            configuration.CreateMap<User, UserDto>().ReverseMap();
+            configuration.CreateMap<Address, AddressDto>().ReverseMap();
         }
     }
 }
