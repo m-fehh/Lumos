@@ -28,6 +28,11 @@ namespace Lumos.Application
             return _repository.GetAllAsync();
         }
 
+        public Task<List<TEntity>> GetAllPaginatedAsync(int pageNumber, int pageSize)
+        {
+            return _repository.GetAllPaginatedAsync(pageNumber, pageSize);
+        }
+
         public Task CreateAsync(TEntity entity)
         {
             return _repository.AddAsync(entity);

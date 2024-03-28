@@ -28,4 +28,8 @@
     <ProjectReference Include="..\Lumos.Application\Lumos.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\lib\" />
+  </ItemGroup>
+
 </Project>

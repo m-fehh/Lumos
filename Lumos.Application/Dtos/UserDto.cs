@@ -1,12 +1,12 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Lumos.Data.Models.Management
+namespace Lumos.Application.Dtos
 {
-    [Table("tbUsers")]
-    public class User : LumosBaseModel
+    public class UserDto
     {
+        #region Login
+
         [Required(ErrorMessage = "O nome de usuário é obrigatório.")]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "O nome de usuário deve ter entre 3 e 50 caracteres.")]
         public string Username { get; set; }
@@ -19,20 +19,33 @@ namespace Lumos.Data.Models.Management
         [StringLength(100, MinimumLength = 6, ErrorMessage = "A senha deve ter no mínimo 6 caracteres.")]
         public string PasswordHash { get; set; }
 
+        #endregion
+
+        #region Identificação
+
         [Required(ErrorMessage = "O nome completo é obrigatório.")]
         public string FullName { get; set; }
 
-        [Required(ErrorMessage = "O CPF é obrigatória.")]
-        [StringLength(11, ErrorMessage = "O CPF deve conter no máximo 11 caracteres.")]
+        [Required(ErrorMessage = "O CPF fornecido não é válido.")]
         public string Cpf { get; set; }
 
+        [Display(Name = "Data de Nascimento")]
+        [DataType(DataType.Date)]
         public DateTime? DateOfBirth { get; set; }
 
         [Required(ErrorMessage = "O gênero é obrigatório.")]
         public string Gender { get; set; }
 
-        [ForeignKey("AddressId")]
-        public Address Address { get; set; }
+        #endregion
+
+        #region Endereço
+
+        [Required(ErrorMessage = "O endereço é obrigatório.")]
+        public AddressDto Address { get; set; }
+
+        #endregion
+
+        #region Contato
 
         [Required(ErrorMessage = "O telefone é obrigatório.")]
         public string Phone { get; set; }
@@ -40,20 +53,25 @@ namespace Lumos.Data.Models.Management
         [Required(ErrorMessage = "O método de contato é obrigatório.")]
         public string ContactMethod { get; set; }
 
-        public long TenantId { get; set; }
+        #endregion
+    }
 
-        [ForeignKey("TenantId")]
-        public Tenant Tenant { get; set; }
+    public class AddressDto
+    {
+        [Required(ErrorMessage = "O endereço é obrigatório.")]
+        public string Street { get; set; }
 
-        public long OrganizationId { get; set; }
+        [Required(ErrorMessage = "O número é obrigatório.")]
+        public string Number { get; set; }
 
-        [ForeignKey("OrganizationId")]
-        public Organization Organization { get; set; }
+        [Required(ErrorMessage = "A cidade é obrigatória.")]
+        public string City { get; set; }
 
-        // Método para verificar se o usuário pertence a um tenant específico
-        public bool BelongsToTenant(Tenant tenant)
-        {
-            return Tenant?.Id == tenant.Id;
-        }
+        [Required(ErrorMessage = "O estado é obrigatório.")]
+        public string State { get; set; }
+
+        [Required(ErrorMessage = "O CEP é obrigatório.")]
+        [RegularExpression(@"^\d{5}-\d{3}$", ErrorMessage = "O CEP fornecido não é válido. Use o formato 99999-999.")]
+        public string ZipCode { get; set; }
     }
 }

@@ -22,6 +22,13 @@ namespace Lumos.Application.Repositories
             return await _context.Set<TEntity>().ToListAsync();
         }
 
+        public async Task<List<TEntity>> GetAllPaginatedAsync(int pageNumber, int pageSize)
+        {
+            return await _context.Set<TEntity>()
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
         public async Task AddAsync(TEntity entity)
         {
             await _context.Set<TEntity>().AddAsync(entity);

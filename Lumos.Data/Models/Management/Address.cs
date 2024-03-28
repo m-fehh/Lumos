@@ -12,6 +12,9 @@ namespace Lumos.Data.Models.Management
         [Required(ErrorMessage = "O campo rua é obrigatório.")]
         public string Street { get; set; }
 
+        [Required(ErrorMessage = "O campo número é obrigatório.")]
+        public string Number { get; set; }
+
         [Required(ErrorMessage = "O campo cidade é obrigatório.")]
         public string City { get; set; }
 
@@ -21,6 +24,9 @@ namespace Lumos.Data.Models.Management
         [Required(ErrorMessage = "O campo CEP é obrigatório.")]
         public string ZipCode { get; set; }
 
-        public string Country { get; set; }
+        public long? UserId { get; set; }
+
+        [ForeignKey("UserId")]
+        public User User { get; set; }
     }
 }

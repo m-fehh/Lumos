@@ -33,16 +33,22 @@ namespace Lumos.Application.Services.Management
             return null;
         }
 
+
+
+
+        #region METHODS PASSWORD
+        
         public bool VerifyPassword(string password, string hashedPassword)
         {
             return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
         }
 
-        // GERA SENHA CRÍPTOGRAFADA
-        //public string HashPassword(string password)
-        //{
-        //    // Gera um hash seguro da senha
-        //    return BCrypt.Net.BCrypt.HashPassword(password, BCrypt.Net.BCrypt.GenerateSalt());
-        //}
+        public string HashPassword(string password)
+        {
+            // Gera um hash seguro da senha
+            return BCrypt.Net.BCrypt.HashPassword(password, BCrypt.Net.BCrypt.GenerateSalt());
+        } 
+
+        #endregion
     }
 }
