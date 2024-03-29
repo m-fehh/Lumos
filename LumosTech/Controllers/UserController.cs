@@ -34,39 +34,6 @@ namespace Lumos.Mvc.Controllers
             return View(new UserDto());
         }
 
-        //public IActionResult GetAllUsers(int page, int pageSize)
-        //{
-        //    //var users = _userAppService.GetAllPaginatedAsync(page, pageSize);
-
-        //    var users = new List<User>
-        //    {
-        //        new User { FullName = "João Silva", Cpf = "123.456.789-00", Email = "joao@example.com" },
-        //        new User { FullName = "Maria Souza", Cpf = "987.654.321-00", Email = "maria@example.com" }
-        //    };
-
-        //    return Json(new { data = users });
-        //}
-
-        //    public IActionResult GetAllUsers(int draw, int start, int length, int page, int pageSize)
-        //    {
-        //        // Simula uma busca paginada (substitua isso pela lógica real de busca paginada)
-        //        var totalRecords = 100; // Total de registros no banco de dados
-        //        var users = new List<User>
-        //{
-        //    new User { FullName = "João Silva", Cpf = "123.456.789-00", Email = "joao@example.com" },
-        //    new User { FullName = "Maria Souza", Cpf = "987.654.321-00", Email = "maria@example.com" }
-        //};
-
-        //        var filteredUsers = users.Skip(start).Take(length).ToList();
-
-        //        return Json(new
-        //        {
-        //            draw = draw,
-        //            recordsTotal = totalRecords,
-        //            recordsFiltered = totalRecords, // Se não houver filtro, é o mesmo que recordsTotal
-        //            data = filteredUsers
-        //        });
-        //    }
 
         //[HttpPost]
         //public override IActionResult GetUserData([FromBody] UserDataTableParams dataTableParams)
@@ -91,37 +58,5 @@ namespace Lumos.Mvc.Controllers
         //    return Content(JsonConvert.SerializeObject(data), "application/json");
         //}
 
-
-        [HttpPost]
-        [AllowAnonymous]
-        public async Task<IActionResult> Save(UserDto model)
-        {
-            var validationResults = new List<ValidationResult>();
-            var isValid = Validator.TryValidateObject(model, new ValidationContext(model), validationResults, true);
-
-            if (!isValid)
-            {
-                foreach (var validationResult in validationResults)
-                {
-                    ModelState.AddModelError(validationResult.MemberNames.FirstOrDefault() ?? string.Empty, validationResult.ErrorMessage);
-                }
-
-                return BadRequest(ModelState);
-            }
-
-            try
-            {
-                var userEntity = _mapper.Map<User>(model);
-                userEntity.PasswordHash = _userAppService.HashPassword(model.PasswordHash);
-
-                await _userAppService.CreateAsync(userEntity);
-                return Ok();
-            }
-            catch (Exception)
-            {
-                ModelState.AddModelError(string.Empty, "Ocorreu um erro ao salvar o usuário. Por favor, contate o suporte.");
-                return BadRequest(ModelState);
-            }
-        }
     }
 }
