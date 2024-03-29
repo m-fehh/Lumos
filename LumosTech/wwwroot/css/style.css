@@ -708,6 +708,7 @@ aside.left-panel {
 
             .navbar .navbar-nav > li.active {
                 background: #fafafa;
+                width: 100%;
             }
 
         .navbar .navbar-nav li {
@@ -788,7 +789,7 @@ aside.left-panel {
                     }
 
                 .navbar .navbar-nav li.menu-item-has-children .sub-menu {
-                    background: #fff;
+                    background: transparent;
                     border: none;
                     -webkit-box-shadow: none;
                     box-shadow: none;
