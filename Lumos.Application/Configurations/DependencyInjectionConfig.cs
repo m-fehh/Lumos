@@ -22,10 +22,16 @@ namespace Lumos.Application.Configurations
             RegisterTransientDependencies(services, Assembly.GetExecutingAssembly());
 
 
-            #region SERVICES - CLASSE X INTERFACE 
+            #region Interface X Classe 
 
-            AddScopedServices<IUserAppService, UserAppService>(services); 
+            AddScopedServices<IUserAppService, UserAppService>(services);
 
+            #endregion
+
+            #region ServiceBase X AppService
+
+            services.AddScoped<LumosAppServiceBase<User>, UserAppService>(); 
+            
             #endregion
         }
 

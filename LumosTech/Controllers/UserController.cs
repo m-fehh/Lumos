@@ -1,19 +1,20 @@
 ﻿using AutoMapper;
+using Lumos.Application;
 using Lumos.Application.Dtos;
 using Lumos.Application.Interfaces.Management;
 using Lumos.Data.Models.Management;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 
 namespace Lumos.Mvc.Controllers
 {
-    public class UserController : LumosControllerBase
+    public class UserController : LumosControllerBase<User, UserDto>
     {
         private readonly IUserAppService _userAppService;
-        public UserController(LumosSession session, IUserAppService userAppService, IMapper mapper)
-            : base(session, mapper)
+
+        public UserController(LumosSession session, IUserAppService userAppService, IMapper mapper, LumosAppServiceBase<User> userService)
+            : base(session, mapper, userService)
         {
             _userAppService = userAppService;
         }
@@ -67,29 +68,28 @@ namespace Lumos.Mvc.Controllers
         //        });
         //    }
 
-        [HttpPost]
-        public IActionResult GetUserData()
-        {
-            // Dados fictícios para exemplo
-            var users = new List<object>
-            {
-                new { Id = 1, Nome = "João", CPF = "123.456.789-00", Email = "joao@example.com" },
-                new { Id = 2, Nome = "Maria", CPF = "987.654.321-00", Email = "maria@example.com" }
-            };
+        //[HttpPost]
+        //public override IActionResult GetUserData([FromBody] UserDataTableParams dataTableParams)
+        //{
+        //    // Dados fictícios para exemplo
+        //    var users = new List<object>
+        //    {
+        //        new { Id = 1, Nome = "João", CPF = "123.456.789-00", Email = "joao@example.com" },
+        //        new { Id = 2, Nome = "Maria", CPF = "987.654.321-00", Email = "maria@example.com" }
+        //    };
 
-            // Definindo a estrutura de dados esperada pela DataTable
-            var data = new
-            {
-                draw = Request.Form["draw"],
-                recordsTotal = users.Count,
-                recordsFiltered = users.Count,
-                data = users
-            };
+        //    // Definindo a estrutura de dados esperada pela DataTable
+        //    var data = new
+        //    {
+        //        draw = Request.Form["draw"],
+        //        recordsTotal = users.Count,
+        //        recordsFiltered = users.Count,
+        //        data = users
+        //    };
 
-            //return Json(data);
-            return Content(JsonConvert.SerializeObject(data), "application/json");
-
-        }
+        //    //return Json(data);
+        //    return Content(JsonConvert.SerializeObject(data), "application/json");
+        //}
 
 
         [HttpPost]

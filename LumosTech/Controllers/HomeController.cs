@@ -1,22 +1,22 @@
-﻿using AutoMapper;
-using Lumos.Data.Models.Management;
-using Lumos.Mvc;
+﻿using Lumos.Data.Models.Management;
 using LumosTech.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace LumosTech.Controllers
 {
-    public class HomeController : LumosControllerBase
+    public class HomeController : Controller
     {
-        public HomeController(LumosSession session, IMapper mapper)
-            : base(session, mapper)
+        private readonly LumosSession _session;
+
+        public HomeController(LumosSession session)
         {
+            _session = session;
         }
 
         public IActionResult Index()
         {
-            SetViewBagValues();
+            ViewBag.UserName = _session.UserName?.ToString().ToUpper();
             return View();
         }
 

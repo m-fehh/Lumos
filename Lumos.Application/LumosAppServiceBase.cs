@@ -1,4 +1,6 @@
-﻿using Lumos.Application.Repositories;
+﻿using Lumos.Application.Configurations;
+using Lumos.Application.Models;
+using Lumos.Application.Repositories;
 using Lumos.Data.Models.Management;
 
 namespace Lumos.Application
@@ -28,9 +30,9 @@ namespace Lumos.Application
             return _repository.GetAllAsync();
         }
 
-        public Task<List<TEntity>> GetAllPaginatedAsync(int pageNumber, int pageSize)
+        public async Task<PaginationResult<TEntity>> GetAllPaginatedAsync(UserDataTableParams dataTableParams)
         {
-            return _repository.GetAllPaginatedAsync(pageNumber, pageSize);
+            return await _repository.GetAllPaginatedAsync(dataTableParams);
         }
 
         public Task CreateAsync(TEntity entity)

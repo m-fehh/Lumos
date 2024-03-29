@@ -4,7 +4,7 @@
 
 <style>
     .dt-search,
-    .dt-length{
+    .dt-length {
         display: flex;
         align-items: baseline;
         gap: 10px;
@@ -12,30 +12,30 @@
         margin-top: 20px;
     }
 
-    .dt-end{
+    .dt-end {
         float: right;
     }
 
-    .dt-layout-row{
+    .dt-layout-row {
         display: flex;
         justify-content: space-between;
     }
 
-    thead{
+    thead {
         font-size: 0.9em;
         background: #A7E105;
     }
 
-    .dt-layout-cell{
+    .dt-layout-cell {
         margin: 7px 0;
         font-size: 0.9em;
     }
 
-    tbody{
+    tbody {
         font-size: 0.8em;
     }
 
-    .dt-paging-button.current{
+    .dt-paging-button.current {
         background: #A7E105;
     }
 
@@ -50,7 +50,7 @@
         gap: 10px;
     }
 
-    .bntActionsTable{
+    .bntActionsTable {
         background-color: #A7E105;
         border: none;
         outline: none;
@@ -62,9 +62,7 @@
     }
 </style>
 
-<!-- Adicione o link para os estilos CSS do DataTable -->
 <link href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.min.css" rel="stylesheet" />
-
 
 <div class="row">
     <div class="col-12">
@@ -97,7 +95,6 @@
                                 <th></th>
                             </tr>
                         </thead>
-                        <!-- Remova o corpo da tabela, os dados serão carregados via AJAX -->
                         <tbody></tbody>
                     </table>
                 </div>
@@ -106,70 +103,8 @@
     </div>
 </div>
 
-<!-- Adicione os scripts JS necessários para o DataTable -->
 @section Scripts {
     <script src="https://cdn.datatables.net/2.0.3/js/dataTables.min.js"></script>
-
-    <script>
-        $(document).ready(function () {
-            $('#userTable').DataTable({
-                "processing": true,
-                "serverSide": true,
-                "ajax": {
-                    "url": "/User/GetUserData",
-                    "type": "POST"
-                },
-                "language": {
-                    "sEmptyTable": "Nenhum registro encontrado",
-                    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
-                    "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
-                    "sInfoFiltered": "(Filtrados de _MAX_ registros)",
-                    "sInfoPostFix": "",
-                    "sInfoThousands": ".",
-                    "sLengthMenu": "_MENU_ resultados por página",
-                    "sLoadingRecords": "Carregando...",
-                    "sProcessing": "Processando...",
-                    "sSearch": "Pesquisar:",
-                    "sZeroRecords": "Nenhum registro encontrado",
-                    "oPaginate": {
-                        "sFirst": "Primeiro",
-                        "sLast": "Último",
-                        "sNext": "Próximo",
-                        "sPrevious": "Anterior"
-                    },
-                    "oAria": {
-                        "sSortAscending": ": Ordenar colunas de forma ascendente",
-                        "sSortDescending": ": Ordenar colunas de forma descendente"
-                    }
-                },
-                "columns": [
-                    { "data": "Id" },
-                    { "data": "Nome" },
-                    { "data": "CPF" },
-                    { "data": "Email" },
-                    { "data": "" }
-                ],
-                "columnDefs": [
-                    {
-                        "targets": -1,
-                        "render": function (data, type, full, meta) {
-                            return [
-                                `
-                                    <div class="bntContainer">
-                                        <button type="button" id="editUser" class="bntActionsTable">✎</button>
-                                        <button type="button" id="cancelUser" class="bntActionsTable">✘</button>
-                                    </div>
-                                   `
-                            ].join('');
-                        }
-                    }
-                ],
-                "paging": true,
-                "searching": true,
-                "ordering": true,
-                "info": true
-            });
-        });
-    </script>
+    <script src="~/js/User/Index.js"></script>
 }
 
