@@ -1,20 +1,22 @@
-﻿using LumosTech.Models;
+﻿using AutoMapper;
+using Lumos.Data.Models.Management;
+using Lumos.Mvc;
+using LumosTech.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace LumosTech.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : LumosControllerBase
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(LumosSession session, IMapper mapper)
+            : base(session, mapper)
         {
-            _logger = logger;
         }
 
         public IActionResult Index()
         {
+            SetViewBagValues();
             return View();
         }
 

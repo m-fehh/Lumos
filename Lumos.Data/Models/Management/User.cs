@@ -31,7 +31,9 @@ namespace Lumos.Data.Models.Management
         [Required(ErrorMessage = "O gênero é obrigatório.")]
         public string Gender { get; set; }
 
+        public long AddressId { get; set; }
         [ForeignKey("AddressId")]
+
         public Address Address { get; set; }
 
         [Required(ErrorMessage = "O telefone é obrigatório.")]

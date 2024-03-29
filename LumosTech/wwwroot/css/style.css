@@ -1080,7 +1080,7 @@ aside.left-panel {
         -webkit-box-shadow: none;
         box-shadow: none;
         clear: both;
-        padding: 0 30px;
+        padding: 0 25px;
         height: 55px;
         position: fixed;
         left: 280px;
@@ -1347,11 +1347,10 @@ header .form-inline {
     .user-area .dropdown-toggle:before {
         content: "";
         position: absolute;
-        right: -3px;
-        bottom: 10px;
+        left: -20px;
         background: #868e96;
-        width: 11px;
-        height: 11px;
+        width: 10px;
+        height: 10px;
         border-radius: 100%;
         border: 2px solid white;
         z-index: 1;

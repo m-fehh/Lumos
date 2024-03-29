@@ -27,6 +27,13 @@ namespace Lumos.Data
                 .HasForeignKey(u => u.OrganizationId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.Address)
+                .WithOne(a => a.User)
+                .HasForeignKey<Address>(a => a.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
             modelBuilder.Entity<Organization>()
                 .HasOne(o => o.Tenant)
                 .WithMany(t => t.Organizations)

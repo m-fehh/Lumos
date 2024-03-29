@@ -25,8 +25,6 @@ namespace Lumos.Data.Models.Management
         public string ZipCode { get; set; }
 
         public long? UserId { get; set; }
-
-        [ForeignKey("UserId")]
         public User User { get; set; }
     }
 }

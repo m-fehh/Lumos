@@ -6,13 +6,18 @@ namespace Lumos.Mvc
 {
     public class LumosControllerBase : Controller
     {
-        protected readonly LumosSession _session;
+        private readonly LumosSession _session;
         protected readonly IMapper _mapper;
 
         public LumosControllerBase(LumosSession session, IMapper mapper)
         {
             _session = session;
             _mapper = mapper;
+        }
+
+        protected void SetViewBagValues()
+        {
+            ViewBag.UserName = _session.UserName?.ToString().ToUpper();
         }
     }
 }

@@ -2,41 +2,44 @@
 {
     public class LumosSession
     {
-        public long? UserId { get; private set; }
-        public long? TenantId { get; private set; }
-        public bool IsHost { get; private set; }
-        public bool IsAuthenticated => UserId.HasValue || IsHost;
+        private long? _userId;
+        private long? _tenantId;
+        private string _userName;
+        private bool _isHost;
 
-        public LumosSession()
-        {
-            UserId = null;
-            TenantId = null;
-            IsHost = false;
-        }
+        public long? UserId => _userId;
+        public long? TenantId => _tenantId;
+        public string UserName => _userName;
+        public bool IsHost => _isHost;
+        public bool IsAuthenticated => _userId.HasValue || _isHost;
 
-        public void SetUserId(long? userId)
+        public void SetUserAndTenant(long? userId, long? tenantId, string userName)
         {
-            UserId = userId;
-            IsHost = false; 
-        }
-
-        public void SetTenantId(long? tenantId)
-        {
-            TenantId = tenantId;
-            IsHost = false; 
+            _userId = userId;
+            _tenantId = tenantId;
+            _userName = userName;
+            _isHost = false;
         }
 
         public void SetHostMode()
         {
-            UserId = null;
-            TenantId = null;
-            IsHost = true;
+            _userId = null;
+            _tenantId = null;
+            _isHost = true;
+            _userName = "ADMIN - HOST";
+        }
+
+        public void Clear()
+        {
+            _userId = null;
+            _tenantId = null;
+            _userName = null;
+            _isHost = false;
         }
 
         public bool IsInHostMode()
         {
-            return IsHost;
+            return _isHost;
         }
     }
-
 }

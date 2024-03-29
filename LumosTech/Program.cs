@@ -29,9 +29,16 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(60);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 // Chamada para registrar as dependências padrão
 DependencyInjectionConfig.RegisterDependencies(builder.Services, builder.Configuration);
+builder.Services.AddHttpContextAccessor();
 
 
 // Add services to the container.
@@ -67,6 +74,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+app.UseSession();
 
 app.UseRouting();
 

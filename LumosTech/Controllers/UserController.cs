@@ -21,12 +21,14 @@ namespace Lumos.Mvc.Controllers
 
         public IActionResult Index()
         {
+            SetViewBagValues();
             return View();
         }
 
 
         public IActionResult Create()
         {
+            SetViewBagValues();
             return View(new UserDto());
         }
 

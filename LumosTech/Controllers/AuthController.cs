@@ -50,8 +50,7 @@ namespace Lumos.Mvc.Controllers
                 }
                 else
                 {
-                    _session.SetUserId(loggedInUser.Id);
-                    _session.SetTenantId(loggedInUser.TenantId);
+                    _session.SetUserAndTenant(loggedInUser.Id, loggedInUser.TenantId, "Felipe Aparecido Martins");
                 }
 
                 // Retorna a resposta JSON
@@ -59,6 +58,17 @@ namespace Lumos.Mvc.Controllers
             }
 
             return BadRequest(new { errorMessage = "Credenciais inválidas. Verifique seus dados e tente novamente." });
+        }
+
+        [HttpPost]
+        public IActionResult Logout()
+        {
+            _session.Clear();
+            var response = new
+            {
+                redirectTo = Url.Action("Index", "Auth")
+            };
+            return Ok(response);
         }
 
         private string GenerateJwtToken(string email)
