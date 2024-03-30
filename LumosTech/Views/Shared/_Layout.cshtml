@@ -133,50 +133,12 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery@2.2.4/dist/jquery.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
- 
+
 
 <script>
     $(document).ready(function () {
-        const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
-
-        dropdownToggles.forEach(dropdownToggle => {
-            dropdownToggle.addEventListener('click', function () {
-                const body = document.querySelector('body');
-
-                body.classList.toggle('open');
-            });
-        });
-
-        const subMenus = document.querySelectorAll('.sub-menu.dropdown-menu');
-
-        subMenus.forEach(subMenu => {
-            subMenu.addEventListener('transitionend', function () {
-                const menuLink = subMenu.previousElementSibling;
-                const menuName = menuLink.textContent.trim();
-
-                const body = document.querySelector('body');
-                if (body.classList.contains('open')) {
-                    if (subMenu.classList.contains('show')) {
-                        if (!menuLink.querySelector('.subtitle')) {
-                            const liSubtitle = document.createElement('li');
-                            liSubtitle.classList.add('nav-item', 'subtitle');
-                            liSubtitle.innerHTML = `<span>${menuName}</span>`;
-                            menuLink.appendChild(liSubtitle);
-                        }
-                    } else {
-                        const subtitle = menuLink.querySelector('.subtitle');
-                        if (subtitle) {
-                            subtitle.remove();
-                        }
-                    }
-                } else {
-                    const subtitle = menuLink.querySelector('.subtitle');
-                    if (subtitle) {
-                        subtitle.remove();
-                    }
-                }
-            });
-        });
+        $('body').toggleClass('open');
+        $('#left-panel').removeClass('open-menu');
 
         $('#preloader').hide();
 
