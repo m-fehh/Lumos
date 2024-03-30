@@ -40,6 +40,12 @@ namespace Lumos.Application
             return _repository.AddAsync(entity);
         }
 
+
+        public async Task<TId> InsertAndGetIdAsync<TId>(TEntity entity)
+        {
+            return await _repository.InsertAndGetIdAsync<TId>(entity);
+        }
+
         public Task UpdateAsync(TEntity entity)
         {
             return _repository.UpdateAsync(entity);
@@ -53,14 +59,3 @@ namespace Lumos.Application
 }
 
 
-/*
- public class ProductAppService : LumosAppServiceBase<Product>
-{
-    public ProductAppService(LumosSession session, IRepository<Product> repository) : base(session, repository)
-    {
-    }
-
-    // Métodos específicos do ProductAppService, se necessário
-}
- 
- */

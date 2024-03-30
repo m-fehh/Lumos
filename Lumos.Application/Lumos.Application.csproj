@@ -16,8 +16,4 @@
     <ProjectReference Include="..\Lumos.Data\Lumos.Data.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Enums\" />
-  </ItemGroup>
-
 </Project>

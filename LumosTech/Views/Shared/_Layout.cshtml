@@ -29,8 +29,8 @@
                         <i class="menu-icon fa fa-user"></i>Usuários
                     </a>
                     <ul class="sub-menu children dropdown-menu">
-                        <li><i class="menu-icon fa fa-sort-alpha-asc"></i><a href="@Url.Action("Index", "User")">Listar</a></li>
-                        <li><i class="menu-icon fa fa-plus"></i><a href="@Url.Action("Create", "User")">Adicionar</a></li>
+                        <li><i class="menu-icon fa fa-sort-alpha-asc"></i><a href="@Url.Action("Index", "Users")">Listar</a></li>
+                        <li><i class="menu-icon fa fa-plus"></i><a href="@Url.Action("Create", "Users")">Adicionar</a></li>
                     </ul>
                 </li>
 
@@ -39,8 +39,8 @@
                         <i class="menu-icon fa fa-wrench"></i>Organizações
                     </a>
                     <ul class="sub-menu children dropdown-menu">
-                        <li><i class="menu-icon fa fa-sort-alpha-asc"></i><a href="@Url.Action("Index", "User")">Listar</a></li>
-                        <li><i class="menu-icon fa fa-plus"></i><a href="@Url.Action("Create", "User")">Adicionar</a></li>
+                        <li><i class="menu-icon fa fa-sort-alpha-asc"></i><a href="@Url.Action("Index", "Users")">Listar</a></li>
+                        <li><i class="menu-icon fa fa-plus"></i><a href="@Url.Action("Create", "Users")">Adicionar</a></li>
                     </ul>
                 </li>
 
@@ -49,8 +49,8 @@
                         <i class="menu-icon fa  fa-bookmark"></i>Tenants
                     </a>
                     <ul class="sub-menu children dropdown-menu">
-                        <li><i class="menu-icon fa fa-sort-alpha-asc"></i><a href="@Url.Action("Index", "User")">Listar</a></li>
-                        <li><i class="menu-icon fa fa-plus"></i><a href="@Url.Action("Create", "User")">Adicionar</a></li>
+                        <li><i class="menu-icon fa fa-sort-alpha-asc"></i><a href="@Url.Action("Index", "Tenants")">Listar</a></li>
+                        <li><i class="menu-icon fa fa-plus"></i><a href="@Url.Action("Create", "Tenants")">Adicionar</a></li>
                     </ul>
                 </li>
             </ul>
@@ -78,9 +78,7 @@
                     </a>
 
                     <div class="user-menu dropdown-menu">
-@*                         <a class="nav-link" href="#"><i class="fa fa- user"></i>Notifications <span class="count">13</span></a>              *@
                         <a class="nav-link" href="#"><i class="fa fa -cog"></i>Trocar Unidade</a>
-
                         <a id="logoutBtn" class="nav-link" href="#"><i class="fa fa-power -off"></i>Logout</a>
                     </div>
                 </div>
@@ -131,6 +129,8 @@
 <!-- Other scripts -->
 <script src="https://cdn.jsdelivr.net/npm/jquery@2.2.4/dist/jquery.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+ 
 
 <script>
     $(document).ready(function () {

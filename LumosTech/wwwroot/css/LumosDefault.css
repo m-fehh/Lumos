@@ -10,17 +10,26 @@ form {
     margin-top: 20px;
 }
 
+hr {
+    border: 0;
+    height: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid #e9ecef;
+    margin: 10px 20px;
+    opacity: 0.3;
+}
+
 .section-identification {
     border-bottom: 0.5px solid #e9ecef;
     font-size: 1.0em;
     font-weight: bold;
     margin: 15px;
-    color: #88E105;
+    color: #58b305;
 }
 
 .container {
     background: #fff;
-    padding: 20px 0;
+    padding: 10px 0 5px 0;
 }
 
 .input-label {
@@ -29,13 +38,18 @@ form {
     font-weight: bold;
 }
 
+.form-control {
+    font-size: 0.9em !important;
+    color: #58b305;
+}
+
 .form-control:focus {
     border-color: #a7e105;
     box-shadow: 0 0 0 0.2rem rgba(167, 225, 5, 0.25);
 }
 
 .input-label.required {
-    color: #a7e105;
+    color: #58b305;
     font-weight: bold;
 }
 
@@ -50,9 +64,24 @@ form {
     font-size: 0.8em;
 }
 
+.next,
 .save {
     width: 25%;
-    margin: 20px 0 0 0;
+    margin: 10px 0 0 0;
 }
 
+.multistep {
+    display: none;
+}
 
+    .multistep.active {
+        display: block;
+    }
+
+.progress {
+    margin: 20px 0;
+}
+
+.progress-bar {
+    background-color: #88E105!important;
+}

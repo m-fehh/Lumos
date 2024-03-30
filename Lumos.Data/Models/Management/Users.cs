@@ -1,11 +1,12 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Lumos.Application.Enums;
 
 namespace Lumos.Data.Models.Management
 {
     [Table("tbUsers")]
-    public class User : LumosBaseModel
+    public class Users : LumosBaseModel
     {
         [Required(ErrorMessage = "O nome de usuário é obrigatório.")]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "O nome de usuário deve ter entre 3 e 50 caracteres.")]
@@ -23,13 +24,16 @@ namespace Lumos.Data.Models.Management
         public string FullName { get; set; }
 
         [Required(ErrorMessage = "O CPF é obrigatória.")]
-        [StringLength(11, ErrorMessage = "O CPF deve conter no máximo 11 caracteres.")]
+        [StringLength(14, ErrorMessage = "O CPF deve conter no máximo 11 caracteres.")]
         public string Cpf { get; set; }
 
         public DateTime? DateOfBirth { get; set; }
 
         [Required(ErrorMessage = "O gênero é obrigatório.")]
         public string Gender { get; set; }
+
+        [Required(ErrorMessage = "O nível de acesso é obrigatório.")]
+        public EAccessLevel AccessLevel { get; set; }
 
         public long AddressId { get; set; }
         [ForeignKey("AddressId")]
@@ -45,15 +49,15 @@ namespace Lumos.Data.Models.Management
         public long TenantId { get; set; }
 
         [ForeignKey("TenantId")]
-        public Tenant Tenant { get; set; }
+        public Tenants Tenant { get; set; }
 
         public long OrganizationId { get; set; }
 
         [ForeignKey("OrganizationId")]
-        public Organization Organization { get; set; }
+        public Organizations Organization { get; set; }
 
         // Método para verificar se o usuário pertence a um tenant específico
-        public bool BelongsToTenant(Tenant tenant)
+        public bool BelongsToTenant(Tenants tenant)
         {
             return Tenant?.Id == tenant.Id;
         }

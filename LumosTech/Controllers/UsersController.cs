@@ -1,25 +1,14 @@
 ﻿using AutoMapper;
 using Lumos.Application;
-using Lumos.Application.Dtos;
-using Lumos.Application.Interfaces.Management;
+using Lumos.Application.Dtos.Management;
 using Lumos.Data.Models.Management;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
 
 namespace Lumos.Mvc.Controllers
 {
-    public class UserController : LumosControllerBase<User, UserDto>
+    public class UsersController : LumosControllerBase<Users, UserDto>
     {
-        private readonly IUserAppService _userAppService;
-
-        public UserController(LumosSession session, IUserAppService userAppService, IMapper mapper, LumosAppServiceBase<User> userService)
-            : base(session, mapper, userService)
-        {
-            _userAppService = userAppService;
-        }
-
-
+        public UsersController(LumosSession session, IMapper mapper, LumosAppServiceBase<Users> userService) : base(session, mapper, userService) { }
 
         public IActionResult Index()
         {

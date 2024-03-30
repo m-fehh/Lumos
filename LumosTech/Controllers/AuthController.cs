@@ -14,9 +14,9 @@ namespace Lumos.Mvc.Controllers
     {
         private readonly IConfiguration _config;
         private readonly LumosSession _session;
-        private readonly IUserAppService _userAppService;
+        private readonly IUsersAppService _userAppService;
 
-        public AuthController(IConfiguration config, LumosSession session, IUserAppService userAppService)
+        public AuthController(IConfiguration config, LumosSession session, IUsersAppService userAppService)
         {
             _config = config;
             _session = session;

@@ -75,6 +75,21 @@ namespace Lumos.Application.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task<TId> InsertAndGetIdAsync<TId>(TEntity entity)
+        {
+            await _context.Set<TEntity>().AddAsync(entity);
+            await _context.SaveChangesAsync();
+
+            var idProperty = typeof(TEntity).GetProperty("Id");
+            if (idProperty == null)
+            {
+                throw new InvalidOperationException("A entidade não possui uma propriedade 'Id' válida para retornar o novo ID.");
+            }
+
+            return (TId)Convert.ChangeType(idProperty.GetValue(entity), typeof(TId));
+        }
+
+
         public async Task UpdateAsync(TEntity entity)
         {
             _context.Set<TEntity>().Update(entity);

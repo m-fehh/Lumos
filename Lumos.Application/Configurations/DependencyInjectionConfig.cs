@@ -24,13 +24,17 @@ namespace Lumos.Application.Configurations
 
             #region Interface X Classe 
 
-            AddScopedServices<IUserAppService, UserAppService>(services);
+            AddScopedServices<IUsersAppService, UsersAppService>(services);
+            AddScopedServices<ITenantsAppService, TenantsAppService>(services);
+            AddScopedServices<IOrganizationsAppService, OrganizationsAppService>(services);
 
             #endregion
 
             #region ServiceBase X AppService
 
-            services.AddScoped<LumosAppServiceBase<User>, UserAppService>(); 
+            services.AddScoped<LumosAppServiceBase<Users>, UsersAppService>(); 
+            services.AddScoped<LumosAppServiceBase<Tenants>, TenantsAppService>(); 
+            services.AddScoped<LumosAppServiceBase<Organizations>, OrganizationsAppService>(); 
             
             #endregion
         }

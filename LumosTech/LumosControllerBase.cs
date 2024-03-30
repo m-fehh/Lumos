@@ -51,7 +51,7 @@ namespace Lumos.Mvc
         }
 
         [HttpPost]
-        public virtual async Task<IActionResult> Create(TDto model)
+        public async Task<IActionResult> InsertAsync(TDto model)
         {
             var validationResults = new List<ValidationResult>();
             var isValid = Validator.TryValidateObject(model, new ValidationContext(model), validationResults, true);
@@ -79,10 +79,5 @@ namespace Lumos.Mvc
             }
         }
 
-        [HttpPut]
-        public virtual async Task<IActionResult> Update(TDto model)
-        {
-
-        }
     }
 }

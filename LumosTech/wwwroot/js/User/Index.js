@@ -3,7 +3,7 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "/User/GetAllPaginated",
+            "url": "/Users/GetAllPaginated",
             "type": "POST",
             "contentType": "application/json",
             "data": function (d) {

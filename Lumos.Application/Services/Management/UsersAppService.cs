@@ -5,17 +5,17 @@ using Lumos.Data.Models.Management;
 
 namespace Lumos.Application.Services.Management
 {
-    public class UserAppService : LumosAppServiceBase<User>, IUserAppService
+    public class UsersAppService : LumosAppServiceBase<Users>, IUsersAppService
     {
-        public UserAppService(LumosSession session, IRepository<User> repository) : base(session, repository)
+        public UsersAppService(LumosSession session, IRepository<Users> repository) : base(session, repository)
         {
         }
 
-        public async Task<User?> ValidateUserCredentials(string email, string password)
+        public async Task<Users?> ValidateUserCredentials(string email, string password)
         {
             if (HostConfigurationConst.HostLogin.Equals(email) && HostConfigurationConst.HostPassword.Equals(password)) 
             {
-                return new User
+                return new Users
                 {
                     Username = "HOST_ACCESS"
                 };
