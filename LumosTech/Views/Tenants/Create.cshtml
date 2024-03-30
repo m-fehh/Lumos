@@ -79,7 +79,7 @@
                 </div>
 
                 <div class="form-group col-md-4">
-                    <label for="Tenant.Uf" class="input-label">UF<span class="input-label-required"></span></label>
+                    <label for="Tenant.Uf" class="input-label">Estado<span class="input-label-required"></span></label>
                     <select class="form-control" name="Tenant.Uf" id="Tenant.Uf">
                         <option value="">Selecione a UF</option>
                         <option value="AC">Acre</option>
@@ -155,9 +155,11 @@
     </form>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-masker/1.2.0/vanilla-masker.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-masker/1.2.0/vanilla-masker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-<script src="~/js/Tenant/Index.js"></script>
+    <script src="~/js/Tenant/Create.js"></script>
+}

@@ -170,80 +170,11 @@
     </form>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-masker/1.2.0/vanilla-masker.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-masker/1.2.0/vanilla-masker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-
-
-<script>
-    // Máscara para CPF
-    VMasker(document.getElementById('Cpf')).maskPattern('999.999.999-99');
-
-    // Máscara para telefone
-    VMasker(document.getElementById('Phone')).maskPattern('(99) 99999-9999');
-
-    // Máscara para CEP
-    VMasker(document.getElementById('ZipCode')).maskPattern('99999-999');
-
-    // Máscara para DATA
-    VMasker(document.getElementById('DateOfBirth')).maskPattern('99/99/9999');
-
-
-    $(document).ready(function () {
-        $('#preloader').hide();
-        $('#registerUser').on('submit', function (e) {
-            e.preventDefault();
-            var formData = new FormData($('#registerUser')[0]);
-            var submitButton = $('#submitButton');
-
-            // Desativa o botão
-            submitButton.prop('disabled', true);
-            $('#preloader').show();
-
-            $.ajax({
-                url: '/Users/Insert',
-                method: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function (data) {
-                    $('#toastSuccess .toast-body').text("Dados salvos com sucesso!");
-                    $('#toastSuccess').toast('show');
-                },
-                error: function (xhr, status, error) {
-                    submitButton.prop('disabled', false);
-
-                    var errorMessage = "Ocorreu um erro ao processar a solicitação.";
-
-                    if (xhr.status === 400) {
-                        var errorResponse = JSON.parse(xhr.responseText);
-                        if (errorResponse) {
-                            var errorMessage = '';
-
-                            for (var key in errorResponse) {
-                                if (errorResponse[key].length > 0) {
-                                    errorMessage = errorResponse[key][0];
-                                    break;
-                                }
-                            }
-
-                            if (errorMessage) {
-                                $('#toastError .toast-body').text(errorMessage);
-                                $('#toastError').toast('show');
-                            }
-                        }
-                    } else {
-                        $('#toastError .toast-body').text(errorMessage);
-                        $('#toastError').toast('show');
-                    }
-                },
-                complete: function () {
-                    submitButton.prop('disabled', false);
-                    $('#preloader').hide();
-                }
-            });
-        });
-    });
-</script>
+    <script src="~/js/User/Create.js"></script>
+}
