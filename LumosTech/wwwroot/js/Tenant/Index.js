@@ -1,9 +1,23 @@
 ﻿$(document).ready(function () {
-    $('#userTable').DataTable({
+
+    // Função para obter o nome do enum com base no valor
+    function getEnumDisplayName(enumType, enumValue) {
+        var enumEntries = Object.entries(enumType);
+        for (var i = 0; i < enumEntries.length; i++) {
+            var key = enumEntries[i][0];
+            var value = enumEntries[i][1];
+            if (typeof value === 'number' && value === enumValue) {
+                return key;
+            }
+        }
+        return ""; 
+    }
+
+    $('#tenantTable').DataTable({
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "/Users/GetAllPaginated",
+            "url": "/Tenants/GetAllPaginated",
             "type": "POST",
             "contentType": "application/json",
             "data": function (d) {
@@ -36,8 +50,17 @@
         "columns": [
             { "data": "Id" },
             { "data": "Name" },
-            { "data": "CPF" },
-            { "data": "Email" },
+            { "data": "TypeName" },
+            { "data": "Branch" },
+            {
+                "data": null,
+                "render": function (data, type, row, meta) {
+                    console.log("data: ", data);
+                    console.log("row: ", row);
+
+                    return row.City + ' - ' + row.Uf;
+                }
+            },
             { "data": "" }
         ],
         "columnDefs": [
@@ -48,8 +71,7 @@
                         `
                          <div class="bntContainer">
                              <button type="button" id="editUser" class="bntActionsTable"><i class="fa fa-edit" aria-hidden="true"></i></button>
-                             <button type="button" id="cancelUser" class="bntActionsTable"><i class="fa fa-times-circle-o" aria-hidden="true"></i></button>
-                         </div>
+                             <button type="button" id="cancelUser" class="bntActionsTable"><i class="fa fa-times-circle-o" aria-hidden="true"></i></button>                         </div>
                         `
                     ].join('');
                 }
@@ -60,4 +82,14 @@
         "ordering": true,
         "info": true
     });
+
+
+    var _tableProcessing = $("#tenantTable_processing");
+    var _tableChildNodes = _tableProcessing[0].childNodes
+
+    for (var i = 0; i < _tableChildNodes.length; i++) {
+        if (_tableChildNodes[i].nodeType === Node.TEXT_NODE) {
+            _tableProcessing[0].removeChild(_tableChildNodes[i]);
+        }
+    }
 });

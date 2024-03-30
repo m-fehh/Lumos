@@ -9,6 +9,7 @@ namespace Lumos.Application.Repositories
         Task<List<TEntity>> GetAllAsync();
         Task<PaginationResult<TEntity>> GetAllPaginatedAsync(UserDataTableParams dataTableParams);
         Task AddAsync(TEntity entity);
+        Task<TId> InsertAndGetIdAsync<TId>(TEntity entity);
         Task UpdateAsync(TEntity entity);
         Task DeleteAsync(int id);
     }

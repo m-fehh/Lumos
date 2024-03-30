@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Lumos.Application.Enums;
+using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Lumos.Application.Dtos
+namespace Lumos.Application.Dtos.Management
 {
     public class UserDto
     {
@@ -19,6 +20,9 @@ namespace Lumos.Application.Dtos
         [StringLength(100, MinimumLength = 6, ErrorMessage = "A senha deve ter no mínimo 6 caracteres.")]
         public string PasswordHash { get; set; }
 
+        [Required(ErrorMessage = "O nível de acesso é obrigatório.")]
+        public EAccessLevel AccessLevel { get; set; }
+
         #endregion
 
         #region Identificação
@@ -29,7 +33,6 @@ namespace Lumos.Application.Dtos
         [Required(ErrorMessage = "O CPF fornecido não é válido.")]
         public string Cpf { get; set; }
 
-        [Display(Name = "Data de Nascimento")]
         [DataType(DataType.Date)]
         public DateTime? DateOfBirth { get; set; }
 

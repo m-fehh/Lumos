@@ -260,7 +260,7 @@ Googel Fonts  */
 }
 
 .bg-white {
-    background-color: #fff;
+    background-color: transparent;
 }
 
 .fade-5 {
@@ -2719,15 +2719,16 @@ footer.site-footer {
 }
 
     footer.site-footer .footer-inner {
-        color: #78909c;
+        color: #88e105;
+        background: transparent;
         font-family: 'Open Sans';
         font-size: 14px;
-        line-height: 1.5;
-        padding: 2.45em 1.125em;
+        line-height: 0.5;
+        padding: 1em 1.125em;
     }
 
         footer.site-footer .footer-inner a {
-            color: #6a7074;
+            color: #88e105;
         }
 
 .calender-cont {
