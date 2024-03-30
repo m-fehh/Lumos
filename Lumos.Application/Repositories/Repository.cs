@@ -33,13 +33,13 @@ namespace Lumos.Application.Repositories
             if (!string.IsNullOrEmpty(dataTableParams.Search?.Value))
             {
                 string searchTerm = dataTableParams.Search.Value.ToLower();
-                query = query.ToList().Where(entity => IsPropertyContainsValue(entity, searchTerm)).AsQueryable();
+                var entities = await query.ToListAsync();
+                entities = entities.Where(entity => IsPropertyContainsValue(entity, searchTerm)).ToList();
+                query = entities.AsQueryable();
             }
 
-            // Obter o total de registros
-            int totalRecords = await query.CountAsync();
+            int totalRecords = query.Count();
 
-            // Aplicar ordenação
             if (dataTableParams.Order != null && dataTableParams.Order.Count > 0)
             {
                 foreach (var order in dataTableParams.Order)
@@ -54,14 +54,14 @@ namespace Lumos.Application.Repositories
             int pageNumber = dataTableParams.Start / dataTableParams.Length + 1;
             int pageSize = dataTableParams.Length;
 
-            List<TEntity> entities = await query
+            List<TEntity> result = query
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-                .ToListAsync();
+                .ToList();
 
             var paginationResult = new PaginationResult<TEntity>
             {
-                Entities = entities,
+                Entities = result,
                 TotalRecords = totalRecords
             };
 

@@ -46,12 +46,57 @@ tbody {
 }
 
 .bntActionsTable {
-    background-color: #A7E105;
+    background-color: transparent;
     border: none;
-    outline: none;
-    border-radius: 10px;
     font-size: 20px;
-    color: #f9f9f9;
+    color: #58b305;
     text-align: center;
-    cursor: pointer;
+    max-width: 25px;
+    font-size: 1.9em;
 }
+
+.dt-processing {
+    background-color: #f1f2f7;
+    border-radius: 4px;
+    padding: 10px;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+    .dt-processing div {
+        top: 15%;
+        color: white;
+    }
+
+    .dt-processing .spinner-border {
+        color: #fff;
+    }
+
+.dt-container {
+    border-radius: 5px;
+}
+
+div.dt-processing {
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    width: 200px;
+    margin-left: -100px;
+    margin-top: -22px;
+    text-align: center;
+    padding: 2px;
+    z-index: 1000;
+    color: white;
+}
+
+
+    div.dt-processing > div:last-child > div {
+        position: absolute;
+        top: 0;
+        width: 13px;
+        color: white;
+        height: 13px;
+        background: white;
+        border-radius: 50%;
+        animation-timing-function: cubic-bezier(0, 1, 1, 0);
+    }

@@ -1,4 +1,4 @@
-﻿document.addEventListener("DOMContentLoaded", function () {
+﻿$(document).ready(function () {
     var typeSelect = document.getElementById("Tenant.Type");
     var cnpjInput = document.getElementById("Organization.CpfCnpj");
     var cnpjLabel = document.querySelector("label[for='Organization.CpfCnpj']");

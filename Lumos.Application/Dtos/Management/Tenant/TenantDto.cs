@@ -15,6 +15,9 @@ namespace Lumos.Application.Dtos.Management.Tenant
         [Required(ErrorMessage = "O tipo é obrigatório.")]
         public ETenantType Type { get; set; }
 
+        public string TypeName => Type.GetDisplayName();
+
+
         [Required(ErrorMessage = "O ramo é obrigatório.")]
         public string Branch { get; set; }
 

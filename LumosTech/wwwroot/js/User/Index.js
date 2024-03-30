@@ -35,7 +35,7 @@
         },
         "columns": [
             { "data": "Id" },
-            { "data": "Nome" },
+            { "data": "Name" },
             { "data": "CPF" },
             { "data": "Email" },
             { "data": "" }
@@ -47,8 +47,8 @@
                     return [
                         `
                          <div class="bntContainer">
-                             <button type="button" id="editUser" class="bntActionsTable">✎</button>
-                             <button type="button" id="cancelUser" class="bntActionsTable">✘</button>
+                             <button type="button" id="editUser" class="bntActionsTable"><i class="fa fa-edit" aria-hidden="true"></i></button>
+                             <button type="button" id="cancelUser" class="bntActionsTable"><i class="fa fa-times-circle-o" aria-hidden="true"></i></button>
                          </div>
                         `
                     ].join('');
