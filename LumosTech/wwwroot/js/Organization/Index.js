@@ -1,9 +1,8 @@
-﻿
-$('#userTable').DataTable({
+﻿$('#organizationTable').DataTable({
     "processing": true,
     "serverSide": true,
     "ajax": {
-        "url": "/Users/GetAllPaginated",
+        "url": "/Organizations/GetAllPaginated",
         "type": "POST",
         "contentType": "application/json",
         "data": function (d) {
@@ -36,9 +35,9 @@ $('#userTable').DataTable({
     "columns": [
         { "data": "Id" },
         { "data": "Name" },
-        { "data": "CPF" },
-        { "data": "Email" },
-        { "data": "" }
+        { "data": "LevelName" },
+        { "data": "CpfCnpj" },
+        { "data": "TenantName" }
     ],
     "columnDefs": [
         {
@@ -46,11 +45,11 @@ $('#userTable').DataTable({
             "render": function (data, type, full, meta) {
                 return [
                     `
-                         <div class="bntContainer">
-                             <button type="button" id="editUser" class="bntActionsTable"><i class="fa fa-edit" aria-hidden="true"></i></button>
-                             <button type="button" id="cancelUser" class="bntActionsTable"><i class="fa fa-times-circle-o" aria-hidden="true"></i></button>
-                         </div>
-                        `
+                        <div class="bntContainer">
+                            <button type="button" id="editOrganization" class="bntActionsTable"><i class="fa fa-edit" aria-hidden="true"></i></button>
+                            <button type="button" id="cancelOrganization" class="bntActionsTable"><i class="fa fa-times-circle-o" aria-hidden="true"></i></button>
+                        </div>
+                    `
                 ].join('');
             }
         }

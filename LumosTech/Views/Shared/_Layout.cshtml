@@ -42,8 +42,8 @@
                         <i class="menu-icon fa fa-briefcase"></i>Unidades
                     </a>
                     <ul class="sub-menu children dropdown-menu">
-                        <li><i class="menu-icon fa fa-sort-alpha-asc"></i><a href="@Url.Action("Index", "Users")">Listar</a></li>
-                        <li><i class="menu-icon fa fa-plus"></i><a href="@Url.Action("Create", "Users")">Adicionar</a></li>
+                        <li><i class="menu-icon fa fa-sort-alpha-asc"></i><a href="@Url.Action("Index", "Organizations")">Listar</a></li>
+                        <li><i class="menu-icon fa fa-plus"></i><a href="@Url.Action("Create", "Organizations")">Adicionar</a></li>
                     </ul>
                 </li>
 
@@ -126,6 +126,7 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery-match-height@0.7.2/dist/jquery.matchHeight.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"></script>
 
+
 <script src="~/js/main.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
 
@@ -137,9 +138,21 @@
 
 <script>
     $(document).ready(function () {
-        $('body').toggleClass('open');
-        $('#left-panel').removeClass('open-menu');
+        var isMenuOpen = localStorage.getItem('isMenuOpen');
 
+        if (isMenuOpen === 'true') {
+            $('body').addClass('open');
+            $('#left-panel').addClass('open-menu');
+
+            $('.subtitle').show();
+        } else {
+            $('body').removeClass('open');
+            $('#left-panel').removeClass('open-menu');
+
+            $('.subtitle').hide();
+        }
+
+        $('#toastError').toast('hide');
         $('#preloader').hide();
 
         // Função para ativar o menu dropdown

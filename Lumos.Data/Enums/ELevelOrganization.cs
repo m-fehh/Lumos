@@ -10,8 +10,8 @@ namespace Lumos.Data.Enums
         [Display(Name = "Filial")]
         Filial = 1,
 
-        [Display(Name = "PF")]
-        Pf = 2,
+        [Display(Name = "Pessoa Física")]
+        PF = 2,
     }
 
     public static class ELevelOrganizationExtensions

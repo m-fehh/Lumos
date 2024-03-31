@@ -1,15 +1,17 @@
 ﻿$(document).ready(function () {
-    VMasker(document.getElementById('Cpf')).maskPattern('999.999.999-99');
-    VMasker(document.getElementById('Phone')).maskPattern('(99) 99999-9999');
-    VMasker(document.getElementById('ZipCode')).maskPattern('99999-999');
-    VMasker(document.getElementById('DateOfBirth')).maskPattern('99/99/9999');
+    $('#TenantId').select2({
+        placeholder: 'Selecione um Tenant',
+        allowClear: true 
+    });
 
 
-    $('#registerUser').on('submit', function (e) {
+    $('#registerOrganization').on('submit', function (e) {
+        console.log("TESTE");
+
         e.preventDefault();
         $('#preloader').hide();
 
-        var formData = new FormData($('#registerUser')[0]);
+        var formData = new FormData($('#registerOrganization')[0]);
         var submitButton = $('#submitButton');
 
         // Desativa o botão
@@ -17,7 +19,8 @@
         $('#preloader').show();
 
         $.ajax({
-            url: '/Users/Insert',
+            //url: '/Organizations/InsertTenant',
+            url: '/Organizations/Insert',
             method: 'POST',
             data: formData,
             processData: false,
@@ -60,18 +63,3 @@
         });
     });
 });
-
-function nextStep(currentStep, nextStep) {
-    document.getElementById(currentStep).classList.remove('active');
-    document.getElementById(nextStep).classList.add('active');
-
-    // Atualiza o progresso
-    var progressBar = document.querySelector('.progress-bar');
-    if (nextStep === 'steep1') {
-        progressBar.style.width = '50%';
-        progressBar.setAttribute('aria-valuenow', '50');
-    } else if (nextStep === 'steep2') {
-        progressBar.style.width = '100%';
-        progressBar.setAttribute('aria-valuenow', '100');
-    }
-}

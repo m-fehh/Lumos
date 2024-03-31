@@ -17,7 +17,6 @@ namespace Lumos.Application.Dtos.Management.Tenant
 
         public string TypeName => Type.GetDisplayName();
 
-
         [Required(ErrorMessage = "O ramo é obrigatório.")]
         public string Branch { get; set; }
 
@@ -30,6 +29,5 @@ namespace Lumos.Application.Dtos.Management.Tenant
         public string Uf { get; set; }
 
         public List<OrganizationDto> Organizations { get; set; }
-
     }
 }

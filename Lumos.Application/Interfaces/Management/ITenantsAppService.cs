@@ -6,7 +6,9 @@ namespace Lumos.Application.Interfaces.Management
 {
     public interface ITenantsAppService : ITransientDependency
     {
-        Task<PaginationResult<Tenants>> GetAllPaginatedAsync(UserDataTableParams dataTableParams);
+        Task<PaginationResult<Tenants>> GetAllPaginatedAsync(UserDataTableParams dataTableParams, long? tenantId, long? organizationId);
+        Task<List<Tenants>> GetAllAsync();
         Task<TId> InsertAndGetIdAsync<TId>(Tenants entity);
+        Task<Tenants> GetByIdAsync<TId>(TId id);
     }
 }

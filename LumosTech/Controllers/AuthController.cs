@@ -50,14 +50,14 @@ namespace Lumos.Mvc.Controllers
                 }
                 else
                 {
-                    _session.SetUserAndTenant(loggedInUser.Id, loggedInUser.TenantId, "Felipe Aparecido Martins");
+                    _session.SetUserAndTenant(loggedInUser.Id, loggedInUser.TenantId, loggedInUser.FullName, loggedInUser.OrganizationId);
                 }
 
                 // Retorna a resposta JSON
                 return Ok(response);
             }
 
-            return BadRequest(new { errorMessage = "Credenciais inválidas. Verifique seus dados e tente novamente." });
+            return BadRequest(new { errorMessage = "Credenciais inválidas." });
         }
 
         [HttpPost]

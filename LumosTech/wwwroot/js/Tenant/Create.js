@@ -1,15 +1,20 @@
 ﻿$(document).ready(function () {
     var typeSelect = document.getElementById("Tenant.Type");
+    var levelSelect = document.getElementById("Organization.Level");
     var cnpjInput = document.getElementById("Organization.CpfCnpj");
     var cnpjLabel = document.querySelector("label[for='Organization.CpfCnpj']");
 
     function updateCnpjField() {
         var selectedType = typeSelect.value;
+        levelSelect.disabled = true;
         if (selectedType === "PJ") {
-            cnpjLabel.textContent = "CNPJ";
+            levelSelect.value = "Matriz";
+
+            cnpjLabel.innerHTML = 'CNPJ<span class="input-label-required"></span>';
             VMasker(cnpjInput).maskPattern('99.999.999/9999-99');
         } else {
-            cnpjLabel.textContent = "CPF";
+            levelSelect.value = "Pessoa Física";
+            cnpjLabel.innerHTML = 'CPF<span class="input-label-required"></span>';
             VMasker(cnpjInput).maskPattern('999.999.999-99');
         }
     }
@@ -19,9 +24,10 @@
         updateCnpjField();
     });
 
-    $('#preloader').hide();
     $('#registerTenant').on('submit', function (e) {
         e.preventDefault();
+        $('#preloader').hide();
+
         var formData = new FormData($('#registerTenant')[0]);
         var submitButton = $('#submitButton');
 

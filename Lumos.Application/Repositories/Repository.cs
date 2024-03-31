@@ -1,6 +1,7 @@
 ﻿using Lumos.Application.Configurations;
 using Lumos.Application.Models;
 using Lumos.Data;
+using Lumos.Data.Models.Management;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -15,7 +16,7 @@ namespace Lumos.Application.Repositories
             _context = context;
         }
 
-        public async Task<TEntity> GetByIdAsync(int id)
+        public async Task<TEntity> GetByIdAsync<TId>(TId id)
         {
             return await _context.Set<TEntity>().FindAsync(id);
         }
@@ -25,9 +26,15 @@ namespace Lumos.Application.Repositories
             return await _context.Set<TEntity>().ToListAsync();
         }
 
-        public async Task<PaginationResult<TEntity>> GetAllPaginatedAsync(UserDataTableParams dataTableParams)
+        public async Task<PaginationResult<TEntity>> GetAllPaginatedAsync(UserDataTableParams dataTableParams, long? tenantId, long? organizationId)
         {
             IQueryable<TEntity> query = _context.Set<TEntity>();
+
+            if (tenantId.HasValue && organizationId.HasValue)
+            {
+                query = ApplyTenantOrganizationFilters(query, tenantId.Value, organizationId);
+
+            }
 
             // Aplicar filtros
             if (!string.IsNullOrEmpty(dataTableParams.Search?.Value))
@@ -96,13 +103,14 @@ namespace Lumos.Application.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync<TId>(TId id)
         {
             var entity = await _context.Set<TEntity>().FindAsync(id);
             _context.Set<TEntity>().Remove(entity);
             await _context.SaveChangesAsync();
         }
 
+        #region  PRIVATE METHODS  
         private bool IsPropertyContainsValue(TEntity entity, string searchTerm)
         {
             var properties = entity.GetType().GetProperties();
@@ -117,6 +125,39 @@ namespace Lumos.Application.Repositories
             return false;
         }
 
+        private async Task<bool> CheckForDuplicatesAsync(Expression<Func<TEntity, bool>> duplicateCheckPredicate)
+        {
+            return await _context.Set<TEntity>().AnyAsync(duplicateCheckPredicate);
+        }
+
+        private IQueryable<TEntity> ApplyTenantOrganizationFilters(IQueryable<TEntity> query, long tenantId, long? organizationId)
+        {
+            // Aplicar filtro de tenantId
+            ParameterExpression param = Expression.Parameter(typeof(TEntity), "entity");
+            Expression<Func<TEntity, bool>> tenantFilter = Expression.Lambda<Func<TEntity, bool>>(
+                Expression.Equal(
+                    Expression.PropertyOrField(param, "TenantId"),
+                    Expression.Constant(tenantId)
+                ),
+                param
+            );
+            query = query.Where(tenantFilter);
+
+            if (organizationId.HasValue)
+            {
+                Expression<Func<TEntity, bool>> organizationFilter = Expression.Lambda<Func<TEntity, bool>>(
+                    Expression.Equal(
+                        Expression.PropertyOrField(param, "OrganizationId"),
+                        Expression.Constant(organizationId.Value)
+                    ),
+                    param
+                );
+                query = query.Where(organizationFilter);
+            }
+
+            return query;
+        }
+        #endregion
     }
 
     public static class ExpressionHelper
