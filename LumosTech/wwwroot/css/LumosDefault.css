@@ -61,7 +61,7 @@ hr {
 
 ::placeholder {
     color: #6c6d6f;
-    font-size: 0.8em;
+    font-size: 0.9em;
 }
 
 .next,
@@ -126,7 +126,7 @@ hr {
 }
 
 .select2-results__option--highlighted[aria-selected] {
-    background-color: #77c133!important;
+    background-color: #58b305 !important;
     color: white;
     font-size: 0.9em;
 }

@@ -33,22 +33,41 @@
         }
     },
     "columns": [
-        { "data": "Id" },
         { "data": "Name" },
         { "data": "LevelName" },
         { "data": "CpfCnpj" },
-        { "data": "TenantName" }
+        {
+            "data": "Tenant",
+            "orderable": false,
+            "render": function (data, type, row, meta) {
+                return  data ? data.Name : "Desconhecido";
+            }
+        },
+        {
+            "data": "IsDeleted",
+            "orderable": false,
+            "render": function (data, type, row, meta) {
+                if (data) {
+                    return '<span class="badge bg-danger" style="font-size: 0.9em; color: white;">Inativo</span>';
+                } else {
+                    return '<span class="badge bg-success" style="font-size: 0.9em; color: white;">Ativo</span>';
+                }
+
+            }
+        },
+        { "data": "" }
     ],
     "columnDefs": [
         {
             "targets": -1,
-            "render": function (data, type, full, meta) {
+            "orderable": false,
+            "render": function (data, type, row, meta) {
                 return [
                     `
-                        <div class="bntContainer">
-                            <button type="button" id="editOrganization" class="bntActionsTable"><i class="fa fa-edit" aria-hidden="true"></i></button>
-                            <button type="button" id="cancelOrganization" class="bntActionsTable"><i class="fa fa-times-circle-o" aria-hidden="true"></i></button>
-                        </div>
+                         <div class="bntContainer">
+                             <button type="button" id="editUser" class="bntActionsTable" data-id="${row.Id}"><i class="fa fa-edit" aria-hidden="true" title="Editar"></i></button>
+                             <button type="button" id="cancelUser" class="bntActionsTable" data-id="${row.Id}"><i class="fa fa-times-circle-o" aria-hidden="true" title="Deletar"></i></button>                         
+                         </div>
                     `
                 ].join('');
             }
@@ -59,3 +78,4 @@
     "ordering": true,
     "info": true
 });
+

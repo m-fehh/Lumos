@@ -2,6 +2,7 @@
 using Lumos.Application.Models;
 using Lumos.Application.Repositories;
 using Lumos.Data.Models.Management;
+using System.Runtime.CompilerServices;
 
 namespace Lumos.Application
 {
@@ -30,9 +31,9 @@ namespace Lumos.Application
             return await _repository.GetAllAsync();
         }
 
-        public async Task<PaginationResult<TEntity>> GetAllPaginatedAsync(UserDataTableParams dataTableParams, long? tenantId, long? organizationId)
+        public async Task<PaginationResult<TEntity>> GetAllPaginatedAsync(UserDataTableParams dataTableParams, long? tenantId, long? organizationId, bool isHost)
         {
-            return await _repository.GetAllPaginatedAsync(dataTableParams, tenantId, organizationId);
+            return await _repository.GetAllPaginatedAsync(dataTableParams, tenantId, organizationId, isHost);
         }
 
         public Task CreateAsync(TEntity entity)

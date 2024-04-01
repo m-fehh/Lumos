@@ -1,9 +1,8 @@
 ﻿using Lumos.Application.Dtos.Management.Tenant;
-using Lumos.Application.Interfaces.Management;
 using Lumos.Data.Enums;
 using Lumos.Data.Models;
-using Lumos.Data.Models.Management;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Lumos.Application.Dtos.Management
 {
@@ -22,6 +21,8 @@ namespace Lumos.Application.Dtos.Management
         public string CpfCnpj { get; set; }
 
         public long TenantId { get; set; }
+
+        [ForeignKey("TenantId")]
         public TenantDto Tenant { get; set; }
     }
 }

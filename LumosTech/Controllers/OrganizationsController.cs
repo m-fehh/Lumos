@@ -4,7 +4,6 @@ using Lumos.Application.Dtos.Management;
 using Lumos.Application.Interfaces.Management;
 using Lumos.Data.Models.Management;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
 
 namespace Lumos.Mvc.Controllers
 {

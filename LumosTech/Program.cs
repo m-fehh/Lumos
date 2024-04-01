@@ -8,6 +8,7 @@ using Lumos.Data;
 using Lumos.Data.Models.Management;
 using Lumos.Application.Configurations;
 using System.Reflection;
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,6 +41,11 @@ builder.Services.AddSession(options =>
 DependencyInjectionConfig.RegisterDependencies(builder.Services, builder.Configuration);
 builder.Services.AddHttpContextAccessor();
 
+
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+{
+    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+});
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

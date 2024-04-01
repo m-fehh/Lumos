@@ -1,26 +1,27 @@
 ﻿$(document).ready(function () {
-    var typeSelect = document.getElementById("Tenant.Type");
-    var levelSelect = document.getElementById("Organization.Level");
-    var cnpjInput = document.getElementById("Organization.CpfCnpj");
-    var cnpjLabel = document.querySelector("label[for='Organization.CpfCnpj']");
+    var typeSelect = $("#Tenant\\.Type");
+    var levelSelect = $("#Organization\\.Level");
+    var cnpjInput = $("#Organization\\.CpfCnpj");
+    var cnpjLabel = $("label[for='Organization.CpfCnpj']");
 
     function updateCnpjField() {
-        var selectedType = typeSelect.value;
-        levelSelect.disabled = true;
+        var selectedType = typeSelect.val();
+        levelSelect.prop("disabled", true);
         if (selectedType === "PJ") {
-            levelSelect.value = "Matriz";
+            levelSelect.val("Matriz");
 
-            cnpjLabel.innerHTML = 'CNPJ<span class="input-label-required"></span>';
+            cnpjLabel.html('CNPJ<span class="input-label-required"></span>');
             VMasker(cnpjInput).maskPattern('99.999.999/9999-99');
         } else {
-            levelSelect.value = "Pessoa Física";
-            cnpjLabel.innerHTML = 'CPF<span class="input-label-required"></span>';
+            levelSelect.val("Pessoa Física");
+            cnpjLabel.html('CPF<span class="input-label-required"></span>');
             VMasker(cnpjInput).maskPattern('999.999.999-99');
         }
     }
 
     updateCnpjField();
-    typeSelect.addEventListener("change", function () {
+
+    typeSelect.on("change", function () {
         updateCnpjField();
     });
 

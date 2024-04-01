@@ -35,8 +35,6 @@ namespace Lumos.Mvc
         {
             return _session.IsInHostMode();
         }
-
-
         [HttpPost]
         public async Task<IActionResult> GetAllPaginated([FromBody] UserDataTableParams dataTableParams)
         {
@@ -45,10 +43,10 @@ namespace Lumos.Mvc
                 return BadRequest("Parâmetros inválidos.");
             }
 
-            long? tenantId = RequiresTenantOrganizationFilter<TDto>() ? _session.TenantId.GetValueOrDefault() : null;
-            long? organizationId = RequiresTenantOrganizationFilter<TDto>() ? _session.OrganizationId.GetValueOrDefault() : null;
+            var tenantId = RequiresTenantOrganizationFilter<TDto>() ? _session.TenantId ?? null : null;
+            var organizationId = RequiresTenantOrganizationFilter<TDto>() ? _session.OrganizationId ?? null : null;
 
-            var result = await _appService.GetAllPaginatedAsync(dataTableParams, tenantId, organizationId);
+            var result = await _appService.GetAllPaginatedAsync(dataTableParams, tenantId, organizationId, _session.IsHost);
 
             var dtos = _mapper.Map<List<TDto>>(result.Entities);
 
@@ -60,7 +58,16 @@ namespace Lumos.Mvc
                 data = dtos
             };
 
-            return Content(JsonConvert.SerializeObject(data), "application/json");
+            // Criar as configurações de serialização
+            var serializerSettings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+
+            // Serializar o objeto usando as configurações criadas
+            var json = JsonConvert.SerializeObject(data, serializerSettings);
+
+            return Content(json, "application/json");
         }
 
         [HttpPost]
@@ -133,25 +140,81 @@ namespace Lumos.Mvc
             }
         }
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateAsync<TId>(TId id, TDto model)
+        {
+            if (model == null)
+            {
+                return BadRequest("Modelo inválido.");
+            }
+
+            var validationResults = new List<ValidationResult>();
+            var isValid = Validator.TryValidateObject(model, new ValidationContext(model), validationResults, true);
+
+            if (!isValid)
+            {
+                foreach (var validationResult in validationResults)
+                {
+                    ModelState.AddModelError(validationResult.MemberNames.FirstOrDefault() ?? string.Empty, validationResult.ErrorMessage);
+                }
+
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var entity = await _appService.GetByIdAsync(id);
+                if (entity == null)
+                {
+                    return NotFound();
+                }
+
+                _mapper.Map(model, entity);
+
+                await _appService.UpdateAsync(entity);
+
+                return Ok();
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError(string.Empty, "Ocorreu um erro ao atualizar os dados! Contate o suporte.");
+                return BadRequest(ModelState);
+            }
+        }
+
+
         #region PRIVATE METHODS 
 
         private bool IsDuplicate(TEntity entity, TDto dto)
         {
-            // Comparar propriedades para determinar se os dados são duplicados
-            PropertyInfo[] properties = typeof(TEntity).GetProperties();
-            foreach (var property in properties)
-            {
-                var entityValue = property.GetValue(entity);
-                var dtoValue = typeof(TDto).GetProperty(property.Name)?.GetValue(dto);
+            // Obtém as propriedades da entidade e da DTO
+            PropertyInfo[] entityProperties = typeof(TEntity).GetProperties();
+            PropertyInfo[] dtoProperties = typeof(TDto).GetProperties();
 
-                if (entityValue != null && dtoValue != null && entityValue.Equals(dtoValue))
+            // Lista de nomes das propriedades a serem excluídas da comparação
+            List<string> excludedProperties = new List<string> { "TenantId", "OrganizationId", "IsDeleted" };
+
+            foreach (var entityProperty in entityProperties)
+            {
+                if (!excludedProperties.Contains(entityProperty.Name))
                 {
-                    return true;
+                    var entityValue = entityProperty.GetValue(entity);
+                    var dtoProperty = dtoProperties.FirstOrDefault(p => p.Name == entityProperty.Name);
+                    if (dtoProperty != null)
+                    {
+                        var dtoValue = dtoProperty.GetValue(dto);
+
+                        if (entityValue != null && dtoValue != null && entityValue.Equals(dtoValue))
+                        {
+                            return true; 
+                        }
+                    }
                 }
             }
 
             return false;
         }
+
 
         private async Task<bool> EntityExistsAsync(Expression<Func<TEntity, bool>> predicate)
         {
@@ -165,7 +228,8 @@ namespace Lumos.Mvc
                 typeof(TenantDto)
             };
 
-            return !classesWithoutFilter.Contains(typeof(T));
+            var result = !classesWithoutFilter.Contains(typeof(T));
+            return result;
         } 
 
         #endregion

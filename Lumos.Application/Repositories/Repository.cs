@@ -26,13 +26,13 @@ namespace Lumos.Application.Repositories
             return await _context.Set<TEntity>().ToListAsync();
         }
 
-        public async Task<PaginationResult<TEntity>> GetAllPaginatedAsync(UserDataTableParams dataTableParams, long? tenantId, long? organizationId)
+        public async Task<PaginationResult<TEntity>> GetAllPaginatedAsync(UserDataTableParams dataTableParams, long? tenantId, long? organizationId, bool isHost)
         {
             IQueryable<TEntity> query = _context.Set<TEntity>();
 
-            if (tenantId.HasValue && organizationId.HasValue)
+            if (isHost || tenantId.HasValue || organizationId.HasValue)
             {
-                query = ApplyTenantOrganizationFilters(query, tenantId.Value, organizationId);
+                query = ApplyTenantOrganizationFilters(query, tenantId, organizationId, isHost);
 
             }
 
@@ -52,10 +52,24 @@ namespace Lumos.Application.Repositories
                 foreach (var order in dataTableParams.Order)
                 {
                     string propertyName = query.ElementType.GetProperties()[order.Column].Name;
-                    Expression<Func<TEntity, object>> propertyExpression = ExpressionHelper.GetPropertyExpression<TEntity>(propertyName);
-                    query = order.Dir == "asc" ? query.OrderBy(propertyExpression) : query.OrderByDescending(propertyExpression);
+                    var property = typeof(TEntity).GetProperty(propertyName);
+
+                    if (property != null)
+                    {
+                        ParameterExpression parameter = Expression.Parameter(typeof(TEntity), "x");
+                        Expression propertyAccess = Expression.MakeMemberAccess(parameter, property);
+                        LambdaExpression orderByExpression = Expression.Lambda(propertyAccess, parameter);
+
+                        string methodName = order.Dir == "asc" ? "OrderBy" : "OrderByDescending";
+                        MethodCallExpression orderByCallExpression  = Expression.Call(typeof(Queryable), methodName,
+                            new Type[] { typeof(TEntity), property.PropertyType },
+                            query.Expression, Expression.Quote(orderByExpression));
+
+                        query = query.Provider.CreateQuery<TEntity>(orderByCallExpression);
+                    }
                 }
             }
+
 
             // Paginação
             int pageNumber = dataTableParams.Start / dataTableParams.Length + 1;
@@ -125,38 +139,55 @@ namespace Lumos.Application.Repositories
             return false;
         }
 
-        private async Task<bool> CheckForDuplicatesAsync(Expression<Func<TEntity, bool>> duplicateCheckPredicate)
+        private IQueryable<TEntity> ApplyTenantOrganizationFilters(IQueryable<TEntity> query, long? tenantId, long? organizationId, bool isHost)
         {
-            return await _context.Set<TEntity>().AnyAsync(duplicateCheckPredicate);
-        }
-
-        private IQueryable<TEntity> ApplyTenantOrganizationFilters(IQueryable<TEntity> query, long tenantId, long? organizationId)
-        {
-            // Aplicar filtro de tenantId
             ParameterExpression param = Expression.Parameter(typeof(TEntity), "entity");
-            Expression<Func<TEntity, bool>> tenantFilter = Expression.Lambda<Func<TEntity, bool>>(
-                Expression.Equal(
-                    Expression.PropertyOrField(param, "TenantId"),
-                    Expression.Constant(tenantId)
-                ),
-                param
-            );
-            query = query.Where(tenantFilter);
 
-            if (organizationId.HasValue)
+            if (isHost)
             {
-                Expression<Func<TEntity, bool>> organizationFilter = Expression.Lambda<Func<TEntity, bool>>(
-                    Expression.Equal(
-                        Expression.PropertyOrField(param, "OrganizationId"),
-                        Expression.Constant(organizationId.Value)
-                    ),
-                    param
-                );
-                query = query.Where(organizationFilter);
+                // Include explicitamente a propriedade de navegação "Tenant" se existir
+                if (typeof(TEntity).GetProperty("Tenant") != null)
+                {
+                    query = query.Include("Tenant");
+                }
+
+                // Include explicitamente a propriedade de navegação "Organization" se existir
+                if (typeof(TEntity).GetProperty("Organization") != null)
+                {
+                    query = query.Include("Organization");
+                }
+            }
+
+            else
+            {
+                if (tenantId.HasValue)
+                {
+                    MemberExpression tenantProperty = Expression.Property(param, "TenantId");
+                    ConstantExpression tenantValue = Expression.Constant(tenantId);
+                    BinaryExpression tenantFilter = Expression.Equal(tenantProperty, tenantValue);
+                    Expression<Func<TEntity, bool>> tenantLambda = Expression.Lambda<Func<TEntity, bool>>(tenantFilter, param);
+                    query = query.Where(tenantLambda);
+
+                    // Include explicitamente a propriedade de navegação Tenant
+                    query = query.Include("Tenant");
+                }
+
+                if (organizationId.HasValue)
+                {
+                    MemberExpression organizationProperty = Expression.Property(param, "OrganizationId");
+                    ConstantExpression organizationValue = Expression.Constant(organizationId.Value);
+                    BinaryExpression organizationFilter = Expression.Equal(organizationProperty, organizationValue);
+                    Expression<Func<TEntity, bool>> organizationLambda = Expression.Lambda<Func<TEntity, bool>>(organizationFilter, param);
+                    query = query.Where(organizationLambda);
+
+                    // Include explicitamente a propriedade de navegação Organization
+                    query = query.Include("Organization");
+                }
             }
 
             return query;
         }
+
         #endregion
     }
 

@@ -1,18 +1,32 @@
 ﻿$(document).ready(function () {
     $('#TenantId').select2({
         placeholder: 'Selecione um Tenant',
-        allowClear: true 
+        allowClear: true
     });
+
+    var typeSelect = $("#Level");
+    var cnpjInput = $("#CpfCnpj");
+    var cnpjLabel = $("label[for='CpfCnpj']");
+
+    function updateCnpjField() {
+        typeSelect.val("Filial");
+        typeSelect.prop("disabled", true);
+
+        cnpjLabel.html('CNPJ<span class="input-label-required"></span>');
+        VMasker(cnpjInput).maskPattern('99.999.999/9999-99');
+    }
+
+    updateCnpjField();
 
 
     $('#registerOrganization').on('submit', function (e) {
-        console.log("TESTE");
-
         e.preventDefault();
         $('#preloader').hide();
 
         var formData = new FormData($('#registerOrganization')[0]);
         var submitButton = $('#submitButton');
+
+        formData.set('Level', 'Filial');
 
         // Desativa o botão
         submitButton.prop('disabled', true);
