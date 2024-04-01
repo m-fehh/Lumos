@@ -144,3 +144,7 @@ hr {
         border-width: 0 4px 5px 4px;
     }
 
+
+.modal-body p {
+    font-size: 0.8em!important;
+}

@@ -52,7 +52,7 @@ namespace Lumos.Application
             return _repository.UpdateAsync(entity);
         }
 
-        public Task DeleteAsync(int id)
+        public Task DeleteAsync<TId>(TId id)
         {
             return _repository.DeleteAsync(id);
         }

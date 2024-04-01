@@ -12,7 +12,7 @@ using System.Reflection;
 
 namespace Lumos.Mvc
 {
-    public class LumosControllerBase<TEntity, TDto> : Controller where TEntity : class where TDto : class
+    public class LumosControllerBase<TEntity, TDto, TEntityId> : Controller where TEntity : class where TDto : class
     {
         private readonly LumosSession _session;
         protected readonly IMapper _mapper;
@@ -88,13 +88,13 @@ namespace Lumos.Mvc
 
             try
             {
-                // Verificar se os dados já existem antes de inserir
-                var exists = await EntityExistsAsync(e => IsDuplicate(e, model));
-                if (exists)
-                {
-                    ModelState.AddModelError(string.Empty, "Os dados já existem no banco de dados.");
-                    return BadRequest(ModelState);
-                }
+                //// Verificar se os dados já existem antes de inserir
+                //var exists = await EntityExistsAsync(e => IsDuplicate(e, model));
+                //if (exists)
+                //{
+                //    ModelState.AddModelError(string.Empty, "Os dados já existem no banco de dados.");
+                //    return BadRequest(ModelState);
+                //}
 
 
                 var entity = _mapper.Map<TEntity>(model);
@@ -131,7 +131,15 @@ namespace Lumos.Mvc
                 }
 
                 await _appService.CreateAsync(entity);
-                return Ok();
+
+                var controllerName = typeof(TEntity).Name.Replace("Entity", string.Empty);
+                var response = new
+                {
+                    redirectTo = Url.Action("Index", controllerName)
+                };
+
+                // Retorna a resposta JSON
+                return Ok(response);
             }
             catch (Exception)
             {
@@ -182,6 +190,38 @@ namespace Lumos.Mvc
             }
         }
 
+        [HttpDelete]
+        public async Task<IActionResult> DeleteAsync(TEntityId id)
+        {
+            try
+            {
+                var entity = await _appService.GetByIdAsync(id);
+                if (entity == null)
+                {
+                    return NotFound();
+                }
+
+                var isDeletedProperty = typeof(TEntity).GetProperty("IsDeleted");
+                if (isDeletedProperty != null)
+                {
+                    isDeletedProperty.SetValue(entity, true);
+                    await _appService.UpdateAsync(entity);
+                }
+                else
+                {
+                    await _appService.DeleteAsync(entity);
+                }
+
+                return Ok();
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError(string.Empty, "Ocorreu um erro ao excluir os dados! Contate o suporte.");
+                return BadRequest(ModelState);
+            }
+        }
+
+
 
         #region PRIVATE METHODS 
 
@@ -206,7 +246,7 @@ namespace Lumos.Mvc
 
                         if (entityValue != null && dtoValue != null && entityValue.Equals(dtoValue))
                         {
-                            return true; 
+                            return true;
                         }
                     }
                 }
@@ -230,7 +270,7 @@ namespace Lumos.Mvc
 
             var result = !classesWithoutFilter.Contains(typeof(T));
             return result;
-        } 
+        }
 
         #endregion
     }

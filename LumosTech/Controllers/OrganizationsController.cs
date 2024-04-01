@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Lumos.Mvc.Controllers
 {
-    public class OrganizationsController : LumosControllerBase<Organizations, OrganizationDto>
+    public class OrganizationsController : LumosControllerBase<Organizations, OrganizationDto, long>
     {
         private readonly ITenantsAppService _tenantAppServices;
 

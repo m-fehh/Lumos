@@ -46,8 +46,10 @@
                 $('#toastSuccess .toast-body').text("Dados salvos com sucesso!");
                 $('#toastSuccess').toast('show');
 
-                window.location.href = data.redirectTo;
-            },
+                setTimeout(function () {
+                    window.location.href = data.redirectTo;
+                }, 3000);
+},
             error: function (xhr, status, error) {
                 submitButton.prop('disabled', false);
                 var errorMessage = "Ocorreu um erro ao processar a solicitação.";

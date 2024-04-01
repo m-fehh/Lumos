@@ -55,6 +55,13 @@ tbody {
     font-size: 1.9em;
 }
 
+.disabledButton {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
 .dt-processing {
     background-color: #f1f2f7;
     border-radius: 4px;

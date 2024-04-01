@@ -33,7 +33,6 @@
         }
     },
     "columns": [
-        { "data": "Id" },
         { "data": "Name" },
         { "data": "TypeName" },
         { "data": "Branch" },
@@ -48,12 +47,13 @@
     "columnDefs": [
         {
             "targets": -1,
-            "render": function (data, type, full, meta) {
+            "orderable": false,
+            "render": function (data, type, row, meta) {
                 return [
                     `
                          <div class="bntContainer">
-                             <button type="button" id="editUser" class="bntActionsTable"><i class="fa fa-edit" aria-hidden="true"></i></button>
-                             <button type="button" id="cancelUser" class="bntActionsTable"><i class="fa fa-times-circle-o" aria-hidden="true"></i></button>                         </div>
+                             <button type="button" id="editUser" class="bntActionsTable" data-id="${row.Id}"><i class="fa fa-edit" aria-hidden="true"></i></button>
+                             <button type="button" id="cancelUser" class="bntActionsTable" data-id="${row.Id}"><i class="fa fa-times-circle-o" aria-hidden="true"></i></button>                         </div>
                         `
                 ].join('');
             }

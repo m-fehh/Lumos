@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Lumos.Mvc.Controllers
 {
-    public class UsersController : LumosControllerBase<Users, UserDto>
+    public class UsersController : LumosControllerBase<Users, UserDto, long>
     {
         public UsersController(LumosSession session, IMapper mapper, LumosAppServiceBase<Users> userService) : base(session, mapper, userService) { }
 

@@ -1,4 +1,4 @@
-﻿$('#organizationTable').DataTable({
+﻿var _$table = $('#organizationTable').DataTable({
     "processing": true,
     "serverSide": true,
     "ajax": {
@@ -40,7 +40,7 @@
             "data": "Tenant",
             "orderable": false,
             "render": function (data, type, row, meta) {
-                return  data ? data.Name : "Desconhecido";
+                return data ? data.TypeName + ' - ' + data.Name : "Desconhecido";
             }
         },
         {
@@ -62,14 +62,29 @@
             "targets": -1,
             "orderable": false,
             "render": function (data, type, row, meta) {
-                return [
+                console.log(row);
+                var editButton = `<button type="button" id="edit" class="bntActionsTable" data-id="${row.Id}" ><i class="fa fa-edit" aria-hidden="true" title="Editar"></i></button>`;
+                var deleteButton = `<button type="button" id="delete" class="bntActionsTable" data-id="${row.Id}" data-toggle="confirmation"><i class="fa fa-times-circle-o" aria-hidden="true" title="Deletar"></i></button>`;
+
+                if (row.LevelName === "Matriz") {
+                    deleteButton = deleteButton.replace(/<button/g, '<button class="bntActionsTable disabledButton"');
+
+                }
+
+                var buttonsContainer =
                     `
-                         <div class="bntContainer">
-                             <button type="button" id="editUser" class="bntActionsTable" data-id="${row.Id}"><i class="fa fa-edit" aria-hidden="true" title="Editar"></i></button>
-                             <button type="button" id="cancelUser" class="bntActionsTable" data-id="${row.Id}"><i class="fa fa-times-circle-o" aria-hidden="true" title="Deletar"></i></button>                         
-                         </div>
-                    `
-                ].join('');
+                    <div class="btn-container">
+                        ${editButton}
+                        ${deleteButton}
+                    </div>
+                `;
+
+
+                if (row.IsDeleted) {
+                    buttonsContainer = buttonsContainer.replace(/<button/g, '<button class="bntActionsTable disabledButton"');
+                }
+
+                return buttonsContainer;
             }
         }
     ],
@@ -79,3 +94,19 @@
     "info": true
 });
 
+
+$(document).on('click', '#confirm-delete', function () {
+    var id = $('#delete-modal').data('id');
+    var url = `/Organizations/Delete/${id}`;
+
+    AjaxDeleteDefault("#deleteOrganization", url);
+
+    $('#delete-modal').modal('hide');
+});
+
+$(document).on('click', '#delete', function () {
+    var id = $(this).data('id');
+
+    $('#delete-modal').data('id', id);
+    $('#delete-modal').modal('show');
+});

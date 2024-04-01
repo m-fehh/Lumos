@@ -8,7 +8,7 @@ using Lumos.Application.Interfaces.Management;
 
 namespace Lumos.Mvc.Controllers
 {
-    public class TenantsController : LumosControllerBase<Tenants, TenantDto>
+    public class TenantsController : LumosControllerBase<Tenants, TenantDto, long>
     {
         private readonly IOrganizationsAppService _organizationsAppService;
 
