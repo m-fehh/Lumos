@@ -75,10 +75,44 @@ function nextStep(currentStep, nextStep) {
     // Atualiza o progresso
     var progressBar = document.querySelector('.progress-bar');
     if (nextStep === 'steep1') {
-        progressBar.style.width = '50%';
-        progressBar.setAttribute('aria-valuenow', '50');
+        progressBar.style.width = '33.3%';
+        progressBar.setAttribute('aria-valuenow', '33.3');
     } else if (nextStep === 'steep2') {
+        progressBar.style.width = '66.6%';
+        progressBar.setAttribute('aria-valuenow', '66.6');
+    } else if (nextStep === 'steep3') {
         progressBar.style.width = '100%';
         progressBar.setAttribute('aria-valuenow', '100');
     }
 }
+
+
+
+
+
+    
+// Evento de início de arrasto
+$('.drag-item').on('dragstart', function (e) {
+    e.originalEvent.dataTransfer.setData('text/plain', $(this).attr('id'));
+});
+
+// Manipular o evento de drop em uma coluna kanban
+$('.kanban-column')
+    .on('dragover', function (e) {
+        e.preventDefault();
+        $(this).addClass('drop-zone-active');
+    })
+    .on('dragleave', function (e) {
+        $(this).removeClass('drop-zone-active');
+    })
+    .on('drop', function (e) {
+        e.preventDefault();
+        $(this).removeClass('drop-zone-active');
+
+        // Obter o ID do cartão sendo arrastado
+        let cardId = e.originalEvent.dataTransfer.getData('text/plain');
+        let $card = $('#' + cardId);
+
+        // Mover o cartão para a nova coluna
+        $card.detach().appendTo($(this).find('.drag-inner-list'));
+    });

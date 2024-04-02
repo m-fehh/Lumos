@@ -23,7 +23,7 @@
 </div>
 
 <div class="progress">
-    <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+    <div class="progress-bar" role="progressbar" style="width: 33.3%;" aria-valuenow="33.3" aria-valuemin="0" aria-valuemax="100"></div>
 </div>
 
 <div class="container-fluid">
@@ -178,6 +178,44 @@
             <div class="row" style="padding: 0 15px;">
                 <div class="col-md-12" style="display: flex; justify-content: flex-end; gap: 20px;">
                     <button type="button" class="btn btn-light next float-right" onclick="nextStep('steep2', 'steep1')">Anterior</button>
+                    <button type="button" class="btn btn-success next float-right" onclick="nextStep('steep2', 'steep3')">Próximo</button>
+                </div>
+            </div>
+        </div>
+        <div class="multistep" id="steep3">
+            <p class="section-identification">• SELECIONAR UNIDADE</p>
+
+            <div class="kanban-container">
+                <ul class="kanban-list">
+                    <li class="kanban-column kanban-column-onhold">
+                        <span class="kanban-column-header header-onhold">
+                            <h2 style="font-size: 1.0em; font-weight: bold;">Unidades Acessíveis</h2>
+                        </span>
+                        <div class="kanban-options"></div>
+                        <ul class="drag-inner-list">
+                            <li class="drag-item" id="card1" draggable="true">Card 1</li>
+                            <li class="drag-item" id="card2" draggable="true">Card 2</li>
+                            <li class="drag-item" id="card3" draggable="true">Card 3</li>
+
+                        </ul>
+                    </li>
+
+                    <li class="kanban-column kanban-column-approved">
+                        <span class="kanban-column-header header-approved">
+                            <h2 style="">Unidades Selecionadas</h2>
+                        </span>
+                        <div class="kanban-options"></div>
+                        <ul class="drag-inner-list">
+                            <li class="drag-item" draggable="true"></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <hr />
+            <div class="row" style="padding: 0 15px;">
+                <div class="col-md-12" style="display: flex; justify-content: flex-end; gap: 20px;">
+                    <button type="button" class="btn btn-light next float-right" onclick="nextStep('steep3', 'steep2')">Anterior</button>
                     <button class="btn btn-success save float-right" type="submit">Finalizar Cadastro</button>
                 </div>
             </div>

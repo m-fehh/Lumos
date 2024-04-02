@@ -30,6 +30,17 @@ tbody {
     font-size: 0.8em;
 }
 
+.paging_full_numbers {
+    width: 100% !important;
+    display: flex !important;
+    align-items: baseline !important;
+}
+
+.dt-paging-button {
+    min-width: auto !important;
+    width: 100%;
+}
+
 .dt-paging-button.current {
     background: #A7E105;
 }
@@ -44,6 +55,7 @@ tbody {
     justify-content: center;
     gap: 10px;
 }
+
 
 .bntActionsTable {
     background-color: transparent;
@@ -107,3 +119,18 @@ div.dt-processing {
         border-radius: 50%;
         animation-timing-function: cubic-bezier(0, 1, 1, 0);
     }
+
+.dt-paging-button.disabled:hover,
+.dt-paging-button:hover {
+    background: #3d874e !important;
+    border: none !important;
+    color: white !important;
+}
+
+
+
+.dt-paging-button.current {
+    background: #28a745 !important;
+    color: #fff !important;
+    border: none !important;
+}
