@@ -1,4 +1,5 @@
-﻿using Lumos.Application.Interfaces.Management;
+﻿using Lumos.Application.Configurations.Filters;
+using Lumos.Application.Interfaces.Management;
 using Lumos.Data.Models.Management;
 using Lumos.Mvc.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -12,15 +13,15 @@ namespace Lumos.Mvc.Controllers
 {
     public class AuthController : Controller
     {
-        private readonly IConfiguration _config;
         private readonly LumosSession _session;
         private readonly IUsersAppService _userAppService;
+        private readonly IAuthService _authService;
 
-        public AuthController(IConfiguration config, LumosSession session, IUsersAppService userAppService)
+        public AuthController(LumosSession session, IUsersAppService userAppService, IAuthService authService)
         {
-            _config = config;
             _session = session;
             _userAppService = userAppService;
+            _authService = authService;
         }
 
         public IActionResult Index()
@@ -36,7 +37,7 @@ namespace Lumos.Mvc.Controllers
 
             if (loggedInUser != null)
             {
-                var token = GenerateJwtToken(model.UserOrEmail);
+                var token = _authService.GenerateJwtToken(model.UserOrEmail);
 
                 var response = new
                 {
@@ -71,35 +72,6 @@ namespace Lumos.Mvc.Controllers
             return Ok(response);
         }
 
-        private string GenerateJwtToken(string email)
-        {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Authentication:JwtBearer:SecurityKey"]));
-
-            if (securityKey.KeySize < 256)
-            {
-                var newKeyBytes = new byte[32]; // Tamanho em bytes para 256 bits
-                Array.Copy(securityKey.Key, newKeyBytes, securityKey.Key.Length);
-                securityKey = new SymmetricSecurityKey(newKeyBytes);
-            }
-
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            var claims = new[]
-            {
-                new Claim(ClaimTypes.Name, email)
-            };
-
-            var token = new JwtSecurityToken(
-                issuer: _config["Authentication:JwtBearer:Issuer"],
-                audience: _config["Authentication:JwtBearer:Audience"],
-                claims: claims,
-                expires: DateTime.UtcNow.AddHours(1),
-                signingCredentials: credentials
-            );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
         [HttpPost]
         [Route("RenewToken")]
         public IActionResult RenewToken(string tokenFixed)
@@ -113,7 +85,7 @@ namespace Lumos.Mvc.Controllers
                     return BadRequest("Usuário não autenticado");
                 }
 
-                var token = GenerateJwtToken(userEmail);
+                var token = _authService.GenerateJwtToken(userEmail);
 
                 return Ok(new { token });
             }

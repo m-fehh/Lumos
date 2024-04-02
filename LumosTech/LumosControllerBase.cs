@@ -3,8 +3,6 @@ using Lumos.Application;
 using Lumos.Application.Configurations;
 using Lumos.Application.Dtos.Management.Tenant;
 using Lumos.Data.Models.Management;
-using Lumos.Mvc.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
@@ -36,8 +34,9 @@ namespace Lumos.Mvc
         {
             return _session.IsInHostMode();
         }
+
         [HttpPost]
-        [Authorize]
+        [ServiceFilter(typeof(JwtAuthorizationFilter))]
         public async Task<IActionResult> GetAllPaginated([FromBody] UserDataTableParams dataTableParams)
         {
             if (dataTableParams == null)
@@ -73,7 +72,7 @@ namespace Lumos.Mvc
         }
 
         [HttpPost]
-        [Authorize]
+        [ServiceFilter(typeof(JwtAuthorizationFilter))]
         public async Task<IActionResult> InsertAsync(TDto model)
         {
             var validationResults = new List<ValidationResult>();
@@ -141,7 +140,6 @@ namespace Lumos.Mvc
                     redirectTo = Url.Action("Index", controllerName)
                 };
 
-                // Retorna a resposta JSON
                 return Ok(response);
             }
             catch (Exception)
@@ -151,50 +149,10 @@ namespace Lumos.Mvc
             }
         }
 
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> UpdateAsync<TId>(TId id, TDto model)
-        //{
-            //if (model == null)
-            //{
-                //return BadRequest("Modelo inválido.");
-            //}
-
-            //var validationResults = new List<ValidationResult>();
-            //var isValid = Validator.TryValidateObject(model, new ValidationContext(model), validationResults, true);
-
-            //if (!isValid)
-            //{
-                //foreach (var validationResult in validationResults)
-                //{
-                    //ModelState.AddModelError(validationResult.MemberNames.FirstOrDefault() ?? string.Empty, validationResult.ErrorMessage);
-                //}
-
-                //return BadRequest(ModelState);
-            //}
-
-            //try
-            //{
-                //var entity = await _appService.GetByIdAsync(id);
-                //if (entity == null)
-                //{
-                    //return NotFound();
-                //}
-
-                //_mapper.Map(model, entity);
-
-                //await _appService.UpdateAsync(entity);
-
-                //return Ok();
-            //}
-            //catch (Exception)
-            //{
-                //ModelState.AddModelError(string.Empty, "Ocorreu um erro ao atualizar os dados! Contate o suporte.");
-                //return BadRequest(ModelState);
-            //}
-        //}
-
+        
         [HttpDelete]
-        [Authorize]
+        [ServiceFilter(typeof(JwtAuthorizationFilter))]
+
         public async Task<IActionResult> DeleteAsync(TEntityId id)
         {
             try
@@ -225,7 +183,30 @@ namespace Lumos.Mvc
             }
         }
 
+        [HttpPut]
+        [ServiceFilter(typeof(JwtAuthorizationFilter))]
 
+        public async Task<IActionResult> UpdateAsync(TEntityId id, TDto model)
+        {
+            try
+            {
+                var entity = await _appService.GetByIdAsync(id);
+                if (entity == null)
+                {
+                    return NotFound();
+                }
+
+                entity = _mapper.Map(model, entity);
+                await _appService.UpdateAsync(entity);
+
+                return Ok();
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError(string.Empty, "Ocorreu um erro ao excluir os dados! Contate o suporte.");
+                return BadRequest(ModelState);
+            }
+        }
 
         #region PRIVATE METHODS 
 

@@ -1,4 +1,9 @@
-﻿function AjaxDeleteDefault(button, url) {
+﻿function GetBearerToken() {
+    console.log('Bearer ' + sessionStorage.getItem('jwtToken'));
+    return 'Bearer ' + sessionStorage.getItem('jwtToken');
+}
+
+function AjaxDeleteDefault(button, url) {
     var submitButton = $(button);
 
     // Desativa o botão
@@ -9,6 +14,9 @@
     $.ajax({
         url: url,
         type: 'DELETE',
+        headers: {
+            'Authorization': GetBearerToken(),
+        },
         success: function (response) {
             $('#toastSuccess .toast-body').text("O registro foi excluído com êxito.");
             $('#toastSuccess').toast('show');

@@ -6,6 +6,9 @@ $('#userTable').DataTable({
         "url": "/Users/GetAllPaginated",
         "type": "POST",
         "contentType": "application/json",
+        "headers": {
+            "Authorization": GetBearerToken()
+        },
         "data": function (d) {
             return JSON.stringify(d);
         }

@@ -28,11 +28,9 @@ namespace Lumos.Data.Models
             var validationContext = new ValidationContext(this);
             validationResults = new List<ValidationResult>();
 
-            // Verifica se os atributos de validação do modelo estão corretos
             if (!Validator.TryValidateObject(this, validationContext, validationResults, true))
                 return false;
 
-            // Verifica se há propriedades marcadas com Required que estão vazias
             var requiredProperties = GetType().GetProperties()
                 .Where(prop => prop.GetCustomAttributes(typeof(RequiredAttribute), true).Any())
                 .ToList();
@@ -51,7 +49,6 @@ namespace Lumos.Data.Models
             return true;
         }
 
-        // Método para atualizar a data de atualização
         public void UpdateUpdatedAt()
         {
             UpdatedAt = DateTime.UtcNow;

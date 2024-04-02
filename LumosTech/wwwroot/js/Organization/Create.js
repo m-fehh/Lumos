@@ -33,9 +33,11 @@
         $('#preloader').show();
 
         $.ajax({
-            //url: '/Organizations/InsertTenant',
             url: '/Organizations/Insert',
             method: 'POST',
+            headers: {
+                'Authorization': GetBearerToken(),
+            },
             data: formData,
             processData: false,
             contentType: false,

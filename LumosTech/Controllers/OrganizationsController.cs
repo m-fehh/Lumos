@@ -15,6 +15,7 @@ namespace Lumos.Mvc.Controllers
         {
             _tenantAppServices = tenantAppServices;
         }
+
         public IActionResult Index()
         {
             SetViewBagValues();

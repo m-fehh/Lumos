@@ -19,6 +19,9 @@
         $.ajax({
             url: '/Users/Insert',
             method: 'POST',
+            headers: {
+                'Authorization': GetBearerToken(),
+            },
             data: formData,
             processData: false,
             contentType: false,

@@ -39,6 +39,9 @@
         $.ajax({
             url: '/Tenants/InsertTenant',
             method: 'POST',
+            headers: {
+                'Authorization': GetBearerToken(),
+            },
             data: formData,
             processData: false,
             contentType: false,

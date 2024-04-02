@@ -9,6 +9,7 @@ using Lumos.Data.Models.Management;
 using Lumos.Application.Configurations;
 using System.Reflection;
 using Newtonsoft.Json;
+using Lumos.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +37,8 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+
+builder.Services.AddScoped<JwtAuthorizationFilter>();
 
 // Chamada para registrar as dependências padrão
 DependencyInjectionConfig.RegisterDependencies(builder.Services, builder.Configuration);
