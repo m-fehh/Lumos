@@ -70,5 +70,8 @@ namespace Lumos.Mvc.Controllers
                 return BadRequest(ModelState);
             }
         }
+
+        //[HttpDelete]
+        //public async Task<IActionResult> DeleteTenantAsync(long id) { }
     }
 }

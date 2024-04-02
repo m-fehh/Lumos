@@ -4,6 +4,7 @@ using Lumos.Application.Configurations;
 using Lumos.Application.Dtos.Management.Tenant;
 using Lumos.Data.Models.Management;
 using Lumos.Mvc.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
@@ -36,6 +37,7 @@ namespace Lumos.Mvc
             return _session.IsInHostMode();
         }
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> GetAllPaginated([FromBody] UserDataTableParams dataTableParams)
         {
             if (dataTableParams == null)
@@ -71,6 +73,7 @@ namespace Lumos.Mvc
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> InsertAsync(TDto model)
         {
             var validationResults = new List<ValidationResult>();
@@ -148,49 +151,50 @@ namespace Lumos.Mvc
             }
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAsync<TId>(TId id, TDto model)
-        {
-            if (model == null)
-            {
-                return BadRequest("Modelo inválido.");
-            }
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> UpdateAsync<TId>(TId id, TDto model)
+        //{
+            //if (model == null)
+            //{
+                //return BadRequest("Modelo inválido.");
+            //}
 
-            var validationResults = new List<ValidationResult>();
-            var isValid = Validator.TryValidateObject(model, new ValidationContext(model), validationResults, true);
+            //var validationResults = new List<ValidationResult>();
+            //var isValid = Validator.TryValidateObject(model, new ValidationContext(model), validationResults, true);
 
-            if (!isValid)
-            {
-                foreach (var validationResult in validationResults)
-                {
-                    ModelState.AddModelError(validationResult.MemberNames.FirstOrDefault() ?? string.Empty, validationResult.ErrorMessage);
-                }
+            //if (!isValid)
+            //{
+                //foreach (var validationResult in validationResults)
+                //{
+                    //ModelState.AddModelError(validationResult.MemberNames.FirstOrDefault() ?? string.Empty, validationResult.ErrorMessage);
+                //}
 
-                return BadRequest(ModelState);
-            }
+                //return BadRequest(ModelState);
+            //}
 
-            try
-            {
-                var entity = await _appService.GetByIdAsync(id);
-                if (entity == null)
-                {
-                    return NotFound();
-                }
+            //try
+            //{
+                //var entity = await _appService.GetByIdAsync(id);
+                //if (entity == null)
+                //{
+                    //return NotFound();
+                //}
 
-                _mapper.Map(model, entity);
+                //_mapper.Map(model, entity);
 
-                await _appService.UpdateAsync(entity);
+                //await _appService.UpdateAsync(entity);
 
-                return Ok();
-            }
-            catch (Exception)
-            {
-                ModelState.AddModelError(string.Empty, "Ocorreu um erro ao atualizar os dados! Contate o suporte.");
-                return BadRequest(ModelState);
-            }
-        }
+                //return Ok();
+            //}
+            //catch (Exception)
+            //{
+                //ModelState.AddModelError(string.Empty, "Ocorreu um erro ao atualizar os dados! Contate o suporte.");
+                //return BadRequest(ModelState);
+            //}
+        //}
 
         [HttpDelete]
+        [Authorize]
         public async Task<IActionResult> DeleteAsync(TEntityId id)
         {
             try

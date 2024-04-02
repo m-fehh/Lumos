@@ -52,9 +52,9 @@
                 return [
                     `
                          <div class="bntContainer">
-                             <button type="button" id="editUser" class="bntActionsTable" data-id="${row.Id}"><i class="fa fa-edit" aria-hidden="true"></i></button>
-                             <button type="button" id="cancelUser" class="bntActionsTable" data-id="${row.Id}"><i class="fa fa-times-circle-o" aria-hidden="true"></i></button>                         </div>
-                        `
+                             <button type="button" id="edit" class="bntActionsTable" data-id="${row.Id}"><i class="fa fa-edit" aria-hidden="true"></i></button>
+                             <button type="button" id="delete" class="bntActionsTable" data-id="${row.Id}"><i class="fa fa-times-circle-o" aria-hidden="true"></i></button>                         </div>
+                    `
                 ].join('');
             }
         }

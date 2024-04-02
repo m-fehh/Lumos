@@ -62,7 +62,6 @@
             "targets": -1,
             "orderable": false,
             "render": function (data, type, row, meta) {
-                console.log(row);
                 var editButton = `<button type="button" id="edit" class="bntActionsTable" data-id="${row.Id}" ><i class="fa fa-edit" aria-hidden="true" title="Editar"></i></button>`;
                 var deleteButton = `<button type="button" id="delete" class="bntActionsTable" data-id="${row.Id}" data-toggle="confirmation"><i class="fa fa-times-circle-o" aria-hidden="true" title="Deletar"></i></button>`;
 
