@@ -29,7 +29,7 @@ Googel Fonts  */
 }
 
 .bg-flat-color-3 {
-    background: #52e105;
+    background: #218838;
 }
 
 .bg-flat-color-4 {
@@ -61,7 +61,7 @@ Googel Fonts  */
 }
 
 .flat-color-3 {
-    color: #52e105;
+    color: #218838;
 }
 
 .flat-color-4 {
@@ -188,7 +188,7 @@ Googel Fonts  */
 }
 
 .bg-flat-color-3 {
-    background: #52e105;
+    background: #218838;
 }
 
 .bg-flat-color-4 {
@@ -220,7 +220,7 @@ Googel Fonts  */
 }
 
 .flat-color-3 {
-    color: #52e105;
+    color: #218838;
 }
 
 .flat-color-4 {
@@ -456,14 +456,14 @@ Googel Fonts  */
 
 body {
     display: table;
-    font-family: "Open Sans", sans-serif;
+    font-family: "Segoe UI VSS (Regular)", "Segoe UI", "-apple-system", BlinkMacSystemFont, Roboto, "Helvetica Neue", Helvetica, Ubunto, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     font-size: 16px;
     width: 100%;
 }
 
 p {
     font-size: 16px;
-    font-family: "Open Sans", sans-serif;
+    /*font-family: "Open Sans", sans-serif;*/
     font-weight: 400;
     line-height: 24px;
     color: #878787;
@@ -708,7 +708,7 @@ aside.left-panel {
 
             .navbar .navbar-nav > li.active {
                 width: 100%;
-                border-left: 5px solid #88E105;
+                border-left: 5px solid #218838;
             }
 
         .navbar .navbar-nav li {
@@ -717,7 +717,7 @@ aside.left-panel {
 
             .navbar .navbar-nav li.active .menu-icon, .navbar .navbar-nav li:hover .toggle_nav_button:before,
             .navbar .navbar-nav li .toggle_nav_button.nav-open:before {
-                color: #52e105;
+                color: #218838;
             }
 
             .navbar .navbar-nav li .dropdown-toggle:after {
@@ -736,7 +736,7 @@ aside.left-panel {
             }
 
                 .navbar .navbar-nav li > a:hover, .navbar .navbar-nav li > a:hover .menu-icon {
-                    color: #52e105;
+                    color: #218838;
                 }
 
                 .navbar .navbar-nav li > a .menu-icon {
@@ -785,7 +785,7 @@ aside.left-panel {
                     }
 
                     .navbar .navbar-nav li.menu-item-has-children a:hover:before {
-                        border-color: #52e105 #52e105 transparent transparent;
+                        border-color: #218838 #218838 transparent transparent;
                     }
 
                 .navbar .navbar-nav li.menu-item-has-children .sub-menu {
@@ -833,7 +833,7 @@ aside.left-panel {
                 }
 
                 .navbar .navbar-nav li.menu-item-has-children.show a:hover:before {
-                    border-color: transparent #52e105 #52e105 transparent;
+                    border-color: transparent #218838 #218838 transparent;
                 }
 
                 .navbar .navbar-nav li.menu-item-has-children.show .sub-menu {
@@ -845,7 +845,7 @@ aside.left-panel {
         .navbar .navbar-nav > .active > a,
         .navbar .navbar-nav > .active > a:focus,
         .navbar .navbar-nav > .active > a:hover {
-            color: #52e105 !important;
+            color: #218838 !important;
             font-weight: bold;
         }
 
@@ -869,7 +869,7 @@ aside.left-panel {
 }
 
 .subtitle {
-    background: #a3ebb4;
+    background: #218838;
     font-weight: bold;
 }
 
@@ -877,7 +877,7 @@ aside.left-panel {
     display: block;
     font-size: 15px;
     line-height: 35px;
-    color: #607d8b;
+    color: white;
     border-bottom: 1px solid rgba(96, 125, 139, 0.15);
 }
 
@@ -2723,7 +2723,7 @@ header .form-inline {
 }
 
 footer.site-footer .footer-inner {
-    color: #88e105;
+    color: #218838;
     background: transparent;
     font-family: 'Open Sans';
     font-size: 14px;
@@ -2732,7 +2732,7 @@ footer.site-footer .footer-inner {
 }
 
         footer.site-footer .footer-inner a {
-            color: #88e105;
+            color: #218838;
         }
 
 .calender-cont {

@@ -1,6 +1,6 @@
 ﻿.breadcrumb-item.active a {
     font-weight: bold;
-    color: #88E105;
+    color: #218838;
     cursor: not-allowed;
     pointer-events: none;
 }
@@ -24,7 +24,7 @@ hr {
     font-size: 1.0em;
     font-weight: bold;
     margin: 25px 15px;
-    color: #58b305;
+    color: #218838;
 }
 
 .container-fluid {
@@ -40,22 +40,22 @@ hr {
 
 .form-control {
     font-size: 0.9em !important;
-    color: #58b305;
+    color: #218838;
 }
 
 .form-control:focus {
-    border-color: #a7e105;
+    border-color: #218838;
     box-shadow: 0 0 0 0.2rem rgba(167, 225, 5, 0.25);
 }
 
 .input-label.required {
-    color: #58b305;
+    color: #218838;
     font-weight: bold;
 }
 
 .input-label-required::after {
     content: " *";
-    color: #a7e105;
+    color: #218838;
     font-weight: bold;
 }
 
@@ -83,15 +83,21 @@ hr {
 }
 
 .progress-bar {
-    background-color: #88E105!important;
+    background-color: #218838!important;
 }
 
-
-
+.select2-container {
+    box-sizing: border-box;
+    display: inline-block;
+    margin: 0;
+    position: relative;
+    width: 100% !important;
+    vertical-align: middle;
+}
 .select2-selection__rendered {
     font-size: 0.9em;
     padding-left: 0 !important;
-    color: #77c133 !important;
+    color: #218838 !important;
 }
 
 .select2-selection--single {
@@ -118,6 +124,7 @@ hr {
 
 .select2-selection--single {
     height: auto!important;
+    outline: none!important;
 }
 
 .select2-results__message,
@@ -125,10 +132,13 @@ hr {
     font-size: 0.9em;
 }
 
-.select2-results__option--highlighted[aria-selected] {
-    background-color: #58b305 !important;
-    color: white;
+.select2-results__option{
     font-size: 0.9em;
+}
+
+.select2-results__option--highlighted[aria-selected] {
+    background-color: #218838 !important;
+    color: white;
 }
 
 .select2-selection__arrow {
@@ -140,7 +150,7 @@ hr {
 }
 
     .select2-selection__arrow b {
-        border-color: #77c133 transparent #77c133 transparent !important;
+        border-color: #218838 transparent #218838 transparent !important;
         border-width: 0 4px 5px 4px;
     }
 
@@ -189,6 +199,12 @@ ul {
         color: white;
     }
 
+.matriz {
+    color: #888; 
+    pointer-events: none;
+    opacity: 0.5; 
+    cursor: not-allowed; 
+}
 
 
 .header-inprogress {
@@ -197,7 +213,7 @@ ul {
 
 .header-onhold,
 .header-approved {
-    background: #8BC34A;
+    background: #218838;
 }
 
 .drag-inner-list {
@@ -207,7 +223,7 @@ ul {
 .drag-item {
     margin: 15px 10px;
     height: 40px;
-    background: #dbebdf;
+    background: #ededed;
     border-radius: 3px;
     color: #27a444;
     display: flex;

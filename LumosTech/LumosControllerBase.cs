@@ -26,6 +26,8 @@ namespace Lumos.Mvc
 
         protected void SetViewBagValues()
         {
+            ViewBag.TenantId = _session.TenantId;
+            ViewBag.OrganizationId = _session.OrganizationId;
             ViewBag.UserName = _session.UserName?.ToString().ToUpper();
             ViewBag.IsHost = IsInHostMode();
         }
@@ -34,6 +36,25 @@ namespace Lumos.Mvc
         {
             return _session.IsInHostMode();
         }
+
+        [HttpGet]
+        [ServiceFilter(typeof(JwtAuthorizationFilter))]
+        public async Task<IActionResult> GetAllAsync()
+        {
+            try
+            {
+                var entities = await _appService.GetAllAsync();
+                var dtos = _mapper.Map<List<TDto>>(entities);
+
+                return Ok(dtos);
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError(string.Empty, "Ocorreu um erro ao buscar os dados! Contate o suporte.");
+                return BadRequest(ModelState);
+            }
+        }
+
 
         [HttpPost]
         [ServiceFilter(typeof(JwtAuthorizationFilter))]
@@ -241,11 +262,11 @@ namespace Lumos.Mvc
         }
 
 
-        private async Task<bool> EntityExistsAsync(Expression<Func<TEntity, bool>> predicate)
-        {
-            var entities = await _appService.GetAllAsync();
-            return entities.Any(predicate.Compile());
-        }
+        //private async Task<bool> EntityExistsAsync(Expression<Func<TEntity, bool>> predicate)
+        //{
+        //    var entities = await _appService.GetAllAsync();
+        //    return entities.Any(predicate.Compile());
+        //}
 
         private bool RequiresTenantOrganizationFilter<T>()
         {

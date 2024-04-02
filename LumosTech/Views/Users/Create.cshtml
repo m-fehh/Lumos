@@ -7,6 +7,12 @@
 
 @model Lumos.Application.Dtos.Management.UserDto
 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
+
+<input type="hidden" id="sessionTenantId" value="@ViewBag.TenantId" />
+<input type="hidden" id="sessionOrganizationId" value="@ViewBag.OrganizationId" />
+
 <div class="row">
     <div class="col-12">
         <nav aria-label="breadcrumb">
@@ -185,6 +191,12 @@
         <div class="multistep" id="steep3">
             <p class="section-identification">• SELECIONAR UNIDADE</p>
 
+            <div class="form-group col-md-12">
+                <label for="TenantId" class="input-label">Tenant<span class="input-label-required"></span></label>
+                <select id="TenantId" class="form-control">
+                    <option value="">Selecione um Tenant</option>
+                </select>
+            </div>
             <div class="kanban-container">
                 <ul class="kanban-list">
                     <li class="kanban-column kanban-column-onhold">
@@ -193,9 +205,9 @@
                         </span>
                         <div class="kanban-options"></div>
                         <ul class="drag-inner-list">
-                            <li class="drag-item" id="card1" draggable="true">Card 1</li>
+@*                             <li class="drag-item" id="card1" draggable="true">Card 1</li>
                             <li class="drag-item" id="card2" draggable="true">Card 2</li>
-                            <li class="drag-item" id="card3" draggable="true">Card 3</li>
+                            <li class="drag-item" id="card3" draggable="true">Card 3</li> *@
 
                         </ul>
                     </li>
@@ -206,7 +218,8 @@
                         </span>
                         <div class="kanban-options"></div>
                         <ul class="drag-inner-list">
-                            <li class="drag-item" draggable="true"></li>
+                            @*                             <li class="drag-item" draggable="true"></li> *@
+                            <div id="replaceSelected"></div>
                         </ul>
                     </li>
                 </ul>
@@ -226,6 +239,7 @@
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-masker/1.2.0/vanilla-masker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 

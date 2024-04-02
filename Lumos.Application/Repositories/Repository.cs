@@ -18,23 +18,32 @@ namespace Lumos.Application.Repositories
 
         public async Task<TEntity> GetByIdAsync<TId>(TId id)
         {
-            return await _context.Set<TEntity>().FindAsync(id);
+            IQueryable<TEntity> query = _context.Set<TEntity>();
+            query = IncludeAllNavigationProperties(query);
+
+            return await query.FirstOrDefaultAsync(e => EF.Property<TId>(e, "Id").Equals(id));
         }
 
         public async Task<List<TEntity>> GetAllAsync()
         {
-            return await _context.Set<TEntity>().ToListAsync();
+            IQueryable<TEntity> query = _context.Set<TEntity>();
+
+            query = IncludeAllNavigationProperties(query);
+
+            return await query.ToListAsync();
         }
 
         public async Task<PaginationResult<TEntity>> GetAllPaginatedAsync(UserDataTableParams dataTableParams, long? tenantId, long? organizationId, bool isHost)
         {
             IQueryable<TEntity> query = _context.Set<TEntity>();
 
-            if (isHost || tenantId.HasValue || organizationId.HasValue)
+            if (isHost || tenantId.HasValue)
             {
                 query = ApplyTenantOrganizationFilters(query, tenantId, organizationId, isHost);
 
             }
+
+            query = IncludeAllNavigationProperties(query);
 
             // Aplicar filtros
             if (!string.IsNullOrEmpty(dataTableParams.Search?.Value))
@@ -61,7 +70,7 @@ namespace Lumos.Application.Repositories
                         LambdaExpression orderByExpression = Expression.Lambda(propertyAccess, parameter);
 
                         string methodName = order.Dir == "asc" ? "OrderBy" : "OrderByDescending";
-                        MethodCallExpression orderByCallExpression  = Expression.Call(typeof(Queryable), methodName,
+                        MethodCallExpression orderByCallExpression = Expression.Call(typeof(Queryable), methodName,
                             new Type[] { typeof(TEntity), property.PropertyType },
                             query.Expression, Expression.Quote(orderByExpression));
 
@@ -139,23 +148,39 @@ namespace Lumos.Application.Repositories
             return false;
         }
 
+        private IQueryable<TEntity> IncludeAllNavigationProperties(IQueryable<TEntity> query)
+        {
+            var entityType = typeof(TEntity);
+            var navigationProperties = entityType.GetProperties()
+                .Where(p => p.PropertyType.IsClass && !p.PropertyType.FullName.StartsWith("System.")
+                            || p.PropertyType.IsGenericType && p.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
+                .ToList();
+
+            foreach (var navigationProperty in navigationProperties)
+            {
+                query = query.Include(navigationProperty.Name);
+            }
+
+            return query;
+        }
+
         private IQueryable<TEntity> ApplyTenantOrganizationFilters(IQueryable<TEntity> query, long? tenantId, long? organizationId, bool isHost)
         {
             ParameterExpression param = Expression.Parameter(typeof(TEntity), "entity");
 
             if (isHost)
             {
-                // Include explicitamente a propriedade de navegação "Tenant" se existir
-                if (typeof(TEntity).GetProperty("Tenant") != null)
-                {
-                    query = query.Include("Tenant");
-                }
+                //// Include explicitamente a propriedade de navegação "Tenant" se existir
+                //if (typeof(TEntity).GetProperty("Tenant") != null)
+                //{
+                //    query = query.Include("Tenant");
+                //}
 
-                // Include explicitamente a propriedade de navegação "Organization" se existir
-                if (typeof(TEntity).GetProperty("Organization") != null)
-                {
-                    query = query.Include("Organization");
-                }
+                //// Include explicitamente a propriedade de navegação "Organization" se existir
+                //if (typeof(TEntity).GetProperty("Organization") != null)
+                //{
+                //    query = query.Include("Organization");
+                //}
             }
 
             else
@@ -167,9 +192,6 @@ namespace Lumos.Application.Repositories
                     BinaryExpression tenantFilter = Expression.Equal(tenantProperty, tenantValue);
                     Expression<Func<TEntity, bool>> tenantLambda = Expression.Lambda<Func<TEntity, bool>>(tenantFilter, param);
                     query = query.Where(tenantLambda);
-
-                    // Include explicitamente a propriedade de navegação Tenant
-                    query = query.Include("Tenant");
                 }
 
                 if (organizationId.HasValue)
@@ -179,9 +201,6 @@ namespace Lumos.Application.Repositories
                     BinaryExpression organizationFilter = Expression.Equal(organizationProperty, organizationValue);
                     Expression<Func<TEntity, bool>> organizationLambda = Expression.Lambda<Func<TEntity, bool>>(organizationFilter, param);
                     query = query.Where(organizationLambda);
-
-                    // Include explicitamente a propriedade de navegação Organization
-                    query = query.Include("Organization");
                 }
             }
 

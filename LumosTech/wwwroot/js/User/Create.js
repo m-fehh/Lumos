@@ -1,4 +1,46 @@
 ﻿$(document).ready(function () {
+
+    var _sessionTenantId = $('#sessionTenantId').val();
+    var tenantList;
+
+    if (!_sessionTenantId || _sessionTenantId === null) {
+        $('#TenantId').prop('disabled', false).show();
+        $('.kanban-container').hide();
+
+
+        AjaxGetAllDefault("Tenants", function (result) {
+            $.each(result, function (index, tenant) {
+                $('#TenantId').append($('<option>', {
+                    value: tenant.id,
+                    text: `${tenant.name} | ${tenant.city}-${tenant.uf}`
+                }));
+            });
+
+            tenantList = result;
+
+            $('#TenantId').select2({
+                placeholder: 'Selecione um Tenant',
+                allowClear: true
+            });
+        });
+    } else {
+        $('#TenantId').hide();
+
+        var filteredTenant = tenantList.find(tenant => tenant.id == selectedTenantId);
+        DisplayOrganizationsKanbanGrid(filteredTenant.organizations);
+    }
+
+    $('#TenantId').on('change', function () {
+        var selectedTenantId = $(this).val();
+
+        var filteredTenant = tenantList.find(tenant => tenant.id == selectedTenantId);
+        DisplayOrganizationsKanbanGrid(filteredTenant.organizations);
+        $('.kanban-container').show();
+
+    });
+
+
+
     VMasker(document.getElementById('Cpf')).maskPattern('999.999.999-99');
     VMasker(document.getElementById('Phone')).maskPattern('(99) 99999-9999');
     VMasker(document.getElementById('ZipCode')).maskPattern('99999-999');
@@ -32,7 +74,7 @@
                 setTimeout(function () {
                     window.location.href = data.redirectTo;
                 }, 3000);
-},
+            },
             error: function (xhr, status, error) {
                 submitButton.prop('disabled', false);
 
@@ -86,17 +128,37 @@ function nextStep(currentStep, nextStep) {
     }
 }
 
+function DisplayOrganizationsKanbanGrid(organizations) {
+    $('.drag-inner-list').empty();
+    organizations.forEach(function (organization) {
+        if (!organization.isDeleted)
+        { 
+            if (organization.levelName !== "Matriz") {
+                var listItem = $('<li>', {
+                    class: 'drag-item',
+                    id: 'card' + organization.id,
+                    draggable: true,
+                    text: `FILIAL: ${organization.name} - ${organization.cpfCnpj}`
+                });
+                $('.kanban-column-onhold .drag-inner-list').append(listItem);
+            } else {
+                var listItem = $('<li>', {
+                    class: 'drag-item matriz',
+                    id: 'card' + organization.id,
+                    html: '<i class="fa fa-lock" style="margin- top: 2px; padding: 10px;"></i> MATRIZ: ' + organization.name + ' - ' + organization.cpfCnpj
+                });
+                $('.kanban-column-approved .drag-inner-list').append(listItem);
+            }
+        }
+    });
+}
 
-
-
-
-    
-// Evento de início de arrasto
-$('.drag-item').on('dragstart', function (e) {
+// Configuração do evento de arrastar para os itens
+$(document).on('dragstart', '.drag-item', function (e) {
     e.originalEvent.dataTransfer.setData('text/plain', $(this).attr('id'));
 });
 
-// Manipular o evento de drop em uma coluna kanban
+// Configuração dos eventos para a coluna kanban
 $('.kanban-column')
     .on('dragover', function (e) {
         e.preventDefault();
@@ -109,7 +171,6 @@ $('.kanban-column')
         e.preventDefault();
         $(this).removeClass('drop-zone-active');
 
-        // Obter o ID do cartão sendo arrastado
         let cardId = e.originalEvent.dataTransfer.getData('text/plain');
         let $card = $('#' + cardId);
 
