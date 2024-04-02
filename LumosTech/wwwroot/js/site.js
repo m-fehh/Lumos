@@ -1,5 +1,4 @@
 ﻿function GetBearerToken() {
-    console.log('Bearer ' + sessionStorage.getItem('jwtToken'));
     return 'Bearer ' + sessionStorage.getItem('jwtToken');
 }
 
