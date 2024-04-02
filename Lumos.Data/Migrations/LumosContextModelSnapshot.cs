@@ -59,7 +59,7 @@ namespace Lumos.Data.Migrations
                         .IsUnique()
                         .HasFilter("[UserId] IS NOT NULL");
 
-                    b.ToTable("tbAddress");
+                    b.ToTable("tbAddress", (string)null);
                 });
 
             modelBuilder.Entity("Lumos.Data.Models.Management.Organization", b =>
@@ -100,7 +100,7 @@ namespace Lumos.Data.Migrations
 
                     b.HasIndex("TenantId");
 
-                    b.ToTable("tbOrganizations");
+                    b.ToTable("tbOrganizations", (string)null);
                 });
 
             modelBuilder.Entity("Lumos.Data.Models.Management.Tenant", b =>
@@ -150,7 +150,7 @@ namespace Lumos.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("tbTenants");
+                    b.ToTable("tbTenants", (string)null);
                 });
 
             modelBuilder.Entity("Lumos.Data.Models.Management.User", b =>
@@ -227,7 +227,7 @@ namespace Lumos.Data.Migrations
 
                     b.HasIndex("TenantId");
 
-                    b.ToTable("tbUsers");
+                    b.ToTable("tbUsers", (string)null);
                 });
 
             modelBuilder.Entity("Lumos.Data.Models.Management.Address", b =>

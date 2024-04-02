@@ -19,8 +19,9 @@ namespace Lumos.Data.Models.Management
         [StringLength(18, MinimumLength = 11, ErrorMessage = "O CPF/CNPJ deve ter entre 11 e 18 caracteres.")]
         public string CpfCnpj { get; set; }
         public List<Users> Users { get; set; }
-
         public long TenantId { get; set; }
+
+        [ForeignKey("TenantId")]
         public Tenants Tenant { get; set; }
 
         public Organizations()

@@ -2,6 +2,7 @@
 using Lumos.Application.Models;
 using Lumos.Application.Repositories;
 using Lumos.Data.Models.Management;
+using System.Runtime.CompilerServices;
 
 namespace Lumos.Application
 {
@@ -20,19 +21,19 @@ namespace Lumos.Application
             _repository = repository;
         }
 
-        public Task<TEntity> GetAsync(int id)
+        public async Task<TEntity> GetByIdAsync<TId>(TId id)
         {
-            return _repository.GetByIdAsync(id);
+            return await _repository.GetByIdAsync(id);
         }
 
-        public Task<List<TEntity>> GetAllAsync()
+        public async Task<List<TEntity>> GetAllAsync()
         {
-            return _repository.GetAllAsync();
+            return await _repository.GetAllAsync();
         }
 
-        public async Task<PaginationResult<TEntity>> GetAllPaginatedAsync(UserDataTableParams dataTableParams)
+        public async Task<PaginationResult<TEntity>> GetAllPaginatedAsync(UserDataTableParams dataTableParams, long? tenantId, long? organizationId, bool isHost)
         {
-            return await _repository.GetAllPaginatedAsync(dataTableParams);
+            return await _repository.GetAllPaginatedAsync(dataTableParams, tenantId, organizationId, isHost);
         }
 
         public Task CreateAsync(TEntity entity)
@@ -51,7 +52,7 @@ namespace Lumos.Application
             return _repository.UpdateAsync(entity);
         }
 
-        public Task DeleteAsync(int id)
+        public Task DeleteAsync<TId>(TId id)
         {
             return _repository.DeleteAsync(id);
         }

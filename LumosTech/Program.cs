@@ -8,6 +8,8 @@ using Lumos.Data;
 using Lumos.Data.Models.Management;
 using Lumos.Application.Configurations;
 using System.Reflection;
+using Newtonsoft.Json;
+using Lumos.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,10 +38,17 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
+builder.Services.AddScoped<JwtAuthorizationFilter>();
+
 // Chamada para registrar as dependências padrão
 DependencyInjectionConfig.RegisterDependencies(builder.Services, builder.Configuration);
 builder.Services.AddHttpContextAccessor();
 
+
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+{
+    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+});
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

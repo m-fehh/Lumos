@@ -1,11 +1,10 @@
-﻿using Lumos.Application.Interfaces.Management;
+﻿using Lumos.Application.Configurations.Filters;
+using Lumos.Application.Interfaces.Management;
 using Lumos.Application.Repositories;
 using Lumos.Application.Services.Management;
 using Lumos.Data.Models.Management;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Linq;
 using System.Reflection;
 
 namespace Lumos.Application.Configurations
@@ -23,6 +22,8 @@ namespace Lumos.Application.Configurations
 
 
             #region Interface X Classe 
+
+            services.AddScoped<IAuthService, JwtAuthService>();
 
             AddScopedServices<IUsersAppService, UsersAppService>(services);
             AddScopedServices<ITenantsAppService, TenantsAppService>(services);

@@ -12,7 +12,6 @@ namespace Lumos.Application.Configurations
             configuration.CreateMap<Users, UserDto>().ReverseMap();
             configuration.CreateMap<Address, AddressDto>().ReverseMap();
 
-            configuration.CreateMap<Tenants, CreateTenantAndOrgDto>().ReverseMap();
             configuration.CreateMap<Tenants, TenantDto>().ReverseMap();
 
             configuration.CreateMap<Organizations, OrganizationDto>().ReverseMap();

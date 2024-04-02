@@ -43,11 +43,11 @@ jQuery(document).ready(function ($) {
     });
 
 
-
-
     // Menu Trigger
     $('#menuToggle').on('click', function (event) {
         var windowWidth = $(window).width();
+        var isMenuOpen;
+
         if (windowWidth < 1010) {
             $('body').removeClass('open');
             if (windowWidth < 760) {
@@ -55,12 +55,17 @@ jQuery(document).ready(function ($) {
             } else {
                 $('#left-panel').toggleClass('open-menu');
             }
+            isMenuOpen = $('body').hasClass('open');
         } else {
             $('body').toggleClass('open');
             $('#left-panel').removeClass('open-menu');
+            isMenuOpen = $('body').hasClass('open');
         }
 
+        localStorage.setItem('isMenuOpen', isMenuOpen);
     });
+
+
 
     $(".dropdown-toggle").on("click", function () {
         var dropdown = $('.menu-item-has-children');
@@ -71,15 +76,13 @@ jQuery(document).ready(function ($) {
         var subtitleExists = subMenuToShow.find('.subtitle').length > 0;
 
         subMenuToShow.css({
-            'background-color': 'white',
-            'margin-top': '10px'
+            'background-color': 'white'
         });
 
         if (!subtitleExists) {
             subMenuToShow.prepend('<li class="subtitle">' + dropdownToggleText + '</li>');
         }
     });
-
 
     // Load Resize 
     $(window).on("load resize", function (event) {       
@@ -91,6 +94,20 @@ jQuery(document).ready(function ($) {
         }
 
     });
+
+    // Pegar Enums
+    function getEnumDisplayName(enumType, enumValue) {
+        var enumEntries = Object.entries(enumType);
+        for (var i = 0; i < enumEntries.length; i++) {
+            var key = enumEntries[i][0];
+            var value = enumEntries[i][1];
+            if (typeof value === 'number' && value === enumValue) {
+                return key;
+            }
+        }
+        return "";
+    }
+
 
 
 });

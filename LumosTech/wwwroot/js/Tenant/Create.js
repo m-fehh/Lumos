@@ -1,27 +1,34 @@
 ﻿$(document).ready(function () {
-    var typeSelect = document.getElementById("Tenant.Type");
-    var cnpjInput = document.getElementById("Organization.CpfCnpj");
-    var cnpjLabel = document.querySelector("label[for='Organization.CpfCnpj']");
+    var typeSelect = $("#Tenant\\.Type");
+    var levelSelect = $("#Organization\\.Level");
+    var cnpjInput = $("#Organization\\.CpfCnpj");
+    var cnpjLabel = $("label[for='Organization.CpfCnpj']");
 
     function updateCnpjField() {
-        var selectedType = typeSelect.value;
+        var selectedType = typeSelect.val();
+        levelSelect.prop("disabled", true);
         if (selectedType === "PJ") {
-            cnpjLabel.textContent = "CNPJ";
+            levelSelect.val("Matriz");
+
+            cnpjLabel.html('CNPJ<span class="input-label-required"></span>');
             VMasker(cnpjInput).maskPattern('99.999.999/9999-99');
         } else {
-            cnpjLabel.textContent = "CPF";
+            levelSelect.val("Pessoa Física");
+            cnpjLabel.html('CPF<span class="input-label-required"></span>');
             VMasker(cnpjInput).maskPattern('999.999.999-99');
         }
     }
 
     updateCnpjField();
-    typeSelect.addEventListener("change", function () {
+
+    typeSelect.on("change", function () {
         updateCnpjField();
     });
 
-    $('#preloader').hide();
     $('#registerTenant').on('submit', function (e) {
         e.preventDefault();
+        $('#preloader').hide();
+
         var formData = new FormData($('#registerTenant')[0]);
         var submitButton = $('#submitButton');
 
@@ -32,6 +39,9 @@
         $.ajax({
             url: '/Tenants/InsertTenant',
             method: 'POST',
+            headers: {
+                'Authorization': GetBearerToken(),
+            },
             data: formData,
             processData: false,
             contentType: false,
@@ -39,8 +49,10 @@
                 $('#toastSuccess .toast-body').text("Dados salvos com sucesso!");
                 $('#toastSuccess').toast('show');
 
-                window.location.href = data.redirectTo;
-            },
+                setTimeout(function () {
+                    window.location.href = data.redirectTo;
+                }, 3000);
+},
             error: function (xhr, status, error) {
                 submitButton.prop('disabled', false);
                 var errorMessage = "Ocorreu um erro ao processar a solicitação.";
