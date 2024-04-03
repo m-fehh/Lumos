@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Lumos.Application.Dtos.Management;
 using Lumos.Application.Dtos.Management.Tenant;
+using Lumos.Data.Models;
 using Lumos.Data.Models.Management;
 
 namespace Lumos.Application.Configurations

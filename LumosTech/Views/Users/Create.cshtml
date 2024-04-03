@@ -82,7 +82,6 @@
                 <div class="form-group col-md-2">
                     <label for="Gender" class="input-label">Gênero <span class="input-label-required"></span></label>
                     <select name="Gender" id="Gender" class="form-control">
-                        <option value="">-- Selecione --</option>
                         <option value="Masculino">Masculino</option>
                         <option value="Feminino">Feminino</option>
                         <option value="Não binário">Não binário</option>
@@ -118,8 +117,7 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label for="Tenant.State" class="input-label">Estado<span class="input-label-required"></span></label>
-                    <select class="form-control" name="Tenant.State" id="Tenant.State">
-                        <option value="">Selecione o estado</option>
+                    <select class="form-control" name="Tenant.State" id="State">
                         <option value="AC">Acre</option>
                         <option value="AL">Alagoas</option>
                         <option value="AP">Amapá</option>
@@ -170,7 +168,6 @@
                 <div class="form-group col-md-6">
                     <label for="ContactMethod" class="input-label">Meio de Comunicação<span class="input-label-required"></span></label>
                     <select name="ContactMethod" id="ContactMethod" class="form-control">
-                        <option value="">-- Selecione --</option>
                         <option value="Telefone">Telefone</option>
                         <option value="Celular">Celular</option>
                         <option value="E-mail">E-mail</option>
@@ -204,12 +201,7 @@
                             <h2 style="font-size: 1.0em; font-weight: bold;">Unidades Acessíveis</h2>
                         </span>
                         <div class="kanban-options"></div>
-                        <ul class="drag-inner-list">
-@*                             <li class="drag-item" id="card1" draggable="true">Card 1</li>
-                            <li class="drag-item" id="card2" draggable="true">Card 2</li>
-                            <li class="drag-item" id="card3" draggable="true">Card 3</li> *@
-
-                        </ul>
+                        <ul class="drag-inner-list"></ul>
                     </li>
 
                     <li class="kanban-column kanban-column-approved">
@@ -217,10 +209,7 @@
                             <h2 style="">Unidades Selecionadas</h2>
                         </span>
                         <div class="kanban-options"></div>
-                        <ul class="drag-inner-list">
-                            @*                             <li class="drag-item" draggable="true"></li> *@
-                            <div id="replaceSelected"></div>
-                        </ul>
+                        <ul class="drag-inner-list"></ul>
                     </li>
                 </ul>
             </div>
@@ -238,8 +227,8 @@
 
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-masker/1.2.0/vanilla-masker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-masker/1.2.0/vanilla-masker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 

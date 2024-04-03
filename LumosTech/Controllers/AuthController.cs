@@ -51,7 +51,7 @@ namespace Lumos.Mvc.Controllers
                 }
                 else
                 {
-                    _session.SetUserAndTenant(loggedInUser.Id, loggedInUser.TenantId, loggedInUser.FullName, loggedInUser.OrganizationId);
+                    //_session.SetUserAndTenant(loggedInUser.Id, loggedInUser.TenantId, loggedInUser.FullName, loggedInUser.OrganizationId);
                 }
 
                 // Retorna a resposta JSON

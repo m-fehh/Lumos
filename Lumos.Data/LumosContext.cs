@@ -1,4 +1,5 @@
-﻿using Lumos.Data.Models.Management;
+﻿using Lumos.Data.Models;
+using Lumos.Data.Models.Management;
 using Microsoft.EntityFrameworkCore;
 
 namespace Lumos.Data
@@ -15,41 +16,49 @@ namespace Lumos.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Users>()
-                .HasOne(u => u.Tenant)
-                .WithMany(t => t.Users)
-                .HasForeignKey(u => u.TenantId)
-                .OnDelete(DeleteBehavior.Restrict);
+            ConfigureEnumerations(modelBuilder);
 
-            modelBuilder.Entity<Users>()
-                .HasOne(u => u.Organization)
-                .WithMany(o => o.Users)
-                .HasForeignKey(u => u.OrganizationId)
-                .OnDelete(DeleteBehavior.Restrict);
-
+            // Configuração da relação entre Users e Address
             modelBuilder.Entity<Users>()
                 .HasOne(u => u.Address)
                 .WithOne(a => a.User)
                 .HasForeignKey<Address>(a => a.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            // Configuração da relação entre Users e Organizations
+            modelBuilder.Entity<Users>()
+                .HasMany(u => u.Organizations)
+                .WithMany(o => o.Users);
+
+            // Configuração da relação entre Organizations e Tenants
             modelBuilder.Entity<Organizations>()
                 .HasOne(o => o.Tenant)
                 .WithMany(t => t.Organizations)
                 .HasForeignKey(o => o.TenantId)
+                .OnDelete(DeleteBehavior.Restrict); 
+
+            // Configuração da relação entre Users e Tenants
+            modelBuilder.Entity<Users>()
+                .HasOne(u => u.Tenant)
+                .WithMany(t => t.Users)
+                .HasForeignKey(u => u.TenantId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // Configuração da relação entre Tenants e Users
             modelBuilder.Entity<Tenants>()
                 .HasMany(t => t.Users)
                 .WithOne(u => u.Tenant)
                 .HasForeignKey(u => u.TenantId);
 
+            // Configuração da relação entre Tenants e Organizations
             modelBuilder.Entity<Tenants>()
                 .HasMany(t => t.Organizations)
                 .WithOne(o => o.Tenant)
                 .HasForeignKey(o => o.TenantId);
+        }
 
-
+        private void ConfigureEnumerations(ModelBuilder modelBuilder)
+        {
             modelBuilder.Entity<Tenants>()
                 .Property(u => u.Type)
                 .HasConversion<string>();

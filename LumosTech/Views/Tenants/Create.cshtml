@@ -5,6 +5,8 @@
 
 @model Lumos.Application.Dtos.Management.Tenant.CreateTenantAndOrgDto
 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
 <div class="row">
     <div class="col-12">
         <nav aria-label="breadcrumb">
@@ -39,7 +41,7 @@
                 </div>
                 <div class="form-group col-md-2">
                     <label for="Tenant.Type" class="input-label">Nível de Acesso <span class="input-label-required"></span></label>
-                    <select class="form-control" id="Tenant.Type" name="Tenant.Type">
+                    <select class="form-control" id="Type" name="Tenant.Type">
                         @foreach (var type in Enum.GetValues(typeof(ETenantType)).Cast<ETenantType>())
                         {
                             <option value="@(@type.GetDisplayName())">@type.GetDisplayName()</option>
@@ -51,7 +53,7 @@
             <div class="row" style="padding: 0 15px;">
                 <div class="form-group col-md-4">
                     <label for="Tenant.Branch" class="input-label">Atuação<span class="input-label-required"></span></label>
-                    <select class="form-control" name="Tenant.Branch" id="Tenant.Branch">
+                    <select class="form-control" name="Tenant.Branch" id="Branch">
                         <option value="">Selecione o Ramo de Empresa</option>
                         <option value="Tecnologia">Tecnologia</option>
                         <option value="Saúde">Saúde</option>
@@ -80,7 +82,7 @@
 
                 <div class="form-group col-md-4">
                     <label for="Tenant.Uf" class="input-label">Estado<span class="input-label-required"></span></label>
-                    <select class="form-control" name="Tenant.Uf" id="Tenant.Uf">
+                    <select class="form-control" name="Tenant.Uf" id="Uf">
                         <option value="">Selecione a UF</option>
                         <option value="AC">Acre</option>
                         <option value="AL">Alagoas</option>
@@ -131,7 +133,7 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label for="Organization.Level" class="input-label">Nível de Acesso <span class="input-label-required"></span></label>
-                    <select class="form-control" id="Organization.Level" name="Organization.Level">
+                    <select class="form-control" id="Level" name="Organization.Level">
                         @foreach (var levelOrg in Enum.GetValues(typeof(ELevelOrganization)).Cast<ELevelOrganization>())
                         {
                             <option value="@(@levelOrg.GetDisplayNameLevel())">@levelOrg.GetDisplayNameLevel()</option>
@@ -157,6 +159,7 @@
 
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-masker/1.2.0/vanilla-masker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
