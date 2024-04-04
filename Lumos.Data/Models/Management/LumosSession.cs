@@ -4,18 +4,18 @@
     {
         private long? _userId;
         private long? _tenantId;
-        private long? _organizationId;
+        private List<long> _organizationId;
         private string _userName;
         private bool _isHost;
 
         public long? UserId => _userId;
         public long? TenantId => _tenantId;
-        public long? OrganizationId => _organizationId;
+        public List<long> OrganizationId => _organizationId;
         public string UserName => _userName;
         public bool IsHost => _isHost;
         public bool IsAuthenticated => _userId.HasValue || _isHost;
 
-        public void SetUserAndTenant(long? userId, long? tenantId, string userName, long? organizationId)
+        public void SetUserAndTenant(long? userId, long? tenantId, string userName, List<long> organizationId)
         {
             _userId = userId;
             _tenantId = tenantId;

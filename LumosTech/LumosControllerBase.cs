@@ -66,9 +66,9 @@ namespace Lumos.Mvc
             }
 
             var tenantId = RequiresTenantOrganizationFilter<TDto>() ? _session.TenantId ?? null : null;
-            var organizationId = RequiresTenantOrganizationFilter<TDto>() ? _session.OrganizationId ?? null : null;
+            var listOrganizationsId = RequiresTenantOrganizationFilter<TDto>() ? _session.OrganizationId : null;
 
-            var result = await _appService.GetAllPaginatedAsync(dataTableParams, tenantId, organizationId, _session.IsHost);
+            var result = await _appService.GetAllPaginatedAsync(dataTableParams, tenantId, listOrganizationsId, _session.IsHost);
 
             var dtos = _mapper.Map<List<TDto>>(result.Entities);
 
@@ -94,7 +94,7 @@ namespace Lumos.Mvc
 
         [HttpPost]
         [ServiceFilter(typeof(JwtAuthorizationFilter))]
-        public async Task<IActionResult> InsertAsync(TDto model)
+        public virtual async Task<IActionResult> InsertAsync(TDto model)
         {
             var validationResults = new List<ValidationResult>();
             var isValid = Validator.TryValidateObject(model, new ValidationContext(model), validationResults, true);
@@ -138,20 +138,20 @@ namespace Lumos.Mvc
                     }
                 }
 
-                var organizationIdProperty = typeof(TDto).GetProperty("OrganizationId");
-                if (organizationIdProperty != null)
-                {
-                    var organizationIdValue = organizationIdProperty.GetValue(model);
-                    if (organizationIdValue == null)
-                    {
-                        long organizationId = _session.OrganizationId.GetValueOrDefault();
-                        typeof(TEntity).GetProperty("OrganizationId")?.SetValue(entity, organizationId);
-                    }
-                    else
-                    {
-                        typeof(TEntity).GetProperty("OrganizationId")?.SetValue(entity, organizationIdValue);
-                    }
-                }
+                //var organizationIdProperty = typeof(TDto).GetProperty("OrganizationId");
+                //if (organizationIdProperty != null)
+                //{
+                //    var organizationIdValue = organizationIdProperty.GetValue(model);
+                //    if (organizationIdValue == null)
+                //    {
+                //        long organizationId = _session.OrganizationId.GetValueOrDefault();
+                //        typeof(TEntity).GetProperty("OrganizationId")?.SetValue(entity, organizationId);
+                //    }
+                //    else
+                //    {
+                //        typeof(TEntity).GetProperty("OrganizationId")?.SetValue(entity, organizationIdValue);
+                //    }
+                //}
 
                 await _appService.CreateAsync(entity);
 
@@ -174,7 +174,7 @@ namespace Lumos.Mvc
         [HttpDelete]
         [ServiceFilter(typeof(JwtAuthorizationFilter))]
 
-        public async Task<IActionResult> DeleteAsync(TEntityId id)
+        public virtual async Task<IActionResult> DeleteAsync(TEntityId id)
         {
             try
             {
@@ -207,7 +207,7 @@ namespace Lumos.Mvc
         [HttpPut]
         [ServiceFilter(typeof(JwtAuthorizationFilter))]
 
-        public async Task<IActionResult> UpdateAsync(TEntityId id, TDto model)
+        public virtual async Task<IActionResult> UpdateAsync(TEntityId id, TDto model)
         {
             try
             {

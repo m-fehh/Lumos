@@ -26,11 +26,11 @@ namespace Lumos.Mvc.Controllers
         public IActionResult Create()
         {
             SetViewBagValues();
-            return View(new CreateTenantAndOrgDto());
+            return View(new CreateTenantDto());
         }
 
         [HttpPost]
-        public async Task<IActionResult> InsertTenantAsync(CreateTenantAndOrgDto model)
+        public async Task<IActionResult> InsertTenantAsync(CreateTenantDto model)
         {
             var validationResults = new List<ValidationResult>();
 

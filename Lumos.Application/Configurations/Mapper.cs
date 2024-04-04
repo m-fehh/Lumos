@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Lumos.Application.Dtos;
 using Lumos.Application.Dtos.Management;
 using Lumos.Application.Dtos.Management.Tenant;
 using Lumos.Data.Models;
@@ -14,6 +15,7 @@ namespace Lumos.Application.Configurations
             configuration.CreateMap<Address, AddressDto>().ReverseMap();
 
             configuration.CreateMap<Tenants, TenantDto>().ReverseMap();
+            configuration.CreateMap<Tenants, CreateTenantDto>().ReverseMap();
 
             configuration.CreateMap<Organizations, OrganizationDto>().ReverseMap();
         }

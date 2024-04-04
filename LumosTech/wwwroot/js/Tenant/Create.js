@@ -31,7 +31,7 @@
         var formData = new FormData($('#registerTenant')[0]);
         var submitButton = $('#submitButton');
 
-        var url = '/Tenants/Insert';
+        var url = '/Tenants/InsertTenant';
 
         AjaxInsertDefault('#submitButton', url, formData);
     });

@@ -33,13 +33,13 @@ namespace Lumos.Application.Repositories
             return await query.ToListAsync();
         }
 
-        public async Task<PaginationResult<TEntity>> GetAllPaginatedAsync(UserDataTableParams dataTableParams, long? tenantId, long? organizationId, bool isHost)
+        public async Task<PaginationResult<TEntity>> GetAllPaginatedAsync(UserDataTableParams dataTableParams, long? tenantId, List<long> listOrganizationId, bool isHost)
         {
             IQueryable<TEntity> query = _context.Set<TEntity>();
 
             if (isHost || tenantId.HasValue)
             {
-                query = ApplyTenantOrganizationFilters(query, tenantId, organizationId, isHost);
+                query = ApplyTenantOrganizationFilters(query, tenantId, listOrganizationId);
 
             }
 
@@ -164,44 +164,28 @@ namespace Lumos.Application.Repositories
             return query;
         }
 
-        private IQueryable<TEntity> ApplyTenantOrganizationFilters(IQueryable<TEntity> query, long? tenantId, long? organizationId, bool isHost)
+        private IQueryable<TEntity> ApplyTenantOrganizationFilters(IQueryable<TEntity> query, long? tenantId, List<long> listOrganizationsId)
         {
             ParameterExpression param = Expression.Parameter(typeof(TEntity), "entity");
 
-            if (isHost)
+            var tenantIdProperty = typeof(TEntity).GetProperty("TenantId");
+            if (tenantId.HasValue && tenantIdProperty != null)
             {
-                //// Include explicitamente a propriedade de navegação "Tenant" se existir
-                //if (typeof(TEntity).GetProperty("Tenant") != null)
-                //{
-                //    query = query.Include("Tenant");
-                //}
-
-                //// Include explicitamente a propriedade de navegação "Organization" se existir
-                //if (typeof(TEntity).GetProperty("Organization") != null)
-                //{
-                //    query = query.Include("Organization");
-                //}
+                MemberExpression tenantProperty = Expression.Property(param, "TenantId");
+                ConstantExpression tenantValue = Expression.Constant(tenantId);
+                BinaryExpression tenantFilter = Expression.Equal(tenantProperty, tenantValue);
+                Expression<Func<TEntity, bool>> tenantLambda = Expression.Lambda<Func<TEntity, bool>>(tenantFilter, param);
+                query = query.Where(tenantLambda);
             }
 
-            else
+            var organizationIdProperty = typeof(TEntity).GetProperty("OrganizationId");
+            if (listOrganizationsId != null && listOrganizationsId.Count() > 0 && organizationIdProperty != null)
             {
-                if (tenantId.HasValue)
-                {
-                    MemberExpression tenantProperty = Expression.Property(param, "TenantId");
-                    ConstantExpression tenantValue = Expression.Constant(tenantId);
-                    BinaryExpression tenantFilter = Expression.Equal(tenantProperty, tenantValue);
-                    Expression<Func<TEntity, bool>> tenantLambda = Expression.Lambda<Func<TEntity, bool>>(tenantFilter, param);
-                    query = query.Where(tenantLambda);
-                }
-
-                if (organizationId.HasValue)
-                {
-                    MemberExpression organizationProperty = Expression.Property(param, "OrganizationId");
-                    ConstantExpression organizationValue = Expression.Constant(organizationId.Value);
-                    BinaryExpression organizationFilter = Expression.Equal(organizationProperty, organizationValue);
-                    Expression<Func<TEntity, bool>> organizationLambda = Expression.Lambda<Func<TEntity, bool>>(organizationFilter, param);
-                    query = query.Where(organizationLambda);
-                }
+                MemberExpression organizationProperty = Expression.Property(param, "OrganizationId");
+                ConstantExpression organizationValue = Expression.Constant(listOrganizationsId);
+                BinaryExpression organizationFilter = Expression.Equal(organizationProperty, organizationValue);
+                Expression<Func<TEntity, bool>> organizationLambda = Expression.Lambda<Func<TEntity, bool>>(organizationFilter, param);
+                query = query.Where(organizationLambda);
             }
 
             return query;

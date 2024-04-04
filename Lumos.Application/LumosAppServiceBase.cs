@@ -31,9 +31,9 @@ namespace Lumos.Application
             return await _repository.GetAllAsync();
         }
 
-        public async Task<PaginationResult<TEntity>> GetAllPaginatedAsync(UserDataTableParams dataTableParams, long? tenantId, long? organizationId, bool isHost)
+        public async Task<PaginationResult<TEntity>> GetAllPaginatedAsync(UserDataTableParams dataTableParams, long? tenantId, List<long> listOrganizationId, bool isHost)
         {
-            return await _repository.GetAllPaginatedAsync(dataTableParams, tenantId, organizationId, isHost);
+            return await _repository.GetAllPaginatedAsync(dataTableParams, tenantId, listOrganizationId, isHost);
         }
 
         public Task CreateAsync(TEntity entity)
