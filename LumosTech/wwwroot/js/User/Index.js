@@ -37,8 +37,8 @@ $('#userTable').DataTable({
         }
     },
     "columns": [
-        { "data": "Name" },
-        { "data": "CPF" },
+        { "data": "FullName" },
+        { "data": "Cpf" },
         { "data": "Email" },
         { "data": "" }
     ],

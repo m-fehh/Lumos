@@ -5,7 +5,13 @@
     ViewData["Title"] = "Criar Usuário";
 }
 
-@model Lumos.Application.Dtos.Management.UserDto
+@model Lumos.Application.Dtos.Management.UserDto;
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
+
+<input type="hidden" id="sessionTenantId" value="@ViewBag.TenantId" />
+<input type="hidden" id="sessionOrganizationId" value="@ViewBag.OrganizationId" />
 
 <div class="row">
     <div class="col-12">
@@ -23,7 +29,7 @@
 </div>
 
 <div class="progress">
-    <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+    <div class="progress-bar" role="progressbar" style="width: 33.3%;" aria-valuenow="33.3" aria-valuemin="0" aria-valuemax="100"></div>
 </div>
 
 <div class="container-fluid">
@@ -76,7 +82,6 @@
                 <div class="form-group col-md-2">
                     <label for="Gender" class="input-label">Gênero <span class="input-label-required"></span></label>
                     <select name="Gender" id="Gender" class="form-control">
-                        <option value="">-- Selecione --</option>
                         <option value="Masculino">Masculino</option>
                         <option value="Feminino">Feminino</option>
                         <option value="Não binário">Não binário</option>
@@ -112,8 +117,7 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label for="Tenant.State" class="input-label">Estado<span class="input-label-required"></span></label>
-                    <select class="form-control" name="Tenant.State" id="Tenant.State">
-                        <option value="">Selecione o estado</option>
+                    <select class="form-control" name="Address.State" id="State">
                         <option value="AC">Acre</option>
                         <option value="AL">Alagoas</option>
                         <option value="AP">Amapá</option>
@@ -164,7 +168,6 @@
                 <div class="form-group col-md-6">
                     <label for="ContactMethod" class="input-label">Meio de Comunicação<span class="input-label-required"></span></label>
                     <select name="ContactMethod" id="ContactMethod" class="form-control">
-                        <option value="">-- Selecione --</option>
                         <option value="Telefone">Telefone</option>
                         <option value="Celular">Celular</option>
                         <option value="E-mail">E-mail</option>
@@ -178,6 +181,43 @@
             <div class="row" style="padding: 0 15px;">
                 <div class="col-md-12" style="display: flex; justify-content: flex-end; gap: 20px;">
                     <button type="button" class="btn btn-light next float-right" onclick="nextStep('steep2', 'steep1')">Anterior</button>
+                    <button type="button" class="btn btn-success next float-right" onclick="nextStep('steep2', 'steep3')">Próximo</button>
+                </div>
+            </div>
+        </div>
+        <div class="multistep" id="steep3">
+            <p class="section-identification">• SELECIONAR UNIDADE</p>
+
+            <div class="form-group col-md-12">
+                <label for="TenantId" class="input-label">Tenant<span class="input-label-required"></span></label>
+                <select id="TenantId" class="form-control">
+                    <option value="">Selecione um Tenant</option>
+                </select>
+            </div>
+            <div class="kanban-container">
+                <ul class="kanban-list">
+                    <li class="kanban-column kanban-column-onhold">
+                        <span class="kanban-column-header header-onhold">
+                            <h2 style="font-size: 1.0em; font-weight: bold;">Unidades Acessíveis</h2>
+                        </span>
+                        <div class="kanban-options"></div>
+                        <ul class="drag-inner-list"></ul>
+                    </li>
+
+                    <li class="kanban-column kanban-column-approved">
+                        <span class="kanban-column-header header-approved">
+                            <h2 style="">Unidades Selecionadas</h2>
+                        </span>
+                        <div class="kanban-options"></div>
+                        <ul class="drag-inner-list"></ul>
+                    </li>
+                </ul>
+            </div>
+
+            <hr />
+            <div class="row" style="padding: 0 15px;">
+                <div class="col-md-12" style="display: flex; justify-content: flex-end; gap: 20px;">
+                    <button type="button" class="btn btn-light next float-right" onclick="nextStep('steep3', 'steep2')">Anterior</button>
                     <button class="btn btn-success save float-right" type="submit">Finalizar Cadastro</button>
                 </div>
             </div>
@@ -187,6 +227,7 @@
 
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-masker/1.2.0/vanilla-masker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

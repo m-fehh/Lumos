@@ -15,19 +15,28 @@ namespace Lumos.Application.Dtos.Management.Tenant
         [Required(ErrorMessage = "O tipo é obrigatório.")]
         public ETenantType Type { get; set; }
 
-        public string TypeName => Type.GetDisplayName();
-
-        [Required(ErrorMessage = "O ramo é obrigatório.")]
+        [Required(ErrorMessage = "A filial é obrigatória.")]
+        [StringLength(50, ErrorMessage = "A filial deve ter no máximo 50 caracteres.")]
         public string Branch { get; set; }
+
+        public string TypeName => Type.GetDisplayName();
 
         [Required(ErrorMessage = "A cidade é obrigatória.")]
         [StringLength(50, ErrorMessage = "A cidade deve ter no máximo 50 caracteres.")]
         public string City { get; set; }
 
-        [Required(ErrorMessage = "O UF é obrigatório.")]
-        [StringLength(2, MinimumLength = 2, ErrorMessage = "O UF deve ter 2 caracteres.")]
+        [Required(ErrorMessage = "A UF é obrigatória.")]
+        [StringLength(2, MinimumLength = 2, ErrorMessage = "A UF deve ter 2 caracteres.")]
         public string Uf { get; set; }
 
+        public List<UserDto> Users { get; set; }
+
         public List<OrganizationDto> Organizations { get; set; }
+
+        public TenantDto()
+        {
+            Users = new List<UserDto>();
+            Organizations = new List<OrganizationDto>();
+        }
     }
 }

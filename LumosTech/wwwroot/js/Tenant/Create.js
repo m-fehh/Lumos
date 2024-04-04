@@ -1,28 +1,27 @@
 ﻿$(document).ready(function () {
-    var typeSelect = $("#Tenant\\.Type");
-    var levelSelect = $("#Organization\\.Level");
-    var cnpjInput = $("#Organization\\.CpfCnpj");
-    var cnpjLabel = $("label[for='Organization.CpfCnpj']");
+    InitializeSelect2('#Branch', 'Selecione o Ramo');
+    InitializeSelect2('#Type', 'Selecione o Nível');
+    InitializeSelect2('#Uf', 'Selecione o Estado');
+    InitializeSelect2('#Level', 'Selecione o Nível');
 
-    function updateCnpjField() {
-        var selectedType = typeSelect.val();
-        levelSelect.prop("disabled", true);
+    function UpdateCnpjField() {
+        var selectedType = $("#Type").val();
+        $("#Level").prop("disabled", true);
+        $("#Level").val("Matriz");
         if (selectedType === "PJ") {
-            levelSelect.val("Matriz");
 
-            cnpjLabel.html('CNPJ<span class="input-label-required"></span>');
-            VMasker(cnpjInput).maskPattern('99.999.999/9999-99');
+            $("label[for='Organization.CpfCnpj']").html('CNPJ<span class="input-label-required"></span>');
+            VMasker($("#Organization\\.CpfCnpj")).maskPattern('99.999.999/9999-99');
         } else {
-            levelSelect.val("Pessoa Física");
-            cnpjLabel.html('CPF<span class="input-label-required"></span>');
-            VMasker(cnpjInput).maskPattern('999.999.999-99');
+            $("label[for='Organization.CpfCnpj']").html('CPF<span class="input-label-required"></span>');
+            VMasker($("#Organization\\.CpfCnpj")).maskPattern('999.999.999-99');
         }
     }
 
-    updateCnpjField();
+    UpdateCnpjField();
 
-    typeSelect.on("change", function () {
-        updateCnpjField();
+    $("#Type").on("change", function () {
+        UpdateCnpjField();
     });
 
     $('#registerTenant').on('submit', function (e) {
@@ -32,58 +31,9 @@
         var formData = new FormData($('#registerTenant')[0]);
         var submitButton = $('#submitButton');
 
-        // Desativa o botão
-        submitButton.prop('disabled', true);
-        $('#preloader').show();
+        var url = '/Tenants/InsertTenant';
 
-        $.ajax({
-            url: '/Tenants/InsertTenant',
-            method: 'POST',
-            headers: {
-                'Authorization': GetBearerToken(),
-            },
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (data) {
-                $('#toastSuccess .toast-body').text("Dados salvos com sucesso!");
-                $('#toastSuccess').toast('show');
-
-                setTimeout(function () {
-                    window.location.href = data.redirectTo;
-                }, 3000);
-},
-            error: function (xhr, status, error) {
-                submitButton.prop('disabled', false);
-                var errorMessage = "Ocorreu um erro ao processar a solicitação.";
-
-                if (xhr.status === 400) {
-                    var errorResponse = JSON.parse(xhr.responseText);
-                    if (errorResponse) {
-                        var errorMessage = '';
-
-                        for (var key in errorResponse) {
-                            if (errorResponse[key].length > 0) {
-                                errorMessage = errorResponse[key][0];
-                                break;
-                            }
-                        }
-
-                        if (errorMessage) {
-                            $('#toastError .toast-body').text(errorMessage);
-                            $('#toastError').toast('show');
-                        }
-                    }
-                } else {
-                    $('#toastError .toast-body').text(errorMessage);
-                    $('#toastError').toast('show');
-                }
-            },
-            complete: function () {
-                submitButton.prop('disabled', false);
-                $('#preloader').hide();
-            }
-        });
+        AjaxInsertDefault('#submitButton', url, formData);
     });
 });
 

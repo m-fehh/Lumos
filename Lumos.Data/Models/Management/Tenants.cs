@@ -7,6 +7,8 @@ namespace Lumos.Data.Models.Management
     [Table("tbTenants")]
     public class Tenants : LumosBaseModel
     {
+        #region Properties
+
         [Required(ErrorMessage = "O nome do tenant é obrigatório.")]
         [StringLength(100, ErrorMessage = "O nome do tenant deve ter no máximo 100 caracteres.")]
         public string Name { get; set; }
@@ -28,15 +30,25 @@ namespace Lumos.Data.Models.Management
         [StringLength(2, MinimumLength = 2, ErrorMessage = "A UF deve ter 2 caracteres.")]
         public string Uf { get; set; }
 
+        #endregion
+
+        #region Relationships
+
         public List<Users> Users { get; set; }
 
         public List<Organizations> Organizations { get; set; }
+
+        #endregion
+
+        #region Constructor
 
         public Tenants()
         {
             Users = new List<Users>();
             Organizations = new List<Organizations>();
         }
+
+        #endregion
     }
 }
 

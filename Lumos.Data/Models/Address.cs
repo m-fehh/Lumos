@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Lumos.Data.Models.Management;
 
-namespace Lumos.Data.Models.Management
+namespace Lumos.Data.Models
 {
     [Table("tbAddress")]
     public class Address

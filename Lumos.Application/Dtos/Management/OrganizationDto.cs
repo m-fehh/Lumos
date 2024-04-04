@@ -2,7 +2,6 @@
 using Lumos.Data.Enums;
 using Lumos.Data.Models;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Lumos.Application.Dtos.Management
 {
@@ -16,13 +15,19 @@ namespace Lumos.Application.Dtos.Management
         public ELevelOrganization Level { get; set; }
         public string LevelName => Level.GetDisplayNameLevel();
 
-        [Required(ErrorMessage = "O CNPJ é obrigatório.")]
-        [StringLength(18, MinimumLength = 14, ErrorMessage = "O CNPJ deve ter entre 14 e 18 caracteres.")]
+        [Required(ErrorMessage = "O CPF/CNPJ é obrigatório.")]
+        [StringLength(18, MinimumLength = 11, ErrorMessage = "O CPF/CNPJ deve ter entre 11 e 18 caracteres.")]
         public string CpfCnpj { get; set; }
 
-        public long TenantId { get; set; }
+        public long? TenantId { get; set; }
 
-        [ForeignKey("TenantId")]
         public TenantDto Tenant { get; set; }
+
+        public List<UserDto> Users { get; set; }
+
+        public OrganizationDto()
+        {
+            Users = new List<UserDto>();
+        }
     }
 }
