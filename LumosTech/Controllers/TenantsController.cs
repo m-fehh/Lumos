@@ -2,19 +2,19 @@
 using Lumos.Application;
 using Lumos.Data.Models.Management;
 using Microsoft.AspNetCore.Mvc;
-using Lumos.Application.Dtos.Management.Tenant;
 using System.ComponentModel.DataAnnotations;
 using Lumos.Application.Interfaces.Management;
+using Lumos.Application.Dtos.Management.Tenants;
 
 namespace Lumos.Mvc.Controllers
 {
-    public class TenantsController : LumosControllerBase<Tenants, TenantDto, long>
+    public class TenantsController : LumosControllerBase<Tenants, TenantsDto, long>
     {
-        private readonly IOrganizationsAppService _organizationsAppService;
+        private readonly IUnitsAppService _UnitsAppService;
 
-        public TenantsController(LumosSession session, IMapper mapper, IOrganizationsAppService organizationsAppService, LumosAppServiceBase<Tenants> tenantService) : base(session, mapper, tenantService)
+        public TenantsController(LumosSession session, IMapper mapper, IUnitsAppService UnitsAppService, LumosAppServiceBase<Tenants> tenantService) : base(session, mapper, tenantService)
         {
-            _organizationsAppService = organizationsAppService;
+            _UnitsAppService = UnitsAppService;
         }
 
         public IActionResult Index()    
@@ -30,15 +30,15 @@ namespace Lumos.Mvc.Controllers
         }
 
         [HttpPost]
+        [ServiceFilter(typeof(JwtAuthorizationFilter))]
         public async Task<IActionResult> InsertTenantAsync(CreateTenantDto model)
         {
             var validationResults = new List<ValidationResult>();
 
             var isValidTenant = Validator.TryValidateObject(model.Tenant, new ValidationContext(model.Tenant), validationResults, true);
-            var isValidOrganization = Validator.TryValidateObject(model.Organization, new ValidationContext(model.Organization), validationResults, true);
+            var isValidUnit = Validator.TryValidateObject(model.Unit, new ValidationContext(model.Unit), validationResults, true);
 
-            var isValid = isValidTenant && isValidOrganization;
-
+            var isValid = isValidTenant && isValidUnit;
             if (!isValid)
             {
                 foreach (var validationResult in validationResults)
@@ -50,13 +50,13 @@ namespace Lumos.Mvc.Controllers
             }
             try
             {
-                var tenant = _mapper.Map<Tenants>(model.Tenant);
-                var organization = _mapper.Map<Organizations>(model.Organization);
+                var entityTenant = _mapper.Map<Tenants>(model.Tenant);
+                var entityUnit = _mapper.Map<Units>(model.Unit);
 
-                var tenantId = await _appService.InsertAndGetIdAsync<long>(tenant);
-                organization.TenantId = tenantId;
+                var tenantId = await _appService.InsertAndGetIdAsync<long>(entityTenant);
+                entityUnit.TenantId = tenantId;
 
-                await _organizationsAppService.CreateAsync(organization);
+                await _UnitsAppService.CreateAsync(entityUnit);
 
                 var response = new
                 {
@@ -70,8 +70,5 @@ namespace Lumos.Mvc.Controllers
                 return BadRequest(ModelState);
             }
         }
-
-        //[HttpDelete]
-        //public async Task<IActionResult> DeleteTenantAsync(long id) { }
     }
 }

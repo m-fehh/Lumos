@@ -1,17 +1,14 @@
 ﻿@using Lumos.Application.Enums;
 @using System.Reflection;
 @using System.ComponentModel.DataAnnotations;
+@using Newtonsoft.Json;
 @{
     ViewData["Title"] = "Criar Usuário";
 }
 
-@model Lumos.Application.Dtos.Management.UserDto;
+@model Lumos.Application.Dtos.Management.UsersDto;
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
-
-
-<input type="hidden" id="sessionTenantId" value="@ViewBag.TenantId" />
-<input type="hidden" id="sessionOrganizationId" value="@ViewBag.OrganizationId" />
 
 <div class="row">
     <div class="col-12">
@@ -28,198 +25,57 @@
     </div>
 </div>
 
-<div class="progress">
-    <div class="progress-bar" role="progressbar" style="width: 33.3%;" aria-valuenow="33.3" aria-valuemin="0" aria-valuemax="100"></div>
-</div>
+@if (@ViewBag.TenantId == null)
+{
+    @Html.Partial("~/Views/Modals/_GetAllTenantsModals.cshtml")
+}
 
 <div class="container-fluid">
     <form id="registerUser">
+        <input type="hidden" id="sessionTenantId" name="TenantId" value="@ViewBag.TenantId" />
 
-        <div class="multistep active" id="steep1">
-            <p class="section-identification">• ACESSO</p>
-            <div class="row" style="padding: 0 15px;">
-                <div class="form-group col-md-5">
-                    <label for="Username" class="input-label">Nome Usuário <span class="input-label-required"></span></label>
-                    <input type="text" class="form-control" name="Username" id="Username" placeholder="">
+        <p class="section-identification">Cadastro de Usuário</p>
+        <div class="row">
+            <div class="col-md-9" style="border-right: 1px solid #e9ecef;">
+
+                <div class="row" style="padding-left: 15px;">
+                    <div class="form-group col-md-12">
+                        <label for="Email" class="input-label">E-mail<span class="input-label-required"></span></label>
+                        <input type="text" class="form-control" name="Email" id="Email" placeholder="">
+                    </div>
+                </div>
+                <div class="row" style="padding-left: 15px;">
+                    <div class="form-group col-md-12">
+                        <label for="FullName" class="input-label">Nome Completo<span class="input-label-required"></span></label>
+                        <input type="text" class="form-control" name="FullName" id="FullName" placeholder="">
+                    </div>
                 </div>
 
-                <div class="form-group col-md-4">
-                    <label for="PasswordHash" class="input-label">Senha <span class="input-label-required"></span></label>
-                    <input type="text" class="form-control" name="PasswordHash" id="PasswordHash" placeholder="">
-                </div>
+                <div class="row" style="padding-left: 15px;">
+                    <div class="form-group col-md-6">
+                        <label for="Password" class="input-label">Senha<span class="input-label-required"></span></label>
+                        <input type="text" class="form-control" name="Password" id="Password" placeholder="">
+                    </div>
 
-                <div class="form-group col-md-3">
-                    <label for="AccessLevel" class="input-label">Nível de Acesso <span class="input-label-required"></span></label>
-                    <select class="form-control" id="AccessLevel" name="AccessLevel">
-                        @foreach (var accessLevel in Enum.GetValues(typeof(EAccessLevel)).Cast<EAccessLevel>())
-                        {
-                            <option value="@(@accessLevel.GetDisplayName())">@accessLevel.GetDisplayName()</option>
-                        }
-                    </select>
-                </div>
-            </div>
-
-            <div class="row" style="padding: 0 15px;">
-                <div class="form-group col-md-12">
-                    <label for="Email" class="input-label">E-mail <span class="input-label-required"></span></label>
-                    <input type="email" class="form-control" name="Email" id="Email">
-                </div>
-            </div>
-
-
-            <p class="section-identification">• DADOS PESSOAIS</p>
-            <div class="row" style="padding: 0 15px;">
-                <div class="form-group col-md-4">
-                    <label for="FullName" class="input-label">Nome <span class="input-label-required"></span></label>
-                    <input type="text" class="form-control" name="FullName" id="FullName" placeholder="">
-                </div>
-
-                <div class="form-group col-md-3">
-                    <label for="Cpf" class="input-label">CPF <span class="input-label-required"></span></label>
-                    <input type="text" class="form-control" name="Cpf" id="Cpf" maxlength="14">
-                </div>
-
-                <div class="form-group col-md-2">
-                    <label for="Gender" class="input-label">Gênero <span class="input-label-required"></span></label>
-                    <select name="Gender" id="Gender" class="form-control">
-                        <option value="Masculino">Masculino</option>
-                        <option value="Feminino">Feminino</option>
-                        <option value="Não binário">Não binário</option>
-                        <option value="Prefiro não informar">Prefiro não informar</option>
-                    </select>
-                </div>
-
-                <div class="form-group col-md-3">
-                    <label for="DateOfBirth" class="input-label">Aniversário</label>
-                    <input type="text" class="form-control" name="DateOfBirth" id="DateOfBirth" placeholder="Ex.: 01/01/1990">
+                    <div class="form-group col-md-6">
+                        <label for="Cpf" class="input-label">CPF<span class="input-label-required"></span></label>
+                        <input type="text" class="form-control" name="Cpf" id="Cpf" placeholder="">
+                    </div>
                 </div>
             </div>
 
-            <hr />
-
-            <div class="row" style="padding: 0 15px;">
-                <div class="col-md-12">
-                    <button type="button" class="btn btn-success next float-right" onclick="nextStep('steep1', 'steep2')">Próximo</button>
+            <div class="col-md-3">
+                <label for="treeview" class="input-label">Selecione o acesso do usuário<span class="input-label-required"></span></label>
+                <div id="treeview" style="margin-left: -15px;">
+                    <ul></ul>
                 </div>
             </div>
         </div>
+        <hr />
 
-        <div class="multistep" id="steep2">
-            <p class="section-identification">• ENDEREÇO</p>
-            <div class="row" style="padding: 0 15px;">
-                <div class="form-group col-md-4">
-                    <label for="Address.ZipCode" class="input-label">CEP <span class="input-label-required"></span></label>
-                    <input type="text" class="form-control" name="Address.ZipCode" id="ZipCode">
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="Address.City" class="input-label">Cidade <span class="input-label-required"></span></label>
-                    <input type="text" class="form-control" name="Address.City" id="City">
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="Tenant.State" class="input-label">Estado<span class="input-label-required"></span></label>
-                    <select class="form-control" name="Address.State" id="State">
-                        <option value="AC">Acre</option>
-                        <option value="AL">Alagoas</option>
-                        <option value="AP">Amapá</option>
-                        <option value="AM">Amazonas</option>
-                        <option value="BA">Bahia</option>
-                        <option value="CE">Ceará</option>
-                        <option value="DF">Distrito Federal</option>
-                        <option value="ES">Espírito Santo</option>
-                        <option value="GO">Goiás</option>
-                        <option value="MA">Maranhão</option>
-                        <option value="MT">Mato Grosso</option>
-                        <option value="MS">Mato Grosso do Sul</option>
-                        <option value="MG">Minas Gerais</option>
-                        <option value="PA">Pará</option>
-                        <option value="PB">Paraíba</option>
-                        <option value="PR">Paraná</option>
-                        <option value="PE">Pernambuco</option>
-                        <option value="PI">Piauí</option>
-                        <option value="RJ">Rio de Janeiro</option>
-                        <option value="RN">Rio Grande do Norte</option>
-                        <option value="RS">Rio Grande do Sul</option>
-                        <option value="RO">Rondônia</option>
-                        <option value="RR">Roraima</option>
-                        <option value="SC">Santa Catarina</option>
-                        <option value="SP">São Paulo</option>
-                        <option value="SE">Sergipe</option>
-                        <option value="TO">Tocantins</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row" style="padding: 0 15px;">
-                <div class="form-group col-md-10">
-                    <label for="Address.Street" class="input-label">Endereço <span class="input-label-required"></span></label>
-                    <input type="text" class="form-control" name="Address.Street" id="Street">
-                </div>
-                <div class="form-group col-md-2">
-                    <label for="Address.Number" class="input-label">Número <span class="input-label-required"></span></label>
-                    <input type="text" class="form-control" name="Address.Number" id="Number">
-                </div>
-            </div>
-
-            <p class="section-identification">• CONTATO</p>
-            <div class="row" style="padding: 0 15px;">
-                <div class="form-group col-md-6">
-                    <label for="Phone" class="input-label">Celular (com DDD) <span class="input-label-required"></span></label>
-                    <input type="text" class="form-control" name="Phone" id="Phone" maxlength="16" placeholder="Ex.: 1192345-6789">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="ContactMethod" class="input-label">Meio de Comunicação<span class="input-label-required"></span></label>
-                    <select name="ContactMethod" id="ContactMethod" class="form-control">
-                        <option value="Telefone">Telefone</option>
-                        <option value="Celular">Celular</option>
-                        <option value="E-mail">E-mail</option>
-                        <option value="WhatsApp">WhatsApp</option>
-                    </select>
-                </div>
-            </div>
-
-            <hr />
-
-            <div class="row" style="padding: 0 15px;">
-                <div class="col-md-12" style="display: flex; justify-content: flex-end; gap: 20px;">
-                    <button type="button" class="btn btn-light next float-right" onclick="nextStep('steep2', 'steep1')">Anterior</button>
-                    <button type="button" class="btn btn-success next float-right" onclick="nextStep('steep2', 'steep3')">Próximo</button>
-                </div>
-            </div>
-        </div>
-        <div class="multistep" id="steep3">
-            <p class="section-identification">• SELECIONAR UNIDADE</p>
-
-            <div class="form-group col-md-12">
-                <label for="TenantId" class="input-label">Tenant<span class="input-label-required"></span></label>
-                <select id="TenantId" class="form-control">
-                    <option value="">Selecione um Tenant</option>
-                </select>
-            </div>
-            <div class="kanban-container">
-                <ul class="kanban-list">
-                    <li class="kanban-column kanban-column-onhold">
-                        <span class="kanban-column-header header-onhold">
-                            <h2 style="font-size: 1.0em; font-weight: bold;">Unidades Acessíveis</h2>
-                        </span>
-                        <div class="kanban-options"></div>
-                        <ul class="drag-inner-list"></ul>
-                    </li>
-
-                    <li class="kanban-column kanban-column-approved">
-                        <span class="kanban-column-header header-approved">
-                            <h2 style="">Unidades Selecionadas</h2>
-                        </span>
-                        <div class="kanban-options"></div>
-                        <ul class="drag-inner-list"></ul>
-                    </li>
-                </ul>
-            </div>
-
-            <hr />
-            <div class="row" style="padding: 0 15px;">
-                <div class="col-md-12" style="display: flex; justify-content: flex-end; gap: 20px;">
-                    <button type="button" class="btn btn-light next float-right" onclick="nextStep('steep3', 'steep2')">Anterior</button>
-                    <button class="btn btn-success save float-right" type="submit">Finalizar Cadastro</button>
-                </div>
+        <div class="row" style="padding: 0 15px;">
+            <div class="col-md-12" style="display: flex; justify-content: flex-end; gap: 20px;">
+                <button class="btn btn-success save float-right" type="submit">Finalizar Cadastro</button>
             </div>
         </div>
     </form>
@@ -232,5 +88,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-    <script src="~/js/User/Create.js"></script>
+    <script src="~/js/Users/Create.js"></script>
 }

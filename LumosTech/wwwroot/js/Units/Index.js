@@ -2,7 +2,7 @@
     "processing": true,
     "serverSide": true,
     "ajax": {
-        "url": "/Organizations/GetAllPaginated",
+        "url": "/Units/GetAllPaginated",
         "type": "POST",
         "contentType": "application/json",
         "headers": {
@@ -99,7 +99,7 @@
 
 $(document).on('click', '#confirm-delete', function () {
     var id = $('#delete-modal').data('id');
-    var url = `/Organizations/Delete/${id}`;
+    var url = `/Units/Delete/${id}`;
 
     AjaxDeleteDefault("#deleteOrganization", url);
 

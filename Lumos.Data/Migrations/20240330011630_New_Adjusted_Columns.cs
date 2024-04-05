@@ -10,11 +10,11 @@ namespace Lumos.Data.Migrations
         {
             migrationBuilder.DropColumn(
                 name: "Cnpj",
-                table: "tbOrganizations");
+                table: "tbUnits");
 
             migrationBuilder.RenameColumn(
                 name: "Description",
-                table: "tbOrganizations",
+                table: "tbUnits",
                 newName: "Level");
 
             migrationBuilder.AlterColumn<string>(
@@ -76,7 +76,7 @@ namespace Lumos.Data.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "Name",
-                table: "tbOrganizations",
+                table: "tbUnits",
                 type: "nvarchar(100)",
                 maxLength: 100,
                 nullable: false,
@@ -85,7 +85,7 @@ namespace Lumos.Data.Migrations
 
             migrationBuilder.AddColumn<string>(
                 name: "CpfCnpj",
-                table: "tbOrganizations",
+                table: "tbUnits",
                 type: "nvarchar(18)",
                 maxLength: 18,
                 nullable: false,
@@ -116,11 +116,11 @@ namespace Lumos.Data.Migrations
 
             migrationBuilder.DropColumn(
                 name: "CpfCnpj",
-                table: "tbOrganizations");
+                table: "tbUnits");
 
             migrationBuilder.RenameColumn(
                 name: "Level",
-                table: "tbOrganizations",
+                table: "tbUnits",
                 newName: "Description");
 
             migrationBuilder.AlterColumn<string>(
@@ -144,7 +144,7 @@ namespace Lumos.Data.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "Name",
-                table: "tbOrganizations",
+                table: "tbUnits",
                 type: "nvarchar(max)",
                 nullable: false,
                 oldClrType: typeof(string),
@@ -153,7 +153,7 @@ namespace Lumos.Data.Migrations
 
             migrationBuilder.AddColumn<string>(
                 name: "Cnpj",
-                table: "tbOrganizations",
+                table: "tbUnits",
                 type: "nvarchar(max)",
                 nullable: false,
                 defaultValue: "");

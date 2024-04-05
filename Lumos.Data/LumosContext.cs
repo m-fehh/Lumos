@@ -7,54 +7,34 @@ namespace Lumos.Data
     public class LumosContext : DbContext
     {
         public DbSet<Users> Users { get; set; }
-        public DbSet<Organizations> Organizations { get; set; }
+        public DbSet<Units> Units { get; set; }
         public DbSet<Tenants> Tenants { get; set; }
-        public DbSet<Address> Address { get; set; }
 
         public LumosContext(DbContextOptions<LumosContext> options) : base(options)
         { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            ConfigureEnumerations(modelBuilder);
+            base.OnModelCreating(modelBuilder);
 
-            // Configuração da relação entre Users e Address
-            modelBuilder.Entity<Users>()
-                .HasOne(u => u.Address)
-                .WithOne(a => a.User)
-                .HasForeignKey<Address>(a => a.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            // Configuração da relação entre Users e Organizations
-            modelBuilder.Entity<Users>()
-                .HasMany(u => u.Organizations)
-                .WithMany(o => o.Users);
-
-            // Configuração da relação entre Organizations e Tenants
-            modelBuilder.Entity<Organizations>()
-                .HasOne(o => o.Tenant)
-                .WithMany(t => t.Organizations)
-                .HasForeignKey(o => o.TenantId)
-                .OnDelete(DeleteBehavior.Restrict); 
-
-            // Configuração da relação entre Users e Tenants
-            modelBuilder.Entity<Users>()
-                .HasOne(u => u.Tenant)
-                .WithMany(t => t.Users)
+            modelBuilder.Entity<Tenants>()
+                .HasMany(t => t.Units)
+                .WithOne(u => u.Tenant)
                 .HasForeignKey(u => u.TenantId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Configuração da relação entre Tenants e Users
-            modelBuilder.Entity<Tenants>()
-                .HasMany(t => t.Users)
-                .WithOne(u => u.Tenant)
-                .HasForeignKey(u => u.TenantId);
+            modelBuilder.Entity<Users>()
+                .HasMany(u => u.Units)
+                .WithMany(u => u.Users)
+                .UsingEntity(j => j.ToTable("UserUnits"));
 
-            // Configuração da relação entre Tenants e Organizations
-            modelBuilder.Entity<Tenants>()
-                .HasMany(t => t.Organizations)
-                .WithOne(o => o.Tenant)
-                .HasForeignKey(o => o.TenantId);
+            modelBuilder.Entity<Users>()
+                .HasOne(u => u.Tenant)
+                .WithMany()
+                .HasForeignKey(u => u.TenantId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            ConfigureEnumerations(modelBuilder);
         }
 
         private void ConfigureEnumerations(ModelBuilder modelBuilder)
@@ -63,11 +43,7 @@ namespace Lumos.Data
                 .Property(u => u.Type)
                 .HasConversion<string>();
 
-            modelBuilder.Entity<Users>()
-                .Property(u => u.AccessLevel)
-                .HasConversion<string>();
-
-            modelBuilder.Entity<Organizations>()
+            modelBuilder.Entity<Units>()
                 .Property(u => u.Level)
                 .HasConversion<string>();
         }

@@ -9,15 +9,15 @@ namespace Lumos.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Organizations_Tenants_TenantId",
-                table: "Organizations");
+                name: "FK_Units_Tenants_TenantId",
+                table: "Units");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_Users_Address_AddressId",
                 table: "Users");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Users_Organizations_OrganizationId",
+                name: "FK_Users_Units_OrganizationId",
                 table: "Users");
 
             migrationBuilder.DropForeignKey(
@@ -33,8 +33,8 @@ namespace Lumos.Data.Migrations
                 table: "Tenants");
 
             migrationBuilder.DropPrimaryKey(
-                name: "PK_Organizations",
-                table: "Organizations");
+                name: "PK_Units",
+                table: "Units");
 
             migrationBuilder.DropPrimaryKey(
                 name: "PK_Address",
@@ -49,8 +49,8 @@ namespace Lumos.Data.Migrations
                 newName: "tbTenants");
 
             migrationBuilder.RenameTable(
-                name: "Organizations",
-                newName: "tbOrganizations");
+                name: "Units",
+                newName: "tbUnits");
 
             migrationBuilder.RenameTable(
                 name: "Address",
@@ -72,9 +72,9 @@ namespace Lumos.Data.Migrations
                 newName: "IX_tbUsers_AddressId");
 
             migrationBuilder.RenameIndex(
-                name: "IX_Organizations_TenantId",
-                table: "tbOrganizations",
-                newName: "IX_tbOrganizations_TenantId");
+                name: "IX_Units_TenantId",
+                table: "tbUnits",
+                newName: "IX_tbUnits_TenantId");
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_tbUsers",
@@ -87,8 +87,8 @@ namespace Lumos.Data.Migrations
                 column: "Id");
 
             migrationBuilder.AddPrimaryKey(
-                name: "PK_tbOrganizations",
-                table: "tbOrganizations",
+                name: "PK_tbUnits",
+                table: "tbUnits",
                 column: "Id");
 
             migrationBuilder.AddPrimaryKey(
@@ -97,8 +97,8 @@ namespace Lumos.Data.Migrations
                 column: "Id");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_tbOrganizations_tbTenants_TenantId",
-                table: "tbOrganizations",
+                name: "FK_tbUnits_tbTenants_TenantId",
+                table: "tbUnits",
                 column: "TenantId",
                 principalTable: "tbTenants",
                 principalColumn: "Id",
@@ -113,10 +113,10 @@ namespace Lumos.Data.Migrations
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_tbUsers_tbOrganizations_OrganizationId",
+                name: "FK_tbUsers_tbUnits_OrganizationId",
                 table: "tbUsers",
                 column: "OrganizationId",
-                principalTable: "tbOrganizations",
+                principalTable: "tbUnits",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
@@ -132,15 +132,15 @@ namespace Lumos.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_tbOrganizations_tbTenants_TenantId",
-                table: "tbOrganizations");
+                name: "FK_tbUnits_tbTenants_TenantId",
+                table: "tbUnits");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_tbUsers_tbAddress_AddressId",
                 table: "tbUsers");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_tbUsers_tbOrganizations_OrganizationId",
+                name: "FK_tbUsers_tbUnits_OrganizationId",
                 table: "tbUsers");
 
             migrationBuilder.DropForeignKey(
@@ -156,8 +156,8 @@ namespace Lumos.Data.Migrations
                 table: "tbTenants");
 
             migrationBuilder.DropPrimaryKey(
-                name: "PK_tbOrganizations",
-                table: "tbOrganizations");
+                name: "PK_tbUnits",
+                table: "tbUnits");
 
             migrationBuilder.DropPrimaryKey(
                 name: "PK_tbAddress",
@@ -172,8 +172,8 @@ namespace Lumos.Data.Migrations
                 newName: "Tenants");
 
             migrationBuilder.RenameTable(
-                name: "tbOrganizations",
-                newName: "Organizations");
+                name: "tbUnits",
+                newName: "Units");
 
             migrationBuilder.RenameTable(
                 name: "tbAddress",
@@ -195,9 +195,9 @@ namespace Lumos.Data.Migrations
                 newName: "IX_Users_AddressId");
 
             migrationBuilder.RenameIndex(
-                name: "IX_tbOrganizations_TenantId",
-                table: "Organizations",
-                newName: "IX_Organizations_TenantId");
+                name: "IX_tbUnits_TenantId",
+                table: "Units",
+                newName: "IX_Units_TenantId");
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_Users",
@@ -210,8 +210,8 @@ namespace Lumos.Data.Migrations
                 column: "Id");
 
             migrationBuilder.AddPrimaryKey(
-                name: "PK_Organizations",
-                table: "Organizations",
+                name: "PK_Units",
+                table: "Units",
                 column: "Id");
 
             migrationBuilder.AddPrimaryKey(
@@ -220,8 +220,8 @@ namespace Lumos.Data.Migrations
                 column: "Id");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Organizations_Tenants_TenantId",
-                table: "Organizations",
+                name: "FK_Units_Tenants_TenantId",
+                table: "Units",
                 column: "TenantId",
                 principalTable: "Tenants",
                 principalColumn: "Id",
@@ -236,10 +236,10 @@ namespace Lumos.Data.Migrations
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Users_Organizations_OrganizationId",
+                name: "FK_Users_Units_OrganizationId",
                 table: "Users",
                 column: "OrganizationId",
-                principalTable: "Organizations",
+                principalTable: "Units",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 

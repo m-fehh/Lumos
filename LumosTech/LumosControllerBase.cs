@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Lumos.Application;
 using Lumos.Application.Configurations;
-using Lumos.Application.Dtos.Management.Tenant;
+using Lumos.Application.Dtos.Management.Tenants;
 using Lumos.Data.Models.Management;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -39,7 +39,7 @@ namespace Lumos.Mvc
 
         [HttpGet]
         [ServiceFilter(typeof(JwtAuthorizationFilter))]
-        public async Task<IActionResult> GetAllAsync()
+        public virtual async Task<IActionResult> GetAllAsync()
         {
             try
             {
@@ -58,7 +58,7 @@ namespace Lumos.Mvc
 
         [HttpPost]
         [ServiceFilter(typeof(JwtAuthorizationFilter))]
-        public async Task<IActionResult> GetAllPaginated([FromBody] UserDataTableParams dataTableParams)
+        public virtual async Task<IActionResult> GetAllPaginated([FromBody] UserDataTableParams dataTableParams)
         {
             if (dataTableParams == null)
             {
@@ -66,9 +66,9 @@ namespace Lumos.Mvc
             }
 
             var tenantId = RequiresTenantOrganizationFilter<TDto>() ? _session.TenantId ?? null : null;
-            var listOrganizationsId = RequiresTenantOrganizationFilter<TDto>() ? _session.OrganizationId : null;
+            var listUnitsId = RequiresTenantOrganizationFilter<TDto>() ? _session.OrganizationId : null;
 
-            var result = await _appService.GetAllPaginatedAsync(dataTableParams, tenantId, listOrganizationsId, _session.IsHost);
+            var result = await _appService.GetAllPaginatedAsync(dataTableParams, tenantId, listUnitsId, _session.IsHost);
 
             var dtos = _mapper.Map<List<TDto>>(result.Entities);
 
@@ -271,7 +271,7 @@ namespace Lumos.Mvc
         private bool RequiresTenantOrganizationFilter<T>()
         {
             var classesWithoutFilter = new List<Type> {
-                typeof(TenantDto)
+                typeof(TenantsDto)
             };
 
             var result = !classesWithoutFilter.Contains(typeof(T));

@@ -44,7 +44,7 @@ namespace Lumos.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Organizations",
+                name: "Units",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
@@ -59,9 +59,9 @@ namespace Lumos.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Organizations", x => x.Id);
+                    table.PrimaryKey("PK_Units", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Organizations_Tenants_TenantId",
+                        name: "FK_Units_Tenants_TenantId",
                         column: x => x.TenantId,
                         principalTable: "Tenants",
                         principalColumn: "Id",
@@ -101,9 +101,9 @@ namespace Lumos.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Users_Organizations_OrganizationId",
+                        name: "FK_Users_Units_OrganizationId",
                         column: x => x.OrganizationId,
-                        principalTable: "Organizations",
+                        principalTable: "Units",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -115,8 +115,8 @@ namespace Lumos.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Organizations_TenantId",
-                table: "Organizations",
+                name: "IX_Units_TenantId",
+                table: "Units",
                 column: "TenantId");
 
             migrationBuilder.CreateIndex(
@@ -144,7 +144,7 @@ namespace Lumos.Data.Migrations
                 name: "Address");
 
             migrationBuilder.DropTable(
-                name: "Organizations");
+                name: "Units");
 
             migrationBuilder.DropTable(
                 name: "Tenants");

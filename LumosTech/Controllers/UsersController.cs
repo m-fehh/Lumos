@@ -9,16 +9,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Lumos.Mvc.Controllers
 {
-    public class UsersController : LumosControllerBase<Users, UserDto, long>
+    public class UsersController : LumosControllerBase<Users, UsersDto, long>
     {
         private readonly ITenantsAppService _tenantAppServices;
-        private readonly IOrganizationsAppService _organizationsAppServices;
+        private readonly IUnitsAppService _UnitsAppServices;
         private readonly IUsersAppService _usersAppServices;
 
-        public UsersController(LumosSession session, IMapper mapper, ITenantsAppService tenantAppServices, IOrganizationsAppService organizationsAppService, IUsersAppService usersAppServices, LumosAppServiceBase<Users> userService) : base(session, mapper, userService)
+        public UsersController(LumosSession session, IMapper mapper, ITenantsAppService tenantAppServices, IUnitsAppService UnitsAppService, IUsersAppService usersAppServices, LumosAppServiceBase<Users> userService) : base(session, mapper, userService)
         {
             _tenantAppServices = tenantAppServices;
-            _organizationsAppServices = organizationsAppService;
+            _UnitsAppServices = UnitsAppService;
             _usersAppServices = usersAppServices;
         }
 
@@ -32,19 +32,12 @@ namespace Lumos.Mvc.Controllers
         public async Task<IActionResult> Create()
         {
             SetViewBagValues();
-
-            if (IsInHostMode())
-            {
-                var allTenants = await _tenantAppServices.GetAllAsync();
-                ViewBag.Tenants = allTenants;
-            }
-
-            return View(new UserDto());
+            return View(new UsersDto());
         }
 
         [HttpPost]
         [ServiceFilter(typeof(JwtAuthorizationFilter))]
-        public override async Task<IActionResult> InsertAsync(UserDto model)
+        public override async Task<IActionResult> InsertAsync(UsersDto model)
         {
             var validationResults = new List<ValidationResult>();
             var isValid = Validator.TryValidateObject(model, new ValidationContext(model), validationResults, true);
@@ -63,7 +56,7 @@ namespace Lumos.Mvc.Controllers
             {
                 var entity = _mapper.Map<Users>(model);
 
-                entity.PasswordHash = _usersAppServices.HashPassword(entity.PasswordHash);
+                entity.Password = _usersAppServices.HashPassword(entity.Password);
                 await _usersAppServices.CreateAsync(entity);
 
                 var response = new

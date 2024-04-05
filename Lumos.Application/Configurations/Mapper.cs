@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Lumos.Application.Dtos;
 using Lumos.Application.Dtos.Management;
-using Lumos.Application.Dtos.Management.Tenant;
+using Lumos.Application.Dtos.Management.Tenants;
 using Lumos.Data.Models;
 using Lumos.Data.Models.Management;
 
@@ -11,13 +11,9 @@ namespace Lumos.Application.Configurations
     {
         public static void CreateMappings(IMapperConfigurationExpression configuration)
         {
-            configuration.CreateMap<Users, UserDto>().ReverseMap();
-            configuration.CreateMap<Address, AddressDto>().ReverseMap();
-
-            configuration.CreateMap<Tenants, TenantDto>().ReverseMap();
-            configuration.CreateMap<Tenants, CreateTenantDto>().ReverseMap();
-
-            configuration.CreateMap<Organizations, OrganizationDto>().ReverseMap();
+            configuration.CreateMap<Users, UsersDto>().ReverseMap();
+            configuration.CreateMap<Tenants, TenantsDto>().ReverseMap();
+            configuration.CreateMap<Units, UnitsDto>().ReverseMap();
         }
     }
 }

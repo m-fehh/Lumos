@@ -9,7 +9,7 @@ namespace Lumos.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_tbUsers_tbOrganizations_OrganizationId",
+                name: "FK_tbUsers_tbUnits_OrganizationId",
                 table: "tbUsers");
 
             migrationBuilder.DropIndex(
@@ -21,23 +21,23 @@ namespace Lumos.Data.Migrations
                 table: "tbUsers");
 
             migrationBuilder.CreateTable(
-                name: "OrganizationsUsers",
+                name: "UnitsUsers",
                 columns: table => new
                 {
-                    OrganizationsId = table.Column<long>(type: "bigint", nullable: false),
+                    UnitsId = table.Column<long>(type: "bigint", nullable: false),
                     UsersId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrganizationsUsers", x => new { x.OrganizationsId, x.UsersId });
+                    table.PrimaryKey("PK_UnitsUsers", x => new { x.UnitsId, x.UsersId });
                     table.ForeignKey(
-                        name: "FK_OrganizationsUsers_tbOrganizations_OrganizationsId",
-                        column: x => x.OrganizationsId,
-                        principalTable: "tbOrganizations",
+                        name: "FK_UnitsUsers_tbUnits_UnitsId",
+                        column: x => x.UnitsId,
+                        principalTable: "tbUnits",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OrganizationsUsers_tbUsers_UsersId",
+                        name: "FK_UnitsUsers_tbUsers_UsersId",
                         column: x => x.UsersId,
                         principalTable: "tbUsers",
                         principalColumn: "Id",
@@ -45,15 +45,15 @@ namespace Lumos.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrganizationsUsers_UsersId",
-                table: "OrganizationsUsers",
+                name: "IX_UnitsUsers_UsersId",
+                table: "UnitsUsers",
                 column: "UsersId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "OrganizationsUsers");
+                name: "UnitsUsers");
 
             migrationBuilder.AddColumn<long>(
                 name: "OrganizationId",
@@ -68,10 +68,10 @@ namespace Lumos.Data.Migrations
                 column: "OrganizationId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_tbUsers_tbOrganizations_OrganizationId",
+                name: "FK_tbUsers_tbUnits_OrganizationId",
                 table: "tbUsers",
                 column: "OrganizationId",
-                principalTable: "tbOrganizations",
+                principalTable: "tbUnits",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
         }

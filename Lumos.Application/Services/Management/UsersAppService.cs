@@ -17,14 +17,14 @@ namespace Lumos.Application.Services.Management
             {
                 return new Users
                 {
-                    Username = "HOST_ACCESS"
+                    FullName = "HOST_ACCESS"
                 };
             }
             else
             {
                 var user = (await _repository.GetAllAsync()).FirstOrDefault(u => u.Email == email);
 
-                if (user != null && VerifyPassword(password, user.PasswordHash))
+                if (user != null && VerifyPassword(password, user.Password))
                 {
                     return user;
                 }

@@ -4,8 +4,8 @@ using Lumos.Data.Models.Management;
 
 namespace Lumos.Application.Interfaces.Management
 {
-    public interface IOrganizationsAppService : ITransientDependency
+    public interface IUnitsAppService : ITransientDependency
     {
-        Task CreateAsync(Organizations entity);
+        Task CreateAsync(Units entity);
     }
 }

@@ -93,7 +93,7 @@ namespace Lumos.Data.Migrations
 
                     b.HasIndex("TenantId");
 
-                    b.ToTable("Organizations");
+                    b.ToTable("Units");
                 });
 
             modelBuilder.Entity("Lumos.Data.Models.Management.Tenant", b =>
@@ -207,7 +207,7 @@ namespace Lumos.Data.Migrations
             modelBuilder.Entity("Lumos.Data.Models.Management.Organization", b =>
                 {
                     b.HasOne("Lumos.Data.Models.Management.Tenant", "Tenant")
-                        .WithMany("Organizations")
+                        .WithMany("Units")
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -249,7 +249,7 @@ namespace Lumos.Data.Migrations
 
             modelBuilder.Entity("Lumos.Data.Models.Management.Tenant", b =>
                 {
-                    b.Navigation("Organizations");
+                    b.Navigation("Units");
 
                     b.Navigation("Users");
                 });

@@ -7,11 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Lumos.Mvc.Controllers
 {
-    public class OrganizationsController : LumosControllerBase<Organizations, OrganizationDto, long>
+    public class UnitsController : LumosControllerBase<Units, UnitsDto, long>
     {
         private readonly ITenantsAppService _tenantAppServices;
 
-        public OrganizationsController(LumosSession session, IMapper mapper, ITenantsAppService tenantAppServices, LumosAppServiceBase<Organizations> organizationService) : base(session, mapper, organizationService)
+        public UnitsController(LumosSession session, IMapper mapper, ITenantsAppService tenantAppServices, LumosAppServiceBase<Units> Unitservice) : base(session, mapper, Unitservice)
         {
             _tenantAppServices = tenantAppServices;
         }
@@ -25,14 +25,7 @@ namespace Lumos.Mvc.Controllers
         public async Task<IActionResult> Create()
         {
             SetViewBagValues();
-
-            if (IsInHostMode())
-            {
-                var allTenants = await _tenantAppServices.GetAllAsync();
-                ViewBag.Tenants = allTenants;
-            }
-
-            return View(new OrganizationDto());
+            return View(new UnitsDto());
         }
     }
 }

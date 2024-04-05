@@ -6,15 +6,18 @@
 
     function UpdateCnpjField() {
         var selectedType = $("#Type").val();
+
+        console.log("alterou o tipo: ", selectedType);
+
         $("#Level").prop("disabled", true);
         $("#Level").val("Matriz");
         if (selectedType === "PJ") {
 
-            $("label[for='Organization.CpfCnpj']").html('CNPJ<span class="input-label-required"></span>');
-            VMasker($("#Organization\\.CpfCnpj")).maskPattern('99.999.999/9999-99');
+            $("label[for='CpfCnpj']").html('CNPJ<span class="input-label-required"></span>');
+            VMasker($("#CpfCnpj")).maskPattern('99.999.999/9999-99');
         } else {
-            $("label[for='Organization.CpfCnpj']").html('CPF<span class="input-label-required"></span>');
-            VMasker($("#Organization\\.CpfCnpj")).maskPattern('999.999.999-99');
+            $("label[for='CpfCnpj']").html('CPF<span class="input-label-required"></span>');
+            VMasker($("#CpfCnpj")).maskPattern('999.999.999-99');
         }
     }
 
@@ -29,8 +32,6 @@
         $('#preloader').hide();
 
         var formData = new FormData($('#registerTenant')[0]);
-        var submitButton = $('#submitButton');
-
         var url = '/Tenants/InsertTenant';
 
         AjaxInsertDefault('#submitButton', url, formData);

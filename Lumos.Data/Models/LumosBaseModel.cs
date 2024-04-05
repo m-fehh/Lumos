@@ -15,6 +15,7 @@ namespace Lumos.Data.Models
 
         public bool IsDeleted { get; set; }
 
+
         protected LumosBaseModel()
         {
             CreatedAt = DateTime.UtcNow;
@@ -22,7 +23,6 @@ namespace Lumos.Data.Models
             IsDeleted = false;
         }
 
-        // Método virtual para validar o modelo
         public virtual bool Validate(out List<ValidationResult> validationResults)
         {
             var validationContext = new ValidationContext(this);
