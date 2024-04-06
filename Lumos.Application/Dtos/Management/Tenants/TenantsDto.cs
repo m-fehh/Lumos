@@ -16,6 +16,8 @@ namespace Lumos.Application.Dtos.Management.Tenants
         [Required(ErrorMessage = "O tipo de inquilino é obrigatório.")]
         public ETenantType Type { get; set; }
 
+        public string TypeName => Type.GetDisplayName();
+
         [Required(ErrorMessage = "A cidade do inquilino é obrigatória.")]
         public string City { get; set; }
 

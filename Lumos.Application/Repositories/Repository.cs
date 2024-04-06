@@ -16,6 +16,16 @@ namespace Lumos.Application.Repositories
             _context = context;
         }
 
+        public async Task<List<TEntity>> GetByListIdsAsync<TId>(IEnumerable<TId> ids)
+        {
+            IQueryable<TEntity> query = _context.Set<TEntity>();
+
+            query = IncludeAllNavigationProperties(query);
+            query = query.Where(e => ids.Contains(EF.Property<TId>(e, "Id")));
+
+            return await query.ToListAsync();
+        }
+
         public async Task<TEntity> GetByIdAsync<TId>(TId id)
         {
             IQueryable<TEntity> query = _context.Set<TEntity>();
@@ -98,7 +108,6 @@ namespace Lumos.Application.Repositories
             return paginationResult;
         }
 
-
         public async Task AddAsync(TEntity entity)
         {
             await _context.Set<TEntity>().AddAsync(entity);
@@ -118,7 +127,6 @@ namespace Lumos.Application.Repositories
 
             return (TId)Convert.ChangeType(idProperty.GetValue(entity), typeof(TId));
         }
-
 
         public async Task UpdateAsync(TEntity entity)
         {

@@ -3,8 +3,8 @@ using Lumos.Application;
 using Lumos.Application.Dtos.Management;
 using Lumos.Application.Interfaces.Management;
 using Lumos.Data.Models.Management;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 
 namespace Lumos.Mvc.Controllers
@@ -12,13 +12,13 @@ namespace Lumos.Mvc.Controllers
     public class UsersController : LumosControllerBase<Users, UsersDto, long>
     {
         private readonly ITenantsAppService _tenantAppServices;
-        private readonly IUnitsAppService _UnitsAppServices;
+        private readonly IUnitsAppService _unitsAppServices;
         private readonly IUsersAppService _usersAppServices;
 
         public UsersController(LumosSession session, IMapper mapper, ITenantsAppService tenantAppServices, IUnitsAppService UnitsAppService, IUsersAppService usersAppServices, LumosAppServiceBase<Users> userService) : base(session, mapper, userService)
         {
             _tenantAppServices = tenantAppServices;
-            _UnitsAppServices = UnitsAppService;
+            _unitsAppServices = UnitsAppService;
             _usersAppServices = usersAppServices;
         }
 
@@ -55,6 +55,19 @@ namespace Lumos.Mvc.Controllers
             try
             {
                 var entity = _mapper.Map<Users>(model);
+
+                if (!string.IsNullOrEmpty(model.SerializedUnitsList))
+                {
+                    var unitsId = JsonConvert.DeserializeObject<List<long>>(model.SerializedUnitsList);
+                    if (unitsId?.Count > 0)
+                    {
+                        var units = await _unitsAppServices.GetByListIdsAsync(unitsId);
+                        if (units?.Any() == true)
+                        {
+                            entity.Units.AddRange(units);
+                        }
+                    }
+                }
 
                 entity.Password = _usersAppServices.HashPassword(entity.Password);
                 await _usersAppServices.CreateAsync(entity);

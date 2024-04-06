@@ -27,7 +27,6 @@ namespace Lumos.Mvc
         protected void SetViewBagValues()
         {
             ViewBag.TenantId = _session.TenantId;
-            ViewBag.OrganizationId = _session.OrganizationId;
             ViewBag.UserName = _session.UserName?.ToString().ToUpper();
             ViewBag.IsHost = IsInHostMode();
         }
@@ -35,6 +34,30 @@ namespace Lumos.Mvc
         protected bool IsInHostMode()
         {
             return _session.IsInHostMode();
+        }
+
+
+        [HttpGet]
+        [ServiceFilter(typeof(JwtAuthorizationFilter))]
+        public virtual async Task<IActionResult> GetByIdAsync(TEntityId id)
+        {
+            try
+            {
+                var entity = await _appService.GetByIdAsync<TEntityId>(id);
+                if (entity == null)
+                {
+                    return NotFound();
+                }
+
+                var dto = _mapper.Map<TDto>(entity);
+
+                return Ok(dto);
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError(string.Empty, "Ocorreu um erro ao buscar os dados! Contate o suporte.");
+                return BadRequest(ModelState);
+            }
         }
 
         [HttpGet]

@@ -18,6 +18,5 @@ namespace Lumos.Data.Models.Management
 
         public long TenantId { get; set; }
         public virtual Tenants Tenant { get; set; }
-        public virtual List<Users> Users { get; set; }
     }
 }

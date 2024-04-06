@@ -17,7 +17,7 @@ namespace Lumos.Application.Services.Management
             {
                 return new Users
                 {
-                    FullName = "HOST_ACCESS"
+                    FullName = "Admin Master"
                 };
             }
             else
@@ -45,7 +45,6 @@ namespace Lumos.Application.Services.Management
 
         public string HashPassword(string password)
         {
-            // Gera um hash seguro da senha
             return BCrypt.Net.BCrypt.HashPassword(password, BCrypt.Net.BCrypt.GenerateSalt());
         } 
 

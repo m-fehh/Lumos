@@ -45,14 +45,14 @@ namespace Lumos.Mvc.Controllers
                     redirectTo = Url.Action("Index", "Home")
                 };
 
-                //if (loggedInUser.Username == "HOST_ACCESS")
-                //{
-                //    _session.SetHostMode(); 
-                //}
-                //else
-                //{
-                //    _session.SetUserAndTenant(loggedInUser.Id, loggedInUser.TenantId, loggedInUser.FullName, loggedInUser.Units.Select(x => x.Id).ToList());
-                //}
+                if (loggedInUser.FullName == "Admin Master")
+                {
+                    _session.SetHostMode();
+                }
+                else
+                {
+                    _session.SetUserAndTenant(loggedInUser.Id, loggedInUser.TenantId, loggedInUser.FullName, loggedInUser.Units.Select(x => x.Id).ToList());
+                }
 
                 // Retorna a resposta JSON
                 return Ok(response);

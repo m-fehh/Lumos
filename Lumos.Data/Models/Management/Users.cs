@@ -17,9 +17,8 @@ namespace Lumos.Data.Models.Management
 
         [Required]
         public string Cpf { get; set; }
-
         public long TenantId { get; set; }
         public virtual Tenants Tenant { get; set; }
-        public virtual IList<Units> Units { get; set; }
+        public virtual List<Units> Units { get; set; }
     }
 }

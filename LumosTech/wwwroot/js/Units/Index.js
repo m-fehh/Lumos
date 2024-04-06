@@ -43,7 +43,7 @@
             "data": "Tenant",
             "orderable": false,
             "render": function (data, type, row, meta) {
-                return data ? data.TypeName + ' - ' + data.Name : "Desconhecido";
+                return data ? data.Name : "Desconhecido";
             }
         },
         {

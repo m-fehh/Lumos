@@ -1,7 +1,52 @@
 ﻿function GetBearerToken() {
     return 'Bearer ' + sessionStorage.getItem('jwtToken');
 }
+function AjaxGetByIdDefault(controller, id, callback) {
+    $('#preloader').show();
 
+    var url = `/${controller}/GetById/${id}`; 
+
+    $.ajax({
+        url: url,
+        type: 'GET',
+        headers: {
+            'Authorization': GetBearerToken(),
+        },
+        success: function (response) {
+            if (typeof callback === 'function') {
+                callback(response);
+            }
+        },
+        error: function (xhr, status, error) {
+            var errorMessage = "Ocorreu um erro ao processar a solicitação.";
+
+            if (xhr.status === 400) {
+                var errorResponse = JSON.parse(xhr.responseText);
+                if (errorResponse) {
+                    var errorMessage = '';
+
+                    for (var key in errorResponse) {
+                        if (errorResponse[key].length > 0) {
+                            errorMessage = errorResponse[key][0];
+                            break;
+                        }
+                    }
+
+                    if (errorMessage) {
+                        $('#toastError .toast-body').text(errorMessage);
+                        $('#toastError').toast('show');
+                    }
+                }
+            } else {
+                $('#toastError .toast-body').text(errorMessage);
+                $('#toastError').toast('show');
+            }
+        },
+        complete: function () {
+            $('#preloader').hide();
+        }
+    });
+}
 function AjaxGetAllDefault(controller, callback) {
     $('#preloader').show();
 

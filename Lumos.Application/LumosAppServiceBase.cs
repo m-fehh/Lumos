@@ -2,7 +2,6 @@
 using Lumos.Application.Models;
 using Lumos.Application.Repositories;
 using Lumos.Data.Models.Management;
-using System.Runtime.CompilerServices;
 
 namespace Lumos.Application
 {
@@ -19,6 +18,11 @@ namespace Lumos.Application
         {
             _session = session;
             _repository = repository;
+        }
+
+        public async Task<List<TEntity>> GetByListIdsAsync<TId>(List<TId> ids)
+        {
+            return await _repository.GetByListIdsAsync(ids);
         }
 
         public async Task<TEntity> GetByIdAsync<TId>(TId id)

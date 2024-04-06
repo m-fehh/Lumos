@@ -24,11 +24,6 @@ namespace Lumos.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Users>()
-                .HasMany(u => u.Units)
-                .WithMany(u => u.Users)
-                .UsingEntity(j => j.ToTable("UserUnits"));
-
-            modelBuilder.Entity<Users>()
                 .HasOne(u => u.Tenant)
                 .WithMany()
                 .HasForeignKey(u => u.TenantId)

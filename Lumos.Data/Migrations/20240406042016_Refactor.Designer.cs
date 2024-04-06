@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lumos.Data.Migrations
 {
     [DbContext(typeof(LumosContext))]
-    [Migration("20240404041026_Entity_Refactoring")]
-    partial class Entity_Refactoring
+    [Migration("20240406042016_Refactor")]
+    partial class Refactor
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -98,9 +98,14 @@ namespace Lumos.Data.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<long?>("UsersId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
 
                     b.HasIndex("TenantId");
+
+                    b.HasIndex("UsersId");
 
                     b.ToTable("tbUnits");
                 });
@@ -148,21 +153,6 @@ namespace Lumos.Data.Migrations
                     b.ToTable("tbUsers");
                 });
 
-            modelBuilder.Entity("UnitsUsers", b =>
-                {
-                    b.Property<long>("UnitsId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("UsersId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("UnitsId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("UserUnits", (string)null);
-                });
-
             modelBuilder.Entity("Lumos.Data.Models.Management.Units", b =>
                 {
                     b.HasOne("Lumos.Data.Models.Management.Tenants", "Tenant")
@@ -170,6 +160,10 @@ namespace Lumos.Data.Migrations
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("Lumos.Data.Models.Management.Users", null)
+                        .WithMany("Units")
+                        .HasForeignKey("UsersId");
 
                     b.Navigation("Tenant");
                 });
@@ -185,22 +179,12 @@ namespace Lumos.Data.Migrations
                     b.Navigation("Tenant");
                 });
 
-            modelBuilder.Entity("UnitsUsers", b =>
+            modelBuilder.Entity("Lumos.Data.Models.Management.Tenants", b =>
                 {
-                    b.HasOne("Lumos.Data.Models.Management.Units", null)
-                        .WithMany()
-                        .HasForeignKey("UnitsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Lumos.Data.Models.Management.Users", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Units");
                 });
 
-            modelBuilder.Entity("Lumos.Data.Models.Management.Tenants", b =>
+            modelBuilder.Entity("Lumos.Data.Models.Management.Users", b =>
                 {
                     b.Navigation("Units");
                 });

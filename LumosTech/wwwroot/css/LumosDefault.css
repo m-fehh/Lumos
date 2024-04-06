@@ -308,3 +308,21 @@ ul {
         border: none;
         border-radius: 3px;
     }
+
+.input-group-addon.toggle-password {
+    background: none;
+    border: none;
+    padding: 5px;
+    margin-left: -30px;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+}
+
+    .input-group-addon.toggle-password i {
+        color: #999; 
+    }
+
+    .input-group-addon.toggle-password:hover i {
+        color: #555;
+    }

@@ -1,6 +1,9 @@
 ﻿$(document).ready(function () {
+    VMasker($("#Cpf")).maskPattern('999.999.999-99');
+
     var tenantId = $("#sessionTenantId").val();
     if (!tenantId) {
+        $("#lblLoadingUnits").show();
         AjaxGetAllDefault("Tenants", function (response) {
             if (response && response.length > 0) {
                 var $tenantSelect = $("#tenantSelect");
@@ -20,9 +23,20 @@
                 $("#tenantModal").modal("show");
             }
         });
+    } else {
+        $("#lblLoadingUnits").hide();
+
+        AjaxGetByIdDefault("Tenants", tenantId, function (response) {
+            if (response) {
+                UpdateUnitsTreeview(response.units);
+
+                $("#sessionTenantId").val(tenantId);
+            }
+        });
     }
 
     $("#confirm-tenant").click(function () {
+        $("#lblLoadingUnits").hide();
         var selectedTenantId = $("#tenantSelect").val();
 
         units = $("#tenantSelect option:selected").data('units');
@@ -72,5 +86,27 @@
         $("#treeview").append(matrizUl);
     }
 
+    $('#registerUser').on('submit', function (e) {
+        e.preventDefault();
+
+        var checkedUnits = [];
+        $("#treeview input[type='checkbox']:checked").each(function () {
+            checkedUnits.push($(this).attr("id").replace("unit", ""));
+        });
+
+        var formData = new FormData($('#registerUser')[0]);
+        formData.append('SerializedUnitsList', JSON.stringify(checkedUnits));
+
+        var url = '/Users/Insert';
+
+        AjaxInsertDefault('#submitButton', url, formData);
+    });
+
+    $('.toggle-password').click(function () {
+        var $input = $(this).closest('.input-group').find('input');
+        var type = $input.attr('type') === 'password' ? 'text' : 'password';
+        $input.attr('type', type);
+        $(this).find('i').toggleClass('fa-eye fa-eye-slash');
+    });
 
 });
