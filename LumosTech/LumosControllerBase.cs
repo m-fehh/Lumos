@@ -11,7 +11,7 @@ using System.Reflection;
 
 namespace Lumos.Mvc
 {
-    public class LumosControllerBase<TEntity, TDto, TEntityId> : Controller where TEntity : class where TDto : class
+    public class LumosControllerBase<TEntity, TDto, TEntityId> : Controller where TEntity : class where TDto : class, new()
     {
         private readonly LumosSession _session;
         protected readonly IMapper _mapper;
@@ -37,6 +37,7 @@ namespace Lumos.Mvc
         }
 
 
+        #region CRUD DEFAULT 
         [HttpGet]
         [ServiceFilter(typeof(JwtAuthorizationFilter))]
         public virtual async Task<IActionResult> GetByIdAsync(TEntityId id)
@@ -193,7 +194,7 @@ namespace Lumos.Mvc
             }
         }
 
-        
+
         [HttpDelete]
         [ServiceFilter(typeof(JwtAuthorizationFilter))]
 
@@ -252,44 +253,37 @@ namespace Lumos.Mvc
             }
         }
 
-        #region PRIVATE METHODS 
+        #endregion
 
-        private bool IsDuplicate(TEntity entity, TDto dto)
+        #region VIEWS
+
+        public virtual IActionResult Index()
         {
-            // Obtém as propriedades da entidade e da DTO
-            PropertyInfo[] entityProperties = typeof(TEntity).GetProperties();
-            PropertyInfo[] dtoProperties = typeof(TDto).GetProperties();
-
-            // Lista de nomes das propriedades a serem excluídas da comparação
-            List<string> excludedProperties = new List<string> { "TenantId", "OrganizationId", "IsDeleted" };
-
-            foreach (var entityProperty in entityProperties)
-            {
-                if (!excludedProperties.Contains(entityProperty.Name))
-                {
-                    var entityValue = entityProperty.GetValue(entity);
-                    var dtoProperty = dtoProperties.FirstOrDefault(p => p.Name == entityProperty.Name);
-                    if (dtoProperty != null)
-                    {
-                        var dtoValue = dtoProperty.GetValue(dto);
-
-                        if (entityValue != null && dtoValue != null && entityValue.Equals(dtoValue))
-                        {
-                            return true;
-                        }
-                    }
-                }
-            }
-
-            return false;
+            SetViewBagValues();
+            return View();
         }
 
+        public virtual IActionResult Create()
+        {
+            SetViewBagValues();
+            return View(new TDto());
+        }
 
-        //private async Task<bool> EntityExistsAsync(Expression<Func<TEntity, bool>> predicate)
-        //{
-        //    var entities = await _appService.GetAllAsync();
-        //    return entities.Any(predicate.Compile());
-        //}
+        public async Task<ActionResult> EditModal(TEntityId id)
+        {
+            var entity = await _appService.GetByIdAsync<TEntityId>(id);
+            if (entity == null)
+            {
+                return NotFound();
+            }
+
+            var dto = _mapper.Map<TDto>(entity); 
+            return View("Create", dto);
+        }
+
+        #endregion
+
+        #region PRIVATE METHODS 
 
         private bool RequiresTenantOrganizationFilter<T>()
         {

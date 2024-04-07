@@ -96,6 +96,14 @@
     "info": true
 });
 
+//data-toggle="modal" data-target="#UnitEditModal"
+
+$(document).on('click', '#delete', function () {
+    var id = $(this).data('id');
+
+    $('#delete-modal').data('id', id);
+    $('#delete-modal').modal('show');
+});
 
 $(document).on('click', '#confirm-delete', function () {
     var id = $('#delete-modal').data('id');
@@ -106,9 +114,24 @@ $(document).on('click', '#confirm-delete', function () {
     $('#delete-modal').modal('hide');
 });
 
-$(document).on('click', '#delete', function () {
+
+$(document).on('click', "#edit", function () {
     var id = $(this).data('id');
 
-    $('#delete-modal').data('id', id);
-    $('#delete-modal').modal('show');
-});
+    var url = `Units/EditModal?id=${id}`;
+
+    $.ajax({
+        url: url,
+        method: 'POST',
+        headers: {
+            'Authorization': GetBearerToken(),
+        },
+        dataType: 'html',
+        processData: false,
+        contentType: false,
+    //    success: function (content) {
+    //        $('#UnitEditModal div.modal-content').html(content);
+    //    }
+    });
+})
+

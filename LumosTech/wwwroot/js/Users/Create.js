@@ -20,6 +20,8 @@
                     $tenantSelect.append(option);
                 });
 
+
+                InitializeSelect2("#tenantSelect", "Selecione o tenant");
                 $("#tenantModal").modal("show");
             }
         });

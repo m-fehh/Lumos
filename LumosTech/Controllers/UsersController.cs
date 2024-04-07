@@ -22,18 +22,6 @@ namespace Lumos.Mvc.Controllers
             _usersAppServices = usersAppServices;
         }
 
-        public IActionResult Index()
-        {
-            SetViewBagValues();
-            return View();
-        }
-
-
-        public async Task<IActionResult> Create()
-        {
-            SetViewBagValues();
-            return View(new UsersDto());
-        }
 
         [HttpPost]
         [ServiceFilter(typeof(JwtAuthorizationFilter))]

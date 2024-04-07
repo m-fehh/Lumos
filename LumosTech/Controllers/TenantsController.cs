@@ -17,18 +17,6 @@ namespace Lumos.Mvc.Controllers
             _UnitsAppService = UnitsAppService;
         }
 
-        public IActionResult Index()    
-        {
-            SetViewBagValues();
-            return View();
-        }
-
-        public IActionResult Create()
-        {
-            SetViewBagValues();
-            return View(new CreateTenantDto());
-        }
-
         [HttpPost]
         [ServiceFilter(typeof(JwtAuthorizationFilter))]
         public async Task<IActionResult> InsertTenantAsync(CreateTenantDto model)

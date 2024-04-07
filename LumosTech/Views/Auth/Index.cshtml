@@ -8,95 +8,43 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
-
-
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-        background: #4dd48f !important;
-    }
-
-    .h3-text {
-        font-size: 24px;
-        color: #333;
-        text-align: center;
-        margin: 20px 0;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-    }
-
-    .p-text {
-        margin-bottom: 20px;
-        color: #777;
-    }
-
-    .bntAccess {
-        padding: 15px;
-        border: none;
-        border-radius: 8px;
-        background: #4dd48f;
-        color: #fff;
-        font-weight: bold;
-        width: 70%;
-        font-size: 16px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-        transition: background-color 0.3s ease, box-shadow 0.3s ease;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-        outline: none !important;
-    }
-
-        .bntAccess:hover {
-            box-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.2);
-        }
-
-</style>
-
 @Html.Partial("~/Views/Shared/_ToastDefault.cshtml")
 @Html.Partial("~/Views/Shared/_LoaderDefault.cshtml")
 
-<div class="body">
-    <div class="login-container">
-        <img src="~/images/Lumos.png" alt="Logo" class="logo">
+<div class="container" id="container">
+    <div class="form-container sign-in-container">
+
         <form id="loginForm">
-            <h3 class="h3-text" style="color: #000;">
-                Inovação e Qualidade: Lumos em Ação
-            </h3>
-            <p class="p-text">Entre na sua conta com o login:</p>
+        <img src="~/images/Lumos.png" alt="Logo">
+            <label for="Login" class="input-label">Login<span class="input-label-required"></span></label>
+            <input type="text" class="form-control" name="Login" id="Login" placeholder="" autocomplete="off">
 
+            <label for="Password" class="input-label">Senha<span class="input-label-required"></span></label>
             <div class="input-group">
-                <input type="text" id="username" name="UserOrEmail" placeholder="Usuário/E-mail" required>
-                <span class="input-icon">
-                    <i class="fas fa-user"></i>
-                </span>
-            </div>
-            <div class="input-group">
-                <input type="password" id="password" name="Password" placeholder="Senha" required>
-                <span class="input-icon">
-                    <i class="fas fa-lock"></i>
-                </span>
+                <input type="password" class="form-control" name="Password" id="Password" placeholder="" autocomplete="off">
             </div>
 
-
-            <button class="bntAccess" id="submitButton" type="submit">Entrar</button>
-            <div class="bottom-text">
-                <p><a href="#">Esqueceu a senha?</a></p>
-            </div>
+            <button class="btn btn-success login float-right" type="submit">Entrar</button>
         </form>
     </div>
+    <div class="overlay-container">
+        <div class="overlay">
+            <div class="overlay-panel overlay-right">
+
+                <h1>Bem-vindo à Lumos: <br /> Iluminando seu Caminho</h1>
+                <p>
+                    Descubra o poder da inovação e da excelência na Lumos. Convidamos você a embarcar em uma jornada única, onde seus sonhos se tornam realidade e suas metas são alcançadas com brilho.
+                    <br />
+                    <br />
+                    Nossa missão é proporcionar soluções tecnológicas de vanguarda que iluminam cada passo do seu caminho para o sucesso. Na Lumos, a excelência é o nosso padrão, a inovação é nossa paixão e você é a razão de nosso compromisso.
+                    <br />
+                    <br />
+                    Venha nos conhecer e descubra como podemos transformar suas ideias em conquistas extraordinárias.
+                </p>
+            </div>
+        </div>
+    </div>
 </div>
-
-
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>

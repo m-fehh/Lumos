@@ -1,78 +1,167 @@
-﻿.login-container {
+﻿
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background: #f6f5f7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: 'Montserrat', sans-serif;
+    height: 100vh;
+    margin: -20px 0 50px;
+}
+
+.container {
     background-color: #fff;
     border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    padding: 40px;
-    max-width: 650px;
-    width: 100%;
-    text-align: center;
-    margin: 0 auto;
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+    position: relative;
+    overflow: hidden;
+    width: 768px!important;
+    max-width: 100%;
+    min-height: 480px;
 }
 
-.logo {
-    width: 280px; 
-    height: auto; 
-    margin-left: -10px;
-}
-
-.loginForm {
-    display: flex;
-    flex-direction: column;
-}
-
-.input-icon {
+.form-container {
     position: absolute;
-    top: 50%;
-    right: 20px;
-    opacity: 0.2;
-    transform: translateY(-50%);
+    top: 0;
+    height: 100%;
+    transition: all 0.6s ease-in-out;
 }
 
-.input-group {
-    margin-bottom: 20px;
-}
-
-    .input-group input {
-        padding: 12px;
-        border-radius: 8px;
-        border: 1px solid #ddd;
-        width: 100%;
-        font-size: 16px;
-        transition: border-color 0.3s ease;
-    }
-
-        .input-group input:focus {
-            border-color: #4dd48f;
-            outline: none;
-        }
-
-
-.bottom-text {
+form {
+    background-color: #FFFFFF;
     display: flex;
+    justify-content: center;
     flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-    color: #777;
+    padding: 0 50px;
+    height: 100%;
+    text-align: center;
 }
 
-    .bottom-text p {
-        margin-bottom: 10px;
+.sign-in-container {
+    left: 0;
+    width: 50%;
+    z-index: 2;
+}
+
+
+.overlay-container {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: transform 0.6s ease-in-out;
+    z-index: 100;
+}
+
+.container.right-panel-active .overlay-container {
+    transform: translateX(-100%);
+}
+
+.overlay {
+    background: #00bf63;
+    background-size: cover;
+    background-position: 0 0;
+    color: #FFFFFF;
+    position: relative;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+    transform: translateX(0);
+    transition: transform 0.6s ease-in-out;
+}
+
+.overlay-panel {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 40px;
+    text-align: center;
+    top: 0;
+    height: 90%;
+    width: 50%;
+    transform: translateX(0);
+    transition: transform 0.6s ease-in-out;
+    padding: 15px;
+    margin: 20px 0;
+}
+
+.overlay-right {
+    right: 0;
+    transform: translateX(0);
+}
+
+.overlay-right h1 {
+    font-weight: bold;
+    font-size: 1.1em!important;
+}
+
+.overlay-right p {
+    font-size: 0.9em;
+    line-height: 20px;
+    text-align: left;
+    margin-top: 20px;
+}
+
+.input-label {
+    color: #6c6d6f;
+    font-size: 0.8em;
+    font-weight: bold;
+    padding: 15px 0;
+    display: flex;
+}
+
+.form-control {
+    font-size: 0.9em !important;
+    color: #218838!important;
+}
+
+    .form-control:focus {
+        border-color: #218838!important;
+        box-shadow: 0 0 0 0.2rem rgba(167, 225, 5, 0.25)!important;
     }
 
-    .bottom-text a {
-        color: #4dd48f;
-        text-decoration: none;
-        transition: color 0.3s ease;
-    }
+.input-label.required {
+    color: #218838;
+    font-weight: bold;
+}
 
-        .bottom-text a:hover {
-            color: #4dd48f;
-        }
+.input-label-required::after {
+    content: " *";
+    color: #218838;
+    font-weight: bold;
+}
 
-/* Responsive */
-@media screen and (max-width: 600px) {
-    .login-container {
-        width: 100%;
-        border-radius: 0;
-    }
+label {
+    margin-bottom: 0!important;
+}
+
+.login {
+    width: 25%;
+    margin: 10px 0 0 0;
+}
+
+img {
+    display: block;
+    margin: 0 auto 20px;
+    width: 300px;
+    margin-top: -50px;
+}
+
+.btn-success {
+    color: #fff;
+    background-color: #28a745;
+    border-color: #28a745;
+    width: 100%;
+    margin-top: 20px;
 }
