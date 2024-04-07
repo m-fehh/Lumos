@@ -16,6 +16,16 @@ namespace Lumos.Application.Repositories
             _context = context;
         }
 
+        public async Task<List<TEntity>> GetByListIdsAsync<TId>(IEnumerable<TId> ids)
+        {
+            IQueryable<TEntity> query = _context.Set<TEntity>();
+
+            query = IncludeAllNavigationProperties(query);
+            query = query.Where(e => ids.Contains(EF.Property<TId>(e, "Id")));
+
+            return await query.ToListAsync();
+        }
+
         public async Task<TEntity> GetByIdAsync<TId>(TId id)
         {
             IQueryable<TEntity> query = _context.Set<TEntity>();
@@ -98,7 +108,6 @@ namespace Lumos.Application.Repositories
             return paginationResult;
         }
 
-
         public async Task AddAsync(TEntity entity)
         {
             await _context.Set<TEntity>().AddAsync(entity);
@@ -118,7 +127,6 @@ namespace Lumos.Application.Repositories
 
             return (TId)Convert.ChangeType(idProperty.GetValue(entity), typeof(TId));
         }
-
 
         public async Task UpdateAsync(TEntity entity)
         {
@@ -164,7 +172,7 @@ namespace Lumos.Application.Repositories
             return query;
         }
 
-        private IQueryable<TEntity> ApplyTenantOrganizationFilters(IQueryable<TEntity> query, long? tenantId, List<long> listOrganizationsId)
+        private IQueryable<TEntity> ApplyTenantOrganizationFilters(IQueryable<TEntity> query, long? tenantId, List<long> listUnitsId)
         {
             ParameterExpression param = Expression.Parameter(typeof(TEntity), "entity");
 
@@ -179,10 +187,10 @@ namespace Lumos.Application.Repositories
             }
 
             var organizationIdProperty = typeof(TEntity).GetProperty("OrganizationId");
-            if (listOrganizationsId != null && listOrganizationsId.Count() > 0 && organizationIdProperty != null)
+            if (listUnitsId != null && listUnitsId.Count() > 0 && organizationIdProperty != null)
             {
                 MemberExpression organizationProperty = Expression.Property(param, "OrganizationId");
-                ConstantExpression organizationValue = Expression.Constant(listOrganizationsId);
+                ConstantExpression organizationValue = Expression.Constant(listUnitsId);
                 BinaryExpression organizationFilter = Expression.Equal(organizationProperty, organizationValue);
                 Expression<Func<TEntity, bool>> organizationLambda = Expression.Lambda<Func<TEntity, bool>>(organizationFilter, param);
                 query = query.Where(organizationLambda);

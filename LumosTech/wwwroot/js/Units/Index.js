@@ -2,7 +2,7 @@
     "processing": true,
     "serverSide": true,
     "ajax": {
-        "url": "/Organizations/GetAllPaginated",
+        "url": "/Units/GetAllPaginated",
         "type": "POST",
         "contentType": "application/json",
         "headers": {
@@ -43,7 +43,7 @@
             "data": "Tenant",
             "orderable": false,
             "render": function (data, type, row, meta) {
-                return data ? data.TypeName + ' - ' + data.Name : "Desconhecido";
+                return data ? data.Name : "Desconhecido";
             }
         },
         {
@@ -96,15 +96,7 @@
     "info": true
 });
 
-
-$(document).on('click', '#confirm-delete', function () {
-    var id = $('#delete-modal').data('id');
-    var url = `/Organizations/Delete/${id}`;
-
-    AjaxDeleteDefault("#deleteOrganization", url);
-
-    $('#delete-modal').modal('hide');
-});
+//data-toggle="modal" data-target="#UnitEditModal"
 
 $(document).on('click', '#delete', function () {
     var id = $(this).data('id');
@@ -112,3 +104,34 @@ $(document).on('click', '#delete', function () {
     $('#delete-modal').data('id', id);
     $('#delete-modal').modal('show');
 });
+
+$(document).on('click', '#confirm-delete', function () {
+    var id = $('#delete-modal').data('id');
+    var url = `/Units/Delete/${id}`;
+
+    AjaxDeleteDefault("#deleteOrganization", url);
+
+    $('#delete-modal').modal('hide');
+});
+
+
+$(document).on('click', "#edit", function () {
+    var id = $(this).data('id');
+
+    var url = `Units/EditModal?id=${id}`;
+
+    $.ajax({
+        url: url,
+        method: 'POST',
+        headers: {
+            'Authorization': GetBearerToken(),
+        },
+        dataType: 'html',
+        processData: false,
+        contentType: false,
+    //    success: function (content) {
+    //        $('#UnitEditModal div.modal-content').html(content);
+    //    }
+    });
+})
+

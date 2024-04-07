@@ -3,7 +3,7 @@
     ViewData["Title"] = "Criar Tenant";
 }
 
-@model Lumos.Application.Dtos.Management.Tenant.CreateTenantDto
+@model Lumos.Application.Dtos.Management.Tenants.CreateTenantDto
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 
@@ -22,136 +22,96 @@
     </div>
 </div>
 
-<div class="progress">
-    <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-</div>
-
 <div class="container-fluid">
     <form id="registerTenant">
-        <div class="multistep active" id="steep1">
-            <p class="section-identification">• TENANT</p>
-            <div class="row" style="padding: 0 15px;">
-                <div class="form-group col-md-5">
-                    <label for="Tenant.Name" class="input-label">Nome<span class="input-label-required"></span></label>
-                    <input type="text" class="form-control" name="Tenant.Name" id="Name" placeholder="">
-                </div>
-                <div class="form-group col-md-5">
-                    <label for="Tenant.Description" class="input-label">Descrição<span class="input-label-required"></span></label>
-                    <input type="text" class="form-control" name="Tenant.Description" id="Description" placeholder="">
-                </div>
-                <div class="form-group col-md-2">
-                    <label for="Tenant.Type" class="input-label">Nível de Acesso <span class="input-label-required"></span></label>
-                    <select class="form-control" id="Type" name="Tenant.Type">
-                        @foreach (var type in Enum.GetValues(typeof(ETenantType)).Cast<ETenantType>())
-                        {
-                            <option value="@(@type.GetDisplayName())">@type.GetDisplayName()</option>
-                        }
-                    </select>
-                </div>
+        <p class="section-identification">Cadastro de Inquilino</p>
+        <div class="row" style="padding: 0 15px;">
+            <div class="form-group col-md-5">
+                <label for="Name" class="input-label">Nome<span class="input-label-required"></span></label>
+                <input type="text" class="form-control" name="Tenant.Name" id="Name" placeholder="">
             </div>
 
-            <div class="row" style="padding: 0 15px;">
-                <div class="form-group col-md-4">
-                    <label for="Tenant.Branch" class="input-label">Atuação<span class="input-label-required"></span></label>
-                    <select class="form-control" name="Tenant.Branch" id="Branch">
-                        <option value="">Selecione o Ramo de Empresa</option>
-                        <option value="Tecnologia">Tecnologia</option>
-                        <option value="Saúde">Saúde</option>
-                        <option value="Financeiro">Financeiro</option>
-                        <option value="Comércio">Comércio</option>
-                        <option value="Serviços">Serviços</option>
-                        <option value="Indústria">Indústria</option>
-                        <option value="Educação">Educação</option>
-                        <option value="Agricultura">Agricultura</option>
-                        <option value="Turismo">Turismo</option>
-                        <option value="Construção Civil">Construção Civil</option>
-                        <option value="Transporte">Transporte</option>
-                        <option value="Entretenimento">Entretenimento</option>
-                        <option value="Alimentos e Bebidas">Alimentos e Bebidas</option>
-                        <option value="Telecomunicações">Telecomunicações</option>
-                        <option value="Consultoria">Consultoria</option>
-                        <option value="Outros">Outros</option>
-                    </select>
-                </div>
-
-
-                <div class="form-group col-md-4">
-                    <label for="Tenant.City" class="input-label">Cidade<span class="input-label-required"></span></label>
-                    <input type="text" class="form-control" name="Tenant.City" id="City" placeholder="">
-                </div>
-
-                <div class="form-group col-md-4">
-                    <label for="Tenant.Uf" class="input-label">Estado<span class="input-label-required"></span></label>
-                    <select class="form-control" name="Tenant.Uf" id="Uf">
-                        <option value="">Selecione a UF</option>
-                        <option value="AC">Acre</option>
-                        <option value="AL">Alagoas</option>
-                        <option value="AP">Amapá</option>
-                        <option value="AM">Amazonas</option>
-                        <option value="BA">Bahia</option>
-                        <option value="CE">Ceará</option>
-                        <option value="DF">Distrito Federal</option>
-                        <option value="ES">Espírito Santo</option>
-                        <option value="GO">Goiás</option>
-                        <option value="MA">Maranhão</option>
-                        <option value="MT">Mato Grosso</option>
-                        <option value="MS">Mato Grosso do Sul</option>
-                        <option value="MG">Minas Gerais</option>
-                        <option value="PA">Pará</option>
-                        <option value="PB">Paraíba</option>
-                        <option value="PR">Paraná</option>
-                        <option value="PE">Pernambuco</option>
-                        <option value="PI">Piauí</option>
-                        <option value="RJ">Rio de Janeiro</option>
-                        <option value="RN">Rio Grande do Norte</option>
-                        <option value="RS">Rio Grande do Sul</option>
-                        <option value="RO">Rondônia</option>
-                        <option value="RR">Roraima</option>
-                        <option value="SC">Santa Catarina</option>
-                        <option value="SP">São Paulo</option>
-                        <option value="SE">Sergipe</option>
-                        <option value="TO">Tocantins</option>
-                    </select>
-                </div>
+            <div class="form-group col-md-5">
+                <label for="Email" class="input-label">E-mail<span class="input-label-required"></span></label>
+                <input type="email" class="form-control" name="Tenant.Email" id="Email" placeholder="">
             </div>
 
-            <hr />
+            <div class="form-group col-md-2">
+                <label for="Type" class="input-label">Nível de Acesso <span class="input-label-required"></span></label>
+                <select class="form-control" id="Type" name="Tenant.Type">
+                    @foreach (var type in Enum.GetValues(typeof(ETenantType)).Cast<ETenantType>())
+                    {
+                        <option value="@(@type.GetDisplayName())">@type.GetDisplayName()</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="row" style="padding: 0 15px;">
+            <div class="form-group col-md-8">
+                <label for="City" class="input-label">Cidade<span class="input-label-required"></span></label>
+                <input type="text" class="form-control" name="Tenant.City" id="City" placeholder="">
+            </div>
 
-            <div class="row" style="padding: 0 15px;">
-                <div class="col-md-12">
-                    <button type="button" class="btn btn-success next float-right" onclick="nextStep('steep1', 'steep2')">Próximo</button>
-                </div>
+            <div class="form-group col-md-4">
+                <label for="State" class="input-label">Estado<span class="input-label-required"></span></label>
+                <select class="form-control" name="Tenant.State" id="Uf">
+                    <option value="">Selecione a UF</option>
+                    <option value="AC">Acre</option>
+                    <option value="AL">Alagoas</option>
+                    <option value="AP">Amapá</option>
+                    <option value="AM">Amazonas</option>
+                    <option value="BA">Bahia</option>
+                    <option value="CE">Ceará</option>
+                    <option value="DF">Distrito Federal</option>
+                    <option value="ES">Espírito Santo</option>
+                    <option value="GO">Goiás</option>
+                    <option value="MA">Maranhão</option>
+                    <option value="MT">Mato Grosso</option>
+                    <option value="MS">Mato Grosso do Sul</option>
+                    <option value="MG">Minas Gerais</option>
+                    <option value="PA">Pará</option>
+                    <option value="PB">Paraíba</option>
+                    <option value="PR">Paraná</option>
+                    <option value="PE">Pernambuco</option>
+                    <option value="PI">Piauí</option>
+                    <option value="RJ">Rio de Janeiro</option>
+                    <option value="RN">Rio Grande do Norte</option>
+                    <option value="RS">Rio Grande do Sul</option>
+                    <option value="RO">Rondônia</option>
+                    <option value="RR">Roraima</option>
+                    <option value="SC">Santa Catarina</option>
+                    <option value="SP">São Paulo</option>
+                    <option value="SE">Sergipe</option>
+                    <option value="TO">Tocantins</option>
+                </select>
             </div>
         </div>
 
-        <div class="multistep" id="steep2">
-            <p class="section-identification">• UNIDADE</p>
-            <div class="row" style="padding: 0 15px;">
-                <div class="form-group col-md-4">
-                    <label for="Organization.Name" class="input-label">Nome<span class="input-label-required"></span></label>
-                    <input type="text" class="form-control" name="Organization.Name" id="Organization.Name" placeholder="">
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="Organization.Level" class="input-label">Nível de Acesso <span class="input-label-required"></span></label>
-                    <select class="form-control" id="Level" name="Organization.Level">
-                        @foreach (var levelOrg in Enum.GetValues(typeof(ELevelOrganization)).Cast<ELevelOrganization>())
-                        {
-                            <option value="@(@levelOrg.GetDisplayNameLevel())">@levelOrg.GetDisplayNameLevel()</option>
-                        }
-                    </select>
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="Organization.CpfCnpj" class="input-label">CNPJ<span class="input-label-required"></span></label>
-                    <input type="text" class="form-control" name="Organization.CpfCnpj" id="Organization.CpfCnpj" placeholder="">
-                </div>
+        <p class="section-identification">Cadastro de Unidade Matriz</p>
+        <div class="row" style="padding: 0 15px;">
+            <div class="form-group col-md-4">
+                <label for="Name" class="input-label">Nome<span class="input-label-required"></span></label>
+                <input type="text" class="form-control" name="Unit.Name" id="Name" placeholder="">
             </div>
-            <hr />
+            <div class="form-group col-md-4">
+                <label for="Level" class="input-label">Nível de Acesso <span class="input-label-required"></span></label>
+                <select class="form-control" id="Level" name="Unit.Level">
+                    @foreach (var levelOrg in Enum.GetValues(typeof(ELevelOrganization)).Cast<ELevelOrganization>())
+                    {
+                        <option value="@(@levelOrg.GetDisplayNameLevel())">@levelOrg.GetDisplayNameLevel()</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="CpfCnpj" class="input-label">CNPJ<span class="input-label-required"></span></label>
+                <input type="text" class="form-control" name="Unit.CpfCnpj" id="CpfCnpj" placeholder="">
+            </div>
+        </div>
 
-            <div class="row" style="padding: 0 15px;">
-                <div class="col-md-12" style="display: flex; justify-content: flex-end; gap: 20px;">
-                    <button type="button" class="btn btn-light next float-right" onclick="nextStep('steep2', 'steep1')">Anterior</button>
-                    <button class="btn btn-success save float-right" type="submit">Finalizar Cadastro</button>
-                </div>
+        <hr />
+        <div class="row" style="padding: 0 15px;">
+            <div class="col-md-12" style="display: flex; justify-content: flex-end; gap: 20px;">
+                <button class="btn btn-success save float-right" type="submit">Finalizar Cadastro</button>
             </div>
         </div>
     </form>
@@ -164,5 +124,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-    <script src="~/js/Tenant/Create.js"></script>
+    <script src="~/js/Tenants/Create.js"></script>
 }

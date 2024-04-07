@@ -38,11 +38,30 @@
     "columns": [
         { "data": "Name" },
         { "data": "TypeName" },
-        { "data": "Branch" },
         {
             "data": null,
             "render": function (data, type, row, meta) {
-                return row.City + ' - ' + row.Uf;
+                var units = row.Units;
+                console.log("1", units);
+                var matrizUnits = units.filter(function (unit) {
+                    return unit.LevelName === "Matriz";
+                });
+
+                console.log("2", matrizUnits);
+
+                var matrizCpfCnpj = matrizUnits.map(function (unit) {
+                    return unit.CpfCnpj;
+                });
+
+                console.log("3", matrizCpfCnpj);
+
+                return matrizCpfCnpj;
+            }
+        },
+        {
+            "data": null,
+            "render": function (data, type, row, meta) {
+                return row.City + ' - ' + row.State;
             }
         },
         { "data": "" }

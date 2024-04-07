@@ -43,10 +43,10 @@ hr {
     color: #218838;
 }
 
-.form-control:focus {
-    border-color: #218838;
-    box-shadow: 0 0 0 0.2rem rgba(167, 225, 5, 0.25);
-}
+    .form-control:focus {
+        border-color: #218838;
+        box-shadow: 0 0 0 0.2rem rgba(167, 225, 5, 0.25);
+    }
 
 .input-label.required {
     color: #218838;
@@ -84,7 +84,7 @@ hr {
 }
 
 .progress-bar {
-    background-color: #218838!important;
+    background-color: #218838 !important;
 }
 
 .select2-container {
@@ -95,16 +95,17 @@ hr {
     width: 100% !important;
     vertical-align: middle;
 }
+
 .select2-selection__rendered {
     font-size: 0.9em;
     padding-left: 0 !important;
     color: #218838 !important;
 }
 
-    .select2-container--open:focus {
-        border-color: #218838;
-        box-shadow: 0 0 0 0.2rem rgba(167, 225, 5, 0.25);
-    }
+.select2-container--open:focus {
+    border-color: #218838;
+    box-shadow: 0 0 0 0.2rem rgba(167, 225, 5, 0.25);
+}
 
 .select2-selection--single {
     display: block;
@@ -128,7 +129,6 @@ hr {
 
 
 .select2-search--dropdown {
-
     font-size: 0.9em;
 }
 
@@ -138,7 +138,7 @@ hr {
     font-size: 0.9em;
 }
 
-.select2-results__option{
+.select2-results__option {
     font-size: 0.9em;
 }
 
@@ -150,7 +150,7 @@ hr {
 .select2-selection__arrow {
     height: 26px;
     position: absolute;
-    top: 8px!important;
+    top: 8px !important;
     right: 1px;
     width: 20px;
 }
@@ -162,7 +162,7 @@ hr {
 
 
 .modal-body p {
-    font-size: 0.8em!important;
+    font-size: 0.8em !important;
 }
 
 
@@ -206,10 +206,10 @@ ul {
     }
 
 .matriz {
-    color: #888; 
+    color: #888;
     pointer-events: none;
-    opacity: 0.5; 
-    cursor: not-allowed; 
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 
@@ -255,3 +255,74 @@ ul {
         margin-bottom: 30px;
     }
 }
+
+
+
+/* Estilos para a treeview */
+#treeview ul {
+    list-style-type: none;
+    padding-left: 20px;
+}
+
+    #treeview ul ul {
+        margin-left: 20px;
+    }
+
+#treeview li {
+    position: relative;
+}
+
+    #treeview li label {
+        cursor: pointer;
+        display: flex;
+        padding: 0;
+        font-size: 0.8em;
+        align-items: center;
+    }
+
+/* Estilos para os checkboxes */
+#treeview input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+}
+
+    #treeview input[type="checkbox"] + label:before {
+        content: '';
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        margin-right: 5px;
+        vertical-align: middle;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        background-color: #fff;
+    }
+
+    #treeview input[type="checkbox"]:checked + label:before {
+        content: '\2713';
+        color: #fff;
+        background-color: #218838;
+        font-size: 12px;
+        text-align: center;
+        line-height: 16px;
+        border: none;
+        border-radius: 3px;
+    }
+
+.input-group-addon.toggle-password {
+    background: none;
+    border: none;
+    padding: 5px;
+    margin-left: -30px;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+}
+
+    .input-group-addon.toggle-password i {
+        color: #999; 
+    }
+
+    .input-group-addon.toggle-password:hover i {
+        color: #555;
+    }

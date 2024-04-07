@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Lumos.Application;
 using Lumos.Application.Configurations;
-using Lumos.Application.Dtos.Management.Tenant;
+using Lumos.Application.Dtos.Management.Tenants;
 using Lumos.Data.Models.Management;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -11,7 +11,7 @@ using System.Reflection;
 
 namespace Lumos.Mvc
 {
-    public class LumosControllerBase<TEntity, TDto, TEntityId> : Controller where TEntity : class where TDto : class
+    public class LumosControllerBase<TEntity, TDto, TEntityId> : Controller where TEntity : class where TDto : class, new()
     {
         private readonly LumosSession _session;
         protected readonly IMapper _mapper;
@@ -27,7 +27,6 @@ namespace Lumos.Mvc
         protected void SetViewBagValues()
         {
             ViewBag.TenantId = _session.TenantId;
-            ViewBag.OrganizationId = _session.OrganizationId;
             ViewBag.UserName = _session.UserName?.ToString().ToUpper();
             ViewBag.IsHost = IsInHostMode();
         }
@@ -37,9 +36,34 @@ namespace Lumos.Mvc
             return _session.IsInHostMode();
         }
 
+
+        #region CRUD DEFAULT 
         [HttpGet]
         [ServiceFilter(typeof(JwtAuthorizationFilter))]
-        public async Task<IActionResult> GetAllAsync()
+        public virtual async Task<IActionResult> GetByIdAsync(TEntityId id)
+        {
+            try
+            {
+                var entity = await _appService.GetByIdAsync<TEntityId>(id);
+                if (entity == null)
+                {
+                    return NotFound();
+                }
+
+                var dto = _mapper.Map<TDto>(entity);
+
+                return Ok(dto);
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError(string.Empty, "Ocorreu um erro ao buscar os dados! Contate o suporte.");
+                return BadRequest(ModelState);
+            }
+        }
+
+        [HttpGet]
+        [ServiceFilter(typeof(JwtAuthorizationFilter))]
+        public virtual async Task<IActionResult> GetAllAsync()
         {
             try
             {
@@ -58,7 +82,7 @@ namespace Lumos.Mvc
 
         [HttpPost]
         [ServiceFilter(typeof(JwtAuthorizationFilter))]
-        public async Task<IActionResult> GetAllPaginated([FromBody] UserDataTableParams dataTableParams)
+        public virtual async Task<IActionResult> GetAllPaginated([FromBody] UserDataTableParams dataTableParams)
         {
             if (dataTableParams == null)
             {
@@ -66,9 +90,9 @@ namespace Lumos.Mvc
             }
 
             var tenantId = RequiresTenantOrganizationFilter<TDto>() ? _session.TenantId ?? null : null;
-            var listOrganizationsId = RequiresTenantOrganizationFilter<TDto>() ? _session.OrganizationId : null;
+            var listUnitsId = RequiresTenantOrganizationFilter<TDto>() ? _session.OrganizationId : null;
 
-            var result = await _appService.GetAllPaginatedAsync(dataTableParams, tenantId, listOrganizationsId, _session.IsHost);
+            var result = await _appService.GetAllPaginatedAsync(dataTableParams, tenantId, listUnitsId, _session.IsHost);
 
             var dtos = _mapper.Map<List<TDto>>(result.Entities);
 
@@ -170,7 +194,7 @@ namespace Lumos.Mvc
             }
         }
 
-        
+
         [HttpDelete]
         [ServiceFilter(typeof(JwtAuthorizationFilter))]
 
@@ -229,49 +253,42 @@ namespace Lumos.Mvc
             }
         }
 
-        #region PRIVATE METHODS 
+        #endregion
 
-        private bool IsDuplicate(TEntity entity, TDto dto)
+        #region VIEWS
+
+        public virtual IActionResult Index()
         {
-            // Obtém as propriedades da entidade e da DTO
-            PropertyInfo[] entityProperties = typeof(TEntity).GetProperties();
-            PropertyInfo[] dtoProperties = typeof(TDto).GetProperties();
-
-            // Lista de nomes das propriedades a serem excluídas da comparação
-            List<string> excludedProperties = new List<string> { "TenantId", "OrganizationId", "IsDeleted" };
-
-            foreach (var entityProperty in entityProperties)
-            {
-                if (!excludedProperties.Contains(entityProperty.Name))
-                {
-                    var entityValue = entityProperty.GetValue(entity);
-                    var dtoProperty = dtoProperties.FirstOrDefault(p => p.Name == entityProperty.Name);
-                    if (dtoProperty != null)
-                    {
-                        var dtoValue = dtoProperty.GetValue(dto);
-
-                        if (entityValue != null && dtoValue != null && entityValue.Equals(dtoValue))
-                        {
-                            return true;
-                        }
-                    }
-                }
-            }
-
-            return false;
+            SetViewBagValues();
+            return View();
         }
 
+        public virtual IActionResult Create()
+        {
+            SetViewBagValues();
+            return View(new TDto());
+        }
 
-        //private async Task<bool> EntityExistsAsync(Expression<Func<TEntity, bool>> predicate)
-        //{
-        //    var entities = await _appService.GetAllAsync();
-        //    return entities.Any(predicate.Compile());
-        //}
+        public async Task<ActionResult> EditModal(TEntityId id)
+        {
+            var entity = await _appService.GetByIdAsync<TEntityId>(id);
+            if (entity == null)
+            {
+                return NotFound();
+            }
+
+            var dto = _mapper.Map<TDto>(entity); 
+            return View("Create", dto);
+        }
+
+        #endregion
+
+        #region PRIVATE METHODS 
 
         private bool RequiresTenantOrganizationFilter<T>()
         {
             var classesWithoutFilter = new List<Type> {
-                typeof(TenantDto)
+                typeof(TenantsDto)
             };
 
             var result = !classesWithoutFilter.Contains(typeof(T));

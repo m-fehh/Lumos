@@ -17,14 +17,14 @@ namespace Lumos.Application.Services.Management
             {
                 return new Users
                 {
-                    Username = "HOST_ACCESS"
+                    FullName = "Admin Master"
                 };
             }
             else
             {
                 var user = (await _repository.GetAllAsync()).FirstOrDefault(u => u.Email == email);
 
-                if (user != null && VerifyPassword(password, user.PasswordHash))
+                if (user != null && VerifyPassword(password, user.Password))
                 {
                     return user;
                 }
@@ -45,7 +45,6 @@ namespace Lumos.Application.Services.Management
 
         public string HashPassword(string password)
         {
-            // Gera um hash seguro da senha
             return BCrypt.Net.BCrypt.HashPassword(password, BCrypt.Net.BCrypt.GenerateSalt());
         } 
 

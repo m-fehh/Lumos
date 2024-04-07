@@ -27,7 +27,7 @@ namespace Lumos.Application.Configurations
 
             AddScopedServices<IUsersAppService, UsersAppService>(services);
             AddScopedServices<ITenantsAppService, TenantsAppService>(services);
-            AddScopedServices<IOrganizationsAppService, OrganizationsAppService>(services);
+            AddScopedServices<IUnitsAppService, UnitsAppService>(services);
 
             #endregion
 
@@ -35,7 +35,7 @@ namespace Lumos.Application.Configurations
 
             services.AddScoped<LumosAppServiceBase<Users>, UsersAppService>(); 
             services.AddScoped<LumosAppServiceBase<Tenants>, TenantsAppService>(); 
-            services.AddScoped<LumosAppServiceBase<Organizations>, OrganizationsAppService>(); 
+            services.AddScoped<LumosAppServiceBase<Units>, UnitsAppService>(); 
             
             #endregion
         }

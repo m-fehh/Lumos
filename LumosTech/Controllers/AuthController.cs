@@ -33,28 +33,28 @@ namespace Lumos.Mvc.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(LoginVM model)
         {
-            var loggedInUser = await _userAppService.ValidateUserCredentials(model.UserOrEmail, model.Password);
+            var loggedInUser = await _userAppService.ValidateUserCredentials(model.Login, model.Password);
 
             if (loggedInUser != null)
             {
-                var token = _authService.GenerateJwtToken(model.UserOrEmail);
+                var token = _authService.GenerateJwtToken(model.Login);
+                var redirectTo = Url.Action("Index", "Home");
 
-                var response = new
+                if (loggedInUser.FullName == "Admin Master")
                 {
-                    token = token,
-                    redirectTo = Url.Action("Index", "Home")
-                };
-
-                if (loggedInUser.Username == "HOST_ACCESS")
-                {
-                    _session.SetHostMode(); 
+                    _session.SetHostMode();
                 }
                 else
                 {
-                    _session.SetUserAndTenant(loggedInUser.Id, loggedInUser.TenantId, loggedInUser.FullName, loggedInUser.Organizations.Select(x => x.Id).ToList());
+                    _session.SetUserAndTenant(
+                        loggedInUser.Id,
+                        loggedInUser.TenantId,
+                        loggedInUser.FullName,
+                        loggedInUser.Units.Select(x => x.Id).ToList()
+                    );
                 }
 
-                // Retorna a resposta JSON
+                var response = new { token, redirectTo };
                 return Ok(response);
             }
 
