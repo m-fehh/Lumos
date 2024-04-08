@@ -15,6 +15,7 @@
 <div class="modal-body">
     <form id="editUnit" style="margin: auto!important">
         <input type="hidden" name="TenantId" value="@Model.TenantId" />
+        <input type="hidden" name="Id" id="UnitId" value="@Model.Id" />
 
         <div class="row">
             <div class="form-group col-md-4">
@@ -32,12 +33,25 @@
                 <input type="text" class="form-control" name="Level" value="@Model.Level" disabled />
             </div>
         </div>
-        <hr style="margin: 10px 0!important"/>
+        <hr style="margin: 10px 0!important" />
 
         <div class="row">
             <div class="col-md-12" style="display: flex; justify-content: flex-end; gap: 20px;">
-                <button class="btn btn-success save float-right" type="submit">Atualizar Cadastro</button>
+                <button class="btn btn-success save float-right" type="submit" id="submitButton">Atualizar Cadastro</button>
             </div>
         </div>
     </form>
 </div>
+
+<script>
+    $("#editUnit").on('submit', function (e) {
+        e.preventDefault();
+
+        var id = $('#UnitId').val();
+        var formData = new FormData($('#editUnit')[0]);
+        formData.set('Level', 'Filial');
+        var url = `/Units/Update/${id}`;
+
+        AjaxUpdateDefault("#submitButton", url, formData, "#UnitEditModal");
+    })
+</script>

@@ -65,7 +65,7 @@
             "targets": -1,
             "orderable": false,
             "render": function (data, type, row, meta) {
-                var editButton = `<button type="button" id="edit" class="bntActionsTable" data-id="${row.Id}" ><i class="fa fa-edit" aria-hidden="true" title="Editar"></i></button>`;
+                var editButton = `<button type="button" id="edit" class="bntActionsTable" data-id="${row.Id}" data-toggle="modal" data-target="#UnitEditModal"><i class="fa fa-edit" aria-hidden="true" title="Editar"></i></button>`;
                 var deleteButton = `<button type="button" id="delete" class="bntActionsTable" data-id="${row.Id}" data-toggle="confirmation"><i class="fa fa-times-circle-o" aria-hidden="true" title="Deletar"></i></button>`;
 
                 if (row.LevelName === "Matriz") {
@@ -96,7 +96,6 @@
     "info": true
 });
 
-//data-toggle="modal" data-target="#UnitEditModal"
 
 $(document).on('click', '#delete', function () {
     var id = $(this).data('id');
@@ -129,9 +128,14 @@ $(document).on('click', "#edit", function () {
         dataType: 'html',
         processData: false,
         contentType: false,
-    //    success: function (content) {
-    //        $('#UnitEditModal div.modal-content').html(content);
-    //    }
+        success: function (content) {
+            $('#UnitEditModal div.modal-content').html(content);
+
+            var cnpjInput = $("#CpfCnpj");
+            VMasker(cnpjInput).maskPattern('99.999.999/9999-99');
+
+            $('#UnitEditModal').modal('show');
+        }
     });
 })
 

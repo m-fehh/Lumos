@@ -198,7 +198,7 @@ function AjaxInsertDefault(button, url, form) {
         }
     });
 }
-function AjaxUpdateDefault(button, url, form)
+function AjaxUpdateDefault(button, url, form, modalName)
 {
     var submitButton = $(button);
 
@@ -216,17 +216,15 @@ function AjaxUpdateDefault(button, url, form)
         processData: false,
         contentType: false,
         success: function (data) {
-            $('#toastSuccess .toast-body').text("Dados salvos com sucesso!");
-            $('#toastSuccess').toast('show');
-            setTimeout(function () {
-                window.location.href = data.redirectTo;
-            }, 3000);
+            $(modalName).modal('hide');
+
+            window.location.reload();
         },
         error: function (xhr, status, error) {
             submitButton.prop('disabled', false);
 
             var errorMessage = "Ocorreu um erro ao processar a solicitação.";
-
+            $(modalName).modal('hide');
             if (xhr.status === 400) {
                 var errorResponse = JSON.parse(xhr.responseText);
                 if (errorResponse) {
@@ -255,7 +253,6 @@ function AjaxUpdateDefault(button, url, form)
         }
     });
 }
-
 function InitializeSelect2(selector, placeholderText) {
     $(selector).select2({
         placeholder: placeholderText,

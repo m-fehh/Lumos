@@ -2,7 +2,6 @@
     InitializeSelect2('#TenantId', 'Selecione um Tenant');
 
     var tenantId = $("#sessionTenantId").val();
-    var tenantIdSelected;
     if (!tenantId) {
         AjaxGetAllDefault("Tenants", function (response) {
             if (response && response.length > 0) {

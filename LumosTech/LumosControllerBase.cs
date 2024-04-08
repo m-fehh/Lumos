@@ -194,10 +194,8 @@ namespace Lumos.Mvc
             }
         }
 
-
         [HttpDelete]
         [ServiceFilter(typeof(JwtAuthorizationFilter))]
-
         public virtual async Task<IActionResult> DeleteAsync(TEntityId id)
         {
             try
@@ -230,7 +228,6 @@ namespace Lumos.Mvc
 
         [HttpPut]
         [ServiceFilter(typeof(JwtAuthorizationFilter))]
-
         public virtual async Task<IActionResult> UpdateAsync(TEntityId id, TDto model)
         {
             try
@@ -241,7 +238,27 @@ namespace Lumos.Mvc
                     return NotFound();
                 }
 
-                entity = _mapper.Map(model, entity);
+                //var originalId = entity.GetType().GetProperty("Id").GetValue(entity);
+
+                //_mapper.Map(model, entity);
+
+                //entity.GetType().GetProperty("Id").SetValue(entity, originalId);
+
+                // Comparar propriedades do model com a entity
+                foreach (var property in typeof(TDto).GetProperties())
+                {
+                    if (property.Name != "Id")
+                    {
+                        var modelValue = property.GetValue(model);
+                        var entityValue = typeof(TEntity).GetProperty(property.Name)?.GetValue(entity);
+
+                        if (modelValue != null && entityValue != null && !modelValue.Equals(entityValue))
+                        {
+                            typeof(TEntity).GetProperty(property.Name)?.SetValue(entity, modelValue);
+                        }
+                    }
+                }
+
                 await _appService.UpdateAsync(entity);
 
                 return Ok();
@@ -277,8 +294,8 @@ namespace Lumos.Mvc
                 return NotFound();
             }
 
-            var dto = _mapper.Map<TDto>(entity); 
-            return View("Create", dto);
+            var dto = _mapper.Map<TDto>(entity);
+            return PartialView("_EditModal", dto);
         }
 
         #endregion
