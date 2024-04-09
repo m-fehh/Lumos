@@ -108,7 +108,7 @@ $(document).on('click', '#confirm-delete', function () {
     var id = $('#delete-modal').data('id');
     var url = `/Units/Delete/${id}`;
 
-    AjaxDeleteDefault("#deleteOrganization", url);
+    AjaxDeleteDefault("#delete", url);
 
     $('#delete-modal').modal('hide');
 });

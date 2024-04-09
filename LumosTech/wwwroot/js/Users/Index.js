@@ -40,6 +40,18 @@ $('#userTable').DataTable({
         { "data": "FullName" },
         { "data": "Cpf" },
         { "data": "Email" },
+        {
+            "data": "IsDeleted",
+            "orderable": false,
+            "render": function (data, type, row, meta) {
+                if (data) {
+                    return '<span class="badge bg-danger" style="font-size: 0.9em; color: white;">Inativo</span>';
+                } else {
+                    return '<span class="badge bg-success" style="font-size: 0.9em; color: white;">Ativo</span>';
+                }
+
+            }
+        },
         { "data": "" }
     ],
     "columnDefs": [
@@ -47,14 +59,23 @@ $('#userTable').DataTable({
             "targets": -1,
             "orderable": false,
             "render": function (data, type, row, meta) {
-                return [
+                var editButton = `<button type="button" id="edit" class="bntActionsTable" data-id="${row.Id}" data-toggle="modal" data-target="#UserEditModal"><i class="fa fa-edit" aria-hidden="true" title="Editar"></i></button>`;
+                var deleteButton = `<button type="button" id="delete" class="bntActionsTable" data-id="${row.Id}" data-toggle="confirmation"><i class="fa fa-times-circle-o" aria-hidden="true" title="Deletar"></i></button>`;
+
+                var buttonsContainer =
                     `
-                         <div class="bntContainer">
-                             <button type="button" id="editUser" class="bntActionsTable" data-id="${row.Id}"><i class="fa fa-edit" aria-hidden="true"></i></button>
-                             <button type="button" id="cancelUser" class="bntActionsTable" data-id="${row.Id}"><i class="fa fa-times-circle-o" aria-hidden="true"></i></button>
-                         </div>
-                        `
-                ].join('');
+                    <div class="btn-container">
+                        ${editButton}
+                        ${deleteButton}
+                    </div>
+                `;
+
+
+                if (row.IsDeleted) {
+                    buttonsContainer = buttonsContainer.replace(/<button/g, '<button class="bntActionsTable disabledButton"');
+                }
+
+                return buttonsContainer;
             }
         }
     ],
