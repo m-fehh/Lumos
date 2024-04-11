@@ -286,7 +286,7 @@ namespace Lumos.Mvc
             return View(new TDto());
         }
 
-        public async Task<ActionResult> EditModal(TEntityId id)
+        public virtual async Task<ActionResult> EditModal(TEntityId id)
         {
             var entity = await _appService.GetByIdAsync<TEntityId>(id);
             if (entity == null)

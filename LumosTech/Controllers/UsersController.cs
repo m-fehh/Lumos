@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Lumos.Application;
+using Lumos.Application.Configurations;
 using Lumos.Application.Dtos.Management;
 using Lumos.Application.Interfaces.Management;
 using Lumos.Data.Models.Management;
@@ -11,17 +12,27 @@ namespace Lumos.Mvc.Controllers
 {
     public class UsersController : LumosControllerBase<Users, UsersDto, long>
     {
-        private readonly ITenantsAppService _tenantAppServices;
         private readonly IUnitsAppService _unitsAppServices;
         private readonly IUsersAppService _usersAppServices;
 
-        public UsersController(LumosSession session, IMapper mapper, ITenantsAppService tenantAppServices, IUnitsAppService UnitsAppService, IUsersAppService usersAppServices, LumosAppServiceBase<Users> userService) : base(session, mapper, userService)
+        public UsersController(LumosSession session, IMapper mapper, IUnitsAppService UnitsAppService, IUsersAppService usersAppServices, LumosAppServiceBase<Users> userService) : base(session, mapper, userService)
         {
-            _tenantAppServices = tenantAppServices;
             _unitsAppServices = UnitsAppService;
             _usersAppServices = usersAppServices;
         }
 
+        public override async Task<ActionResult> EditModal(long id)
+        {
+            var entity = await _appService.GetByIdAsync(id);
+            if (entity == null)
+            {
+                return NotFound();
+            }
+
+            var dto = _mapper.Map<UsersDto>(entity);
+            dto.DecryptPassword();
+            return PartialView("_EditModal", dto);
+        }
 
         [HttpPost]
         [ServiceFilter(typeof(JwtAuthorizationFilter))]
@@ -57,7 +68,9 @@ namespace Lumos.Mvc.Controllers
                     }
                 }
 
-                entity.Password = _usersAppServices.HashPassword(entity.Password);
+                var encryptionService = new AesEncryptionService();
+
+                entity.Password = encryptionService.Encrypt(entity.Password);
                 await _usersAppServices.CreateAsync(entity);
 
                 var response = new

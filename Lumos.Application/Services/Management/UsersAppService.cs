@@ -1,7 +1,10 @@
-﻿using Lumos.Application.Consts;
+﻿using Lumos.Application.Configurations;
+using Lumos.Application.Consts;
 using Lumos.Application.Interfaces.Management;
 using Lumos.Application.Repositories;
 using Lumos.Data.Models.Management;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Lumos.Application.Services.Management
 {
@@ -24,30 +27,15 @@ namespace Lumos.Application.Services.Management
             {
                 var user = (await _repository.GetAllAsync()).FirstOrDefault(u => u.Email == email);
 
-                if (user != null && VerifyPassword(password, user.Password))
+                var encryptionService = new AesEncryptionService();
+
+                if (user != null && encryptionService.Decrypt(password) == user.Password)
                 {
                     return user;
                 }
             }
-            // Retorna null se as credenciais forem inválidas
+
             return null;
         }
-
-
-
-
-        #region METHODS PASSWORD
-        
-        public bool VerifyPassword(string password, string hashedPassword)
-        {
-            return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
-        }
-
-        public string HashPassword(string password)
-        {
-            return BCrypt.Net.BCrypt.HashPassword(password, BCrypt.Net.BCrypt.GenerateSalt());
-        } 
-
-        #endregion
     }
 }

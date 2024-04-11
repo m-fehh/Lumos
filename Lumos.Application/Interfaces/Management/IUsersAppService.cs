@@ -8,7 +8,6 @@ namespace Lumos.Application.Interfaces.Management
     {
         Task<PaginationResult<Users>> GetAllPaginatedAsync(UserDataTableParams dataTableParams, long? tenantId, List<long> organizationId, bool isHost);
         Task<Users?> ValidateUserCredentials(string email, string password);
-        string HashPassword(string password);
         Task CreateAsync(Users entity);
     }
 }

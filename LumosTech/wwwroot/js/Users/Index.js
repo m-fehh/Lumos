@@ -84,3 +84,44 @@ $('#userTable').DataTable({
     "ordering": true,
     "info": true
 });
+
+$(document).on('click', '#delete', function () {
+    var id = $(this).data('id');
+
+    $('#delete-modal').data('id', id);
+    $('#delete-modal').modal('show');
+});
+
+$(document).on('click', '#confirm-delete', function () {
+    var id = $('#delete-modal').data('id');
+    var url = `/Users/Delete/${id}`;
+
+    AjaxDeleteDefault("#delete", url);
+
+    $('#delete-modal').modal('hide');
+});
+
+$(document).on('click', "#edit", function () {
+    var id = $(this).data('id');
+
+    var url = `Users/EditModal?id=${id}`;
+
+    $.ajax({
+        url: url,
+        method: 'POST',
+        headers: {
+            'Authorization': GetBearerToken(),
+        },
+        dataType: 'html',
+        processData: false,
+        contentType: false,
+        success: function (content) {
+            $('#UserEditModal div.modal-content').html(content);
+
+            var cpf = $("#Cpf");
+            VMasker(cpf).maskPattern('99.999.999/9999-99');
+
+            $('#UserEditModal').modal('show');
+        }
+    });
+})

@@ -30,7 +30,7 @@
 
         AjaxGetByIdDefault("Tenants", tenantId, function (response) {
             if (response) {
-                UpdateUnitsTreeview(response.units);
+                loadUnits(response.units);
 
                 $("#sessionTenantId").val(tenantId);
             }
@@ -43,61 +43,35 @@
 
         units = $("#tenantSelect option:selected").data('units');
 
-        UpdateUnitsTreeview(units);
+        loadUnits(units);
 
         $("#sessionTenantId").val(selectedTenantId);
         $("#tenantModal").modal("hide");
     });
 
 
-    function UpdateUnitsTreeview(units) {
-        $("#treeview ul").empty();
-
-        var matrizUl = $("<ul>");
-        var filialUl = null;
+    var loadUnits = function (units) {
+        var $unitsSelect = $("#SelectedUnits");
+        $unitsSelect.empty();
 
         units.forEach(function (unit) {
-            var li = $("<li>");
-            var input = $("<input>", {
-                type: "checkbox",
-                id: "unit" + unit.id,
-                disabled: unit.levelName === "Matriz", 
-                checked: unit.levelName === "Matriz" 
-            });
-            var label = $("<label>", {
-                for: "unit" + unit.id
+            var option = $("<option>", {
+                value: unit.id
             }).text(unit.name);
-
-            li.append(input).append(label);
-
-            // Verifica se a unidade é do tipo "Filial" para adicionar na lista dentro da "Matriz"
-            if (unit.levelName === "Filial") {
-                if (!filialUl) {
-                    filialUl = $("<ul>");
-                    matrizUl.append(filialUl);
-                }
-                filialUl.append(li);
-            } else {
-                matrizUl.append(li);
-                if (filialUl) {
-                    filialUl = null; // Fecha a lista de filiais quando a "Matriz" termina
-                }
-            }
+            $unitsSelect.append(option);
         });
 
-        $("#treeview").append(matrizUl);
-    }
+        InitializeSelect2("#SelectedUnits", "Selecione as Unidades");
+    };
 
     $('#registerUser').on('submit', function (e) {
         e.preventDefault();
 
-        var checkedUnits = [];
-        $("#treeview input[type='checkbox']:checked").each(function () {
-            checkedUnits.push($(this).attr("id").replace("unit", ""));
-        });
+        var selectedUnits = $("#SelectedUnits").val();
+
 
         var formData = new FormData($('#registerUser')[0]);
-        formData.append('SerializedUnitsList', JSON.stringify(checkedUnits));
+        formData.append('SerializedUnitsList', JSON.stringify(selectedUnits));
 
         var url = '/Users/Insert';
 

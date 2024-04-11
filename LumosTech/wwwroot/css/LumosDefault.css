@@ -36,6 +36,7 @@ hr {
     color: #6c6d6f;
     font-size: 0.8em;
     font-weight: bold;
+    margin-left: 3px;
 }
 
 .form-control {
@@ -102,11 +103,17 @@ hr {
     color: #218838 !important;
 }
 
+.select2-selection--multiple .select2-selection__choice {
+    margin-top: 3px!important;
+}
+
+.select2-selection--multiple::after:focus,
 .select2-container--open:focus {
     border-color: #218838;
     box-shadow: 0 0 0 0.2rem rgba(167, 225, 5, 0.25);
 }
 
+.select2-selection--multiple,
 .select2-selection--single {
     display: block;
     width: 100%;
@@ -326,3 +333,4 @@ ul {
     .input-group-addon.toggle-password:hover i {
         color: #555;
     }
+
