@@ -2,11 +2,13 @@
 @using System.Reflection;
 @using System.ComponentModel.DataAnnotations;
 @using Newtonsoft.Json;
+@using Lumos.Mvc.Extensions;
+@model Lumos.Application.Dtos.Management.UsersDto;
+
 @{
     ViewData["Title"] = "Criar Usuário";
 }
 
-@model Lumos.Application.Dtos.Management.UsersDto;
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 
@@ -38,30 +40,33 @@
 
         <div class="row" style="padding: 0 15px;">
             <div class="form-group col-md-6">
-                <label for="Email" class="input-label">E-mail<span class="input-label-required"></span></label>
-                <input type="text" class="form-control" name="Email" id="Email" placeholder="" autocomplete="email">
+                @using (Html.MControlGroup(m => m.Email))
+                {
+                    @Html.MTextBoxFor(m => m.Email)
+                }
             </div>
 
             <div class="form-group col-md-6">
-                <label for="FullName" class="input-label">Nome Completo<span class="input-label-required"></span></label>
-                <input type="text" class="form-control" name="FullName" id="FullName" placeholder="" autocomplete="fullName">
+                @using (Html.MControlGroup(m => m.FullName))
+                {
+                    @Html.MTextBoxFor(m => m.FullName)
+                }
             </div>
         </div>
 
         <div class="row" style="padding: 0 15px;">
             <div class="form-group col-md-6">
-                <label for="Password" class="input-label">Senha<span class="input-label-required"></span></label>
-                <div class="input-group">
-                    <input type="password" class="form-control" name="Password" id="Password" placeholder="" autocomplete="password">
-                    <span class="input-group-addon toggle-password" style="cursor: pointer;">
-                        <i class="fa fa-eye"></i>
-                    </span>
-                </div>
+                @using (Html.MControlGroup(m => m.Password))
+                {
+                    @Html.MTextBoxFor(m => m.Password)
+                }
             </div>
 
             <div class="form-group col-md-6">
-                <label for="Cpf" class="input-label">CPF<span class="input-label-required"></span></label>
-                <input type="text" class="form-control" name="Cpf" id="Cpf" placeholder="">
+                @using (Html.MControlGroup(m => m.Cpf))
+                {
+                    @Html.MTextBoxFor(m => m.Cpf)
+                }
             </div>
         </div>
 

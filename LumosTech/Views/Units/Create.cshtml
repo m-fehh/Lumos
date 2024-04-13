@@ -1,11 +1,11 @@
 ﻿@using Lumos.Data.Enums;
 @using Lumos.Mvc.Extensions;
+@model Lumos.Application.Dtos.Management.UnitsDto
 
 @{
     ViewData["Title"] = "Cadastro Unidade";
 }
 
-@model Lumos.Application.Dtos.Management.UnitsDto
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 
@@ -36,7 +36,7 @@
         <p class="section-identification">Cadastro de Unidade</p>
 
         <div class="row" style="padding: 0 15px;">
-            <div class="col-md-5">
+            <div class="col-md-4">
                 @using (Html.MControlGroup(m => m.Name))
                 {
                     @Html.MTextBoxFor(m => m.Name)
@@ -50,15 +50,10 @@
                 }
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-4">
                 @using (Html.MControlGroup(m => m.Level))
                 {
-                    @Html.MComboFor(m => m.Level, new List<SelectListItem>(){
-                        new SelectListItem(),
-                        new SelectListItem{Text = ELevelOrganization.Filial.ToString(), Value = ELevelOrganization.Filial.ToString()},
-                        new SelectListItem{Text = ELevelOrganization.Matriz.ToString(), Value = ELevelOrganization.Matriz.ToString()},
-                        new SelectListItem{Text = ELevelOrganization.PF.ToString(), Value = ELevelOrganization.PF.ToString()}
-                    })
+                    @Html.MComboFor(m => m.Level, Html.GetEnumSelectList<ELevelOrganization>())
                 }
             </div>
         </div>

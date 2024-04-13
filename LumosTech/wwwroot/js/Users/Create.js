@@ -56,8 +56,10 @@
 
         units.forEach(function (unit) {
             var option = $("<option>", {
-                value: unit.id
+                value: unit.id,
+                selected: unit.levelName === "Matriz"
             }).text(unit.name);
+
             $unitsSelect.append(option);
         });
 
@@ -68,7 +70,6 @@
         e.preventDefault();
 
         var selectedUnits = $("#SelectedUnits").val();
-
 
         var formData = new FormData($('#registerUser')[0]);
         formData.append('SerializedUnitsList', JSON.stringify(selectedUnits));

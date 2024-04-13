@@ -40,6 +40,7 @@ $('#userTable').DataTable({
         { "data": "FullName" },
         { "data": "Cpf" },
         { "data": "Email" },
+        { "data": "Tenant.Name" },
         {
             "data": "IsDeleted",
             "orderable": false,

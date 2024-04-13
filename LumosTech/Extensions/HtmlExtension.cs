@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Extensions;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
@@ -198,7 +199,6 @@ namespace Lumos.Mvc.Extensions
             var attributes = new Dictionary<string, object>();
 
             attributes.Add("class", classe);
-
 
             if (htmlAttributes != null)
             {
@@ -615,13 +615,21 @@ namespace Lumos.Mvc.Extensions
             }
         }
 
+        public static List<SelectListItem> GetEnumSelectList<TEnum>() where TEnum : Enum
+        {
+            return Enum.GetValues(typeof(TEnum))
+                .Cast<TEnum>()
+                .Select(e => new SelectListItem { Text = e.GetDisplayName(), Value = e.ToString() })
+                .ToList();
+        }
+
 
         /// <summary>
         /// Helper para combobox com valores estáticos
         /// </summary>
         public static IHtmlContent MComboFor<TModel, TValue>(this IHtmlHelper<TModel> helper, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectListItem> values, bool multiple = false, string optionLabel = null, IDictionary<string, object> htmlAttributes = null)
         {
-            StringBuilder classe = new StringBuilder("form-control col-md-12 voeit-combobox");
+            StringBuilder classe = new StringBuilder("form-control");
 
             var attributes = new Dictionary<string, object>();
 
@@ -706,7 +714,7 @@ namespace Lumos.Mvc.Extensions
         public static IHtmlContent MMultiSelect(this IHtmlHelper helper, string name, string dataSourceUrl, bool startWithSelectedOnly = false)
         {
             var id = $"{name}{Guid.NewGuid()}";
-            return helper.Hidden(name, new { @id = id, @Name = name, @class = "evup-multiSelect", data_Source_Url = dataSourceUrl, data_start_selected_only = startWithSelectedOnly });
+            return helper.Hidden(name, new { @id = id, @Name = name, @class = "lumos-multiSelect", data_Source_Url = dataSourceUrl, data_start_selected_only = startWithSelectedOnly });
         }
 
         /// <summary>
@@ -717,8 +725,9 @@ namespace Lumos.Mvc.Extensions
             var name = ((expression.Body as MemberExpression).Member as PropertyInfo).Name;
 
             var id = $"{name}{Guid.NewGuid()}";
-            return helper.HiddenFor(expression, new { @id = id, @Name = name, @class = "evup-multiSelect", data_Source_Url = dataSourceUrl, data_start_selected_only = startWithSelectedOnly });
+            return helper.HiddenFor(expression, new { @id = id, @Name = name, @class = "lumos-multiSelect", data_Source_Url = dataSourceUrl, data_start_selected_only = startWithSelectedOnly });
         }
+
 
         /// <summary>
         /// Helper para criar uma div-container de controles de aplicações do tipo portal

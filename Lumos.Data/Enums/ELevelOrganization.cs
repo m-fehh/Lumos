@@ -16,7 +16,7 @@ namespace Lumos.Data.Enums
 
     public static class ELevelOrganizationExtensions
     {
-        public static string GetDisplayNameLevel(this ELevelOrganization level)
+        public static string GetDisplayName(this ELevelOrganization level)
         {
             var displayAttribute = level.GetType()
                 .GetMember(level.ToString())

@@ -5,13 +5,13 @@ namespace Lumos.Application.Enums
     public enum EAccessLevel
     {
         [Display(Name = "Admin")]
-        Admin = 0,          // Administrador com acesso completo
+        Admin = 0,         
 
         [Display(Name = "Gerente")]
-        Manager = 1,        // Gerente com permissões intermediárias
+        Manager = 1,       
 
         [Display(Name = "Analista")]
-        Analyst = 2       // Analista com permissões específicas
+        Analyst = 2      
     }
 
     public static class EAccessLevelExtensions

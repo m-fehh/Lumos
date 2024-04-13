@@ -47,14 +47,24 @@
                 <input type="text" class="form-control" name="Cpf" id="Cpf" placeholder="" value="@Model.Cpf">
             </div>
         </div>
-        <div class="row" style="padding: 0 15px;">
+        <div class="row">
             <div class="form-group col-md-12">
                 <label for="SelectedUnits" class="input-label">Selecionar Unidades<span class="input-label-required"></span></label>
                 <select id="SelectedUnits" class="form-control" multiple required></select>
             </div>
         </div>
+        <hr style="margin: 10px 0!important" />
+
+        <div class="row">
+            <div class="col-md-12" style="display: flex; justify-content: flex-end; gap: 20px;">
+                <button class="btn btn-success save float-right" type="submit" id="submitButton">Atualizar Cadastro</button>
+            </div>
+        </div>
     </form>
 </div>
+
+<script src="~/js/site.js" asp-append-version="true"></script>
+
 
 <script>
     $('.toggle-password').click(function () {
@@ -65,30 +75,52 @@
     });
 
     $('#UserEditModal').on('shown.bs.modal', function () {
-        var units = @Html.Raw(JsonConvert.SerializeObject(Model.Units, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
+        var unitsJson = '@Html.Raw(JsonConvert.SerializeObject(Model.Units, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }))';
+        var units = JSON.parse(unitsJson);
 
-        console.log(units);
+        console.log(" - ", units);
+        AjaxGetAllDefault("Units", function (data) {
+            if (data && data.length > 0) {
+                console.log("data: ", data);
+                var allUnits = data.filter(function (unit) {
+                    return unit.tenantId === parseInt($('input[name="TenantId"]').val());
+                });
 
-        var $selectedUnits = $("#SelectedUnits");
-        $selectedUnits.empty();
 
-        units.forEach(function (unit) {
-            var option = $("<option>", {
-                value: unit.Id,
-                text: unit.Name,
-                selected: true
-            });
-            $selectedUnits.append(option);
+                console.log("allUnits: ", allUnits);
+
+                var $selectedUnits = $("#SelectedUnits");
+                $selectedUnits.empty();
+
+                allUnits.forEach(function (unit) {
+                    var isSelected = units.some(function (selectedUnit) {
+                        console.log("validado: " + selectedUnit.Name + " - " + selectedUnit.Id === unit.id);
+                        return selectedUnit.Id === unit.id;
+                    });
+
+
+                    var option = $("<option>", {
+                        value: unit.id,
+                        text: unit.name,
+                        selected: isSelected
+                    });
+                    $selectedUnits.append(option);
+                });
+
+                InitializeSelect2("#SelectedUnits", "Selecione as Unidades");
+            }
         });
-
-        InitializeSelect2("#SelectedUnits", "Selecione as Unidades");
     });
+
 
     $("#editUser").on('submit', function (e) {
         e.preventDefault();
+        var selectedUnits = $("#SelectedUnits").val();
 
         var id = $('#UnitId').val();
         var formData = new FormData($('#editUser')[0]);
+        formData.append('SerializedUnitsList', JSON.stringify(selectedUnits));
+
 
         var url = `/Users/Update/${id}`;
 
