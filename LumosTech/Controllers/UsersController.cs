@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Lumos.Application;
+using Lumos.Application.Configurations;
 using Lumos.Application.Dtos.Management;
 using Lumos.Application.Interfaces.Management;
 using Lumos.Data.Models.Management;
@@ -11,17 +12,29 @@ namespace Lumos.Mvc.Controllers
 {
     public class UsersController : LumosControllerBase<Users, UsersDto, long>
     {
-        private readonly ITenantsAppService _tenantAppServices;
         private readonly IUnitsAppService _unitsAppServices;
         private readonly IUsersAppService _usersAppServices;
 
-        public UsersController(LumosSession session, IMapper mapper, ITenantsAppService tenantAppServices, IUnitsAppService UnitsAppService, IUsersAppService usersAppServices, LumosAppServiceBase<Users> userService) : base(session, mapper, userService)
+        public UsersController(LumosSession session, IMapper mapper, IUnitsAppService UnitsAppService, IUsersAppService usersAppServices, LumosAppServiceBase<Users> userService) : base(session, mapper, userService)
         {
-            _tenantAppServices = tenantAppServices;
             _unitsAppServices = UnitsAppService;
             _usersAppServices = usersAppServices;
         }
 
+        #region OVERRIDE USERS
+
+        public override async Task<ActionResult> EditModal(long id)
+        {
+            var entity = await _appService.GetByIdAsync(id);
+            if (entity == null)
+            {
+                return NotFound();
+            }
+
+            var dto = _mapper.Map<UsersDto>(entity);
+            dto.DecryptPassword();
+            return PartialView("_EditModal", dto);
+        }
 
         [HttpPost]
         [ServiceFilter(typeof(JwtAuthorizationFilter))]
@@ -57,7 +70,9 @@ namespace Lumos.Mvc.Controllers
                     }
                 }
 
-                entity.Password = _usersAppServices.HashPassword(entity.Password);
+                var encryptionService = new AesEncryptionService();
+
+                entity.Password = encryptionService.Encrypt(entity.Password);
                 await _usersAppServices.CreateAsync(entity);
 
                 var response = new
@@ -73,5 +88,70 @@ namespace Lumos.Mvc.Controllers
                 return BadRequest(ModelState);
             }
         }
+
+        [HttpPut]
+        [ServiceFilter(typeof(JwtAuthorizationFilter))]
+        public override async Task<IActionResult> UpdateAsync(long id, UsersDto model)
+        {
+            try
+            {
+                var entity = await _appService.GetByIdAsync(id);
+                if (entity == null)
+                {
+                    return NotFound();
+                }
+
+
+                var entityProperties = typeof(Users).GetProperties();
+                var modelProperties = typeof(UsersDto).GetProperties();
+
+                foreach (var modelProperty in modelProperties)
+                {
+                    if (modelProperty.Name != "Id")
+                    {
+                        var modelValue = modelProperty.GetValue(model);
+                        var entityProperty = entityProperties.FirstOrDefault(p => p.Name == modelProperty.Name);
+
+                        if (entityProperty != null)
+                        {
+                            var entityValue = entityProperty.GetValue(entity);
+
+                            if (modelValue != null && entityValue != null && !modelValue.Equals(entityValue))
+                            {
+                                entityProperty.SetValue(entity, modelValue);
+                            }
+                        }
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(model.SerializedUnitsList))
+                {
+                    var unitsId = JsonConvert.DeserializeObject<List<long>>(model.SerializedUnitsList);
+                    if (unitsId?.Count > 0)
+                    {
+                        var units = await _unitsAppServices.GetByListIdsAsync(unitsId);
+                        if (units?.Any() == true)
+                        {
+                            entity.Units.Clear();
+                            entity.Units.AddRange(units);
+                        }
+                    }
+                }
+
+                var encryptionService = new AesEncryptionService();
+
+                entity.Password = encryptionService.Encrypt(entity.Password);
+
+                await _usersAppServices.UpdateAsync(entity);
+
+                return Ok();
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError(string.Empty, "Ocorreu um erro ao excluir os dados! Contate o suporte.");
+                return BadRequest(ModelState);
+            }
+        } 
+        #endregion
     }
 }

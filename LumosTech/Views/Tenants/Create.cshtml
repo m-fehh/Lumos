@@ -1,9 +1,10 @@
 ﻿@using Lumos.Data.Enums;
+@using Lumos.Mvc.Extensions;
+@model Lumos.Application.Dtos.Management.Tenants.CreateTenantDto
 @{
     ViewData["Title"] = "Criar Tenant";
 }
 
-@model Lumos.Application.Dtos.Management.Tenants.CreateTenantDto
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 
@@ -25,94 +26,73 @@
 <div class="container-fluid">
     <form id="registerTenant">
         <p class="section-identification">Cadastro de Inquilino</p>
-        <div class="row" style="padding: 0 15px;">
+
+        <div class="row">
             <div class="form-group col-md-5">
-                <label for="Name" class="input-label">Nome<span class="input-label-required"></span></label>
-                <input type="text" class="form-control" name="Tenant.Name" id="Name" placeholder="">
+                @using (Html.MControlGroup(m => m.Tenant.Name))
+                {
+                    @Html.MTextBoxFor(m => m.Tenant.Name)
+                }
             </div>
 
             <div class="form-group col-md-5">
-                <label for="Email" class="input-label">E-mail<span class="input-label-required"></span></label>
-                <input type="email" class="form-control" name="Tenant.Email" id="Email" placeholder="">
+                @using (Html.MControlGroup(m => m.Tenant.Email))
+                {
+                    @Html.MTextBoxFor(m => m.Tenant.Email)
+                }
             </div>
 
             <div class="form-group col-md-2">
-                <label for="Type" class="input-label">Nível de Acesso <span class="input-label-required"></span></label>
-                <select class="form-control" id="Type" name="Tenant.Type">
-                    @foreach (var type in Enum.GetValues(typeof(ETenantType)).Cast<ETenantType>())
-                    {
-                        <option value="@(@type.GetDisplayName())">@type.GetDisplayName()</option>
-                    }
-                </select>
+                @using (Html.MControlGroup(m => m.Tenant.Type))
+                {
+                    @Html.MComboFor(m => m.Tenant.Type, Html.GetEnumSelectList<ETenantType>())
+                }
             </div>
         </div>
-        <div class="row" style="padding: 0 15px;">
+        <div class="row">
             <div class="form-group col-md-8">
-                <label for="City" class="input-label">Cidade<span class="input-label-required"></span></label>
-                <input type="text" class="form-control" name="Tenant.City" id="City" placeholder="">
+                @using (Html.MControlGroup(m => m.Tenant.City))
+                {
+                    @Html.MTextBoxFor(m => m.Tenant.City)
+                }
             </div>
 
             <div class="form-group col-md-4">
-                <label for="State" class="input-label">Estado<span class="input-label-required"></span></label>
-                <select class="form-control" name="Tenant.State" id="Uf">
-                    <option value="">Selecione a UF</option>
-                    <option value="AC">Acre</option>
-                    <option value="AL">Alagoas</option>
-                    <option value="AP">Amapá</option>
-                    <option value="AM">Amazonas</option>
-                    <option value="BA">Bahia</option>
-                    <option value="CE">Ceará</option>
-                    <option value="DF">Distrito Federal</option>
-                    <option value="ES">Espírito Santo</option>
-                    <option value="GO">Goiás</option>
-                    <option value="MA">Maranhão</option>
-                    <option value="MT">Mato Grosso</option>
-                    <option value="MS">Mato Grosso do Sul</option>
-                    <option value="MG">Minas Gerais</option>
-                    <option value="PA">Pará</option>
-                    <option value="PB">Paraíba</option>
-                    <option value="PR">Paraná</option>
-                    <option value="PE">Pernambuco</option>
-                    <option value="PI">Piauí</option>
-                    <option value="RJ">Rio de Janeiro</option>
-                    <option value="RN">Rio Grande do Norte</option>
-                    <option value="RS">Rio Grande do Sul</option>
-                    <option value="RO">Rondônia</option>
-                    <option value="RR">Roraima</option>
-                    <option value="SC">Santa Catarina</option>
-                    <option value="SP">São Paulo</option>
-                    <option value="SE">Sergipe</option>
-                    <option value="TO">Tocantins</option>
-                </select>
+                @using (Html.MControlGroup(m => m.Tenant.State))
+                {
+                    @Html.MComboFor(m => m.Tenant.State, Html.GetEnumSelectList<EStates>())
+                }
             </div>
         </div>
 
         <p class="section-identification">Cadastro de Unidade Matriz</p>
-        <div class="row" style="padding: 0 15px;">
+
+        <div class="row">
             <div class="form-group col-md-4">
-                <label for="Name" class="input-label">Nome<span class="input-label-required"></span></label>
-                <input type="text" class="form-control" name="Unit.Name" id="Name" placeholder="">
+                @using (Html.MControlGroup(m => m.Unit.Name))
+                {
+                    @Html.MTextBoxFor(m => m.Unit.Name)
+                }
             </div>
+
             <div class="form-group col-md-4">
-                <label for="Level" class="input-label">Nível de Acesso <span class="input-label-required"></span></label>
-                <select class="form-control" id="Level" name="Unit.Level">
-                    @foreach (var levelOrg in Enum.GetValues(typeof(ELevelOrganization)).Cast<ELevelOrganization>())
-                    {
-                        <option value="@(@levelOrg.GetDisplayNameLevel())">@levelOrg.GetDisplayNameLevel()</option>
-                    }
-                </select>
+                @using (Html.MControlGroup(m => m.Unit.Level))
+                {
+                    @Html.MComboFor(m => m.Unit.Level, Html.GetEnumSelectList<ELevelOrganization>())
+                }
             </div>
+
             <div class="form-group col-md-4">
-                <label for="CpfCnpj" class="input-label">CNPJ<span class="input-label-required"></span></label>
-                <input type="text" class="form-control" name="Unit.CpfCnpj" id="CpfCnpj" placeholder="">
+                @using (Html.MControlGroup(m => m.Unit.CpfCnpj))
+                {
+                    @Html.MTextBoxFor(m => m.Unit.CpfCnpj)
+                }
             </div>
         </div>
 
         <hr />
-        <div class="row" style="padding: 0 15px;">
-            <div class="col-md-12" style="display: flex; justify-content: flex-end; gap: 20px;">
-                <button class="btn btn-success save float-right" type="submit">Finalizar Cadastro</button>
-            </div>
+        <div class="row">
+            @Html.MSubmitButton("Finalizar Cadastro", "btn btn-success save", isFloatRight: true)
         </div>
     </form>
 </div>

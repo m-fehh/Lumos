@@ -1,9 +1,11 @@
 ﻿@using Lumos.Data.Enums;
+@using Lumos.Mvc.Extensions;
+@model Lumos.Application.Dtos.Management.UnitsDto
+
 @{
     ViewData["Title"] = "Cadastro Unidade";
 }
 
-@model Lumos.Application.Dtos.Management.UnitsDto
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 
@@ -33,33 +35,32 @@
 
         <p class="section-identification">Cadastro de Unidade</p>
 
-        <div class="row" style="padding: 0 15px;">
-            <div class="form-group col-md-5">
-                <label for="Name" class="input-label">Nome<span class="input-label-required"></span></label>
-                <input type="text" class="form-control" name="Name" id="Name" placeholder="">
+        <div class="row">
+            <div class="col-md-4">
+                @using (Html.MControlGroup(m => m.Name))
+                {
+                    @Html.MTextBoxFor(m => m.Name)
+                }
             </div>
 
-            <div class="form-group col-md-5">
-                <label for="CpfCnpj" class="input-label">CNPJ<span class="input-label-required"></span></label>
-                <input type="text" class="form-control" name="CpfCnpj" id="CpfCnpj" placeholder="">
+            <div class="col-md-4">
+                @using (Html.MControlGroup(m => m.CpfCnpj))
+                {
+                    @Html.MTextBoxFor(m => m.CpfCnpj)
+                }
             </div>
 
-            <div class="form-group col-md-2">
-                <label for="Level" class="input-label">Nível de Acesso <span class="input-label-required"></span></label>
-                <select class="form-control" id="Level" name="Level">
-                    @foreach (var levelOrg in Enum.GetValues(typeof(ELevelOrganization)).Cast<ELevelOrganization>())
-                    {
-                        <option value="@(@levelOrg.GetDisplayNameLevel())">@levelOrg.GetDisplayNameLevel()</option>
-                    }
-                </select>
+            <div class="col-md-4">
+                @using (Html.MControlGroup(m => m.Level))
+                {
+                    @Html.MComboFor(m => m.Level, Html.GetEnumSelectList<ELevelOrganization>())
+                }
             </div>
         </div>
         <hr />
 
-        <div class="row" style="padding: 0 15px;">
-            <div class="col-md-12" style="display: flex; justify-content: flex-end; gap: 20px;">
-                <button class="btn btn-success save float-right" type="submit">Finalizar Cadastro</button>
-            </div>
+        <div class="row">
+            @Html.MSubmitButton("Finalizar Cadastro", "btn btn-success save", isFloatRight: true)
         </div>
     </form>
 </div>

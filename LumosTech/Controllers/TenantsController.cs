@@ -17,6 +17,13 @@ namespace Lumos.Mvc.Controllers
             _UnitsAppService = UnitsAppService;
         }
 
+
+        public override IActionResult Create()
+        {
+            SetViewBagValues();
+            return View(new CreateTenantDto());
+        }
+
         [HttpPost]
         [ServiceFilter(typeof(JwtAuthorizationFilter))]
         public async Task<IActionResult> InsertTenantAsync(CreateTenantDto model)

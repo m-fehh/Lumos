@@ -36,7 +36,7 @@
         var cnpjInput = $("#CpfCnpj");
         var cnpjLabel = $("label[for='CpfCnpj']");
 
-        typeSelect.val("Filial");
+        typeSelect.val(1);
         typeSelect.prop("disabled", true);
 
         cnpjLabel.html('CNPJ<span class="input-label-required"></span>');

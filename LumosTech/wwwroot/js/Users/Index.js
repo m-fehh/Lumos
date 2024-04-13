@@ -40,6 +40,19 @@ $('#userTable').DataTable({
         { "data": "FullName" },
         { "data": "Cpf" },
         { "data": "Email" },
+        { "data": "Tenant.Name" },
+        {
+            "data": "IsDeleted",
+            "orderable": false,
+            "render": function (data, type, row, meta) {
+                if (data) {
+                    return '<span class="badge bg-danger" style="font-size: 0.9em; color: white;">Inativo</span>';
+                } else {
+                    return '<span class="badge bg-success" style="font-size: 0.9em; color: white;">Ativo</span>';
+                }
+
+            }
+        },
         { "data": "" }
     ],
     "columnDefs": [
@@ -47,14 +60,23 @@ $('#userTable').DataTable({
             "targets": -1,
             "orderable": false,
             "render": function (data, type, row, meta) {
-                return [
+                var editButton = `<button type="button" id="edit" class="bntActionsTable" data-id="${row.Id}" data-toggle="modal" data-target="#UserEditModal"><i class="fa fa-edit" aria-hidden="true" title="Editar"></i></button>`;
+                var deleteButton = `<button type="button" id="delete" class="bntActionsTable" data-id="${row.Id}" data-toggle="confirmation"><i class="fa fa-times-circle-o" aria-hidden="true" title="Deletar"></i></button>`;
+
+                var buttonsContainer =
                     `
-                         <div class="bntContainer">
-                             <button type="button" id="editUser" class="bntActionsTable" data-id="${row.Id}"><i class="fa fa-edit" aria-hidden="true"></i></button>
-                             <button type="button" id="cancelUser" class="bntActionsTable" data-id="${row.Id}"><i class="fa fa-times-circle-o" aria-hidden="true"></i></button>
-                         </div>
-                        `
-                ].join('');
+                    <div class="btn-container">
+                        ${editButton}
+                        ${deleteButton}
+                    </div>
+                `;
+
+
+                if (row.IsDeleted) {
+                    buttonsContainer = buttonsContainer.replace(/<button/g, '<button class="bntActionsTable disabledButton"');
+                }
+
+                return buttonsContainer;
             }
         }
     ],
@@ -63,3 +85,44 @@ $('#userTable').DataTable({
     "ordering": true,
     "info": true
 });
+
+$(document).on('click', '#delete', function () {
+    var id = $(this).data('id');
+
+    $('#delete-modal').data('id', id);
+    $('#delete-modal').modal('show');
+});
+
+$(document).on('click', '#confirm-delete', function () {
+    var id = $('#delete-modal').data('id');
+    var url = `/Users/Delete/${id}`;
+
+    AjaxDeleteDefault("#delete", url);
+
+    $('#delete-modal').modal('hide');
+});
+
+$(document).on('click', "#edit", function () {
+    var id = $(this).data('id');
+
+    var url = `Users/EditModal?id=${id}`;
+
+    $.ajax({
+        url: url,
+        method: 'POST',
+        headers: {
+            'Authorization': GetBearerToken(),
+        },
+        dataType: 'html',
+        processData: false,
+        contentType: false,
+        success: function (content) {
+            $('#UserEditModal div.modal-content').html(content);
+
+            var cpf = $("#Cpf");
+            VMasker(cpf).maskPattern('99.999.999/9999-99');
+
+            $('#UserEditModal').modal('show');
+        }
+    });
+})

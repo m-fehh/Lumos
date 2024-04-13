@@ -31,6 +31,7 @@
                                 <th>Tipo de Empresa</th>
                                 <th>CPF/CNPJ Matriz</th>
                                 <th>Localização</th>
+                                <th>Condição</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -42,7 +43,21 @@
     </div>
 </div>
 
+
+
+
 @section Scripts {
     <script src="https://cdn.datatables.net/2.0.3/js/dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
     <script src="~/js/Tenants/Index.js"></script>
 }
+
+<div class="modal fade" id="TenantEditModal" tabindex="-1" role="dialog" aria-labelledby="TenantEditModalLabel" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+@Html.Partial("~/Views/Modals/_DeleteConfirmationModal.cshtml")

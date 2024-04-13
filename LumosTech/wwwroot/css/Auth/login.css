@@ -6,7 +6,7 @@
 }
 
 body {
-    background: #f6f5f7;
+    background: #d7f5e7 !important;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -67,16 +67,18 @@ form {
 }
 
 .overlay {
-    background: #00bf63;
+    background: #7fcfa9;
     background-size: cover;
     background-position: 0 0;
-    color: #FFFFFF;
     position: relative;
     left: -100%;
     height: 100%;
     width: 200%;
     transform: translateX(0);
     transition: transform 0.6s ease-in-out;
+    color: #322d2d;
+    font-weight: 500;
+    text-align: center;
 }
 
 .overlay-panel {
@@ -106,12 +108,12 @@ form {
     font-size: 1.1em!important;
 }
 
-.overlay-right p {
-    font-size: 0.9em;
-    line-height: 20px;
-    text-align: left;
-    margin-top: 20px;
-}
+    .overlay-right p {
+        font-size: 0.9em;
+        line-height: 20px;
+        text-align: center;
+        margin-top: 20px;
+    }
 
 .input-label {
     color: #6c6d6f;
@@ -142,6 +144,10 @@ form {
     font-weight: bold;
 }
 
+h1 {
+    text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.8)!important;
+}
+
 label {
     margin-bottom: 0!important;
 }
@@ -159,9 +165,10 @@ img {
 }
 
 .btn-success {
-    color: #fff;
-    background-color: #28a745;
+    color: #322d2d!important;
+    font-weight: 500!important;
+    background-color: #7fcfa9 !important;
     border-color: #28a745;
     width: 100%;
-    margin-top: 20px;
+    margin-top: 30px;
 }
