@@ -21,6 +21,8 @@ namespace Lumos.Mvc.Controllers
             _usersAppServices = usersAppServices;
         }
 
+        #region OVERRIDE USERS
+
         public override async Task<ActionResult> EditModal(long id)
         {
             var entity = await _appService.GetByIdAsync(id);
@@ -149,6 +151,7 @@ namespace Lumos.Mvc.Controllers
                 ModelState.AddModelError(string.Empty, "Ocorreu um erro ao excluir os dados! Contate o suporte.");
                 return BadRequest(ModelState);
             }
-        }
+        } 
+        #endregion
     }
 }
