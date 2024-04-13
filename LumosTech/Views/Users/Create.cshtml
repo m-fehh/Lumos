@@ -38,7 +38,7 @@
 
         <p class="section-identification">Cadastro de Usuário</p>
 
-        <div class="row" style="padding: 0 15px;">
+        <div class="row">
             <div class="form-group col-md-6">
                 @using (Html.MControlGroup(m => m.Email))
                 {
@@ -54,7 +54,7 @@
             </div>
         </div>
 
-        <div class="row" style="padding: 0 15px;">
+        <div class="row">
             <div class="form-group col-md-6">
                 @using (Html.MControlGroup(m => m.Password))
                 {
@@ -70,7 +70,7 @@
             </div>
         </div>
 
-        <div class="row" style="padding: 0 15px;">
+        <div class="row">
             <div class="form-group col-md-12">
                 <label for="SelectedUnits" class="input-label">Selecionar Unidades<span class="input-label-required"></span></label>
                 <select id="SelectedUnits" class="form-control" multiple required></select>
@@ -80,10 +80,8 @@
 
         <hr />
 
-        <div class="row" style="padding: 0 15px;">
-            <div class="col-md-12" style="display: flex; justify-content: flex-end; gap: 20px;">
-                <button class="btn btn-success save float-right" type="submit">Finalizar Cadastro</button>
-            </div>
+        <div class="row">
+            @Html.MSubmitButton("Finalizar Cadastro", "btn btn-success save", isFloatRight: true)
         </div>
     </form>
 </div>

@@ -664,6 +664,27 @@ namespace Lumos.Mvc.Extensions
             }
         }
 
+        public static IHtmlContent MSubmitButton<TModel>(this IHtmlHelper<TModel> helper, string buttonText, string cssClass = "btn btn-success", bool isFloatRight = false)
+        {
+            TagBuilder button = new TagBuilder("button");
+            button.AddCssClass(cssClass);
+            button.MergeAttribute("type", "submit");
+            button.InnerHtml.Append(buttonText);
+
+            TagBuilder div = new TagBuilder("div");
+            div.AddCssClass("col-md-12");
+
+            if (isFloatRight)
+            {
+                div.AddCssClass("float-right");
+            }
+
+            div.InnerHtml.AppendHtml(button);
+
+            return div;
+        }
+
+
         public static IHtmlContent MComboFor<TModel, TValue>(this IHtmlHelper<TModel> helper, Expression<Func<TModel, TValue>> expression, string searchName, bool multiple = false, string extraCondition = null)
         {
             var item = FindInSearchCollection(searchName);

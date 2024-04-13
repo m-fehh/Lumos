@@ -1,8 +1,6 @@
 ﻿using Lumos.Application.Configurations;
 using Lumos.Application.Dtos.Management.Tenants;
-using Lumos.Application.Services.Management;
 using Lumos.Data.Models;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Lumos.Application.Dtos.Management
@@ -16,7 +14,6 @@ namespace Lumos.Application.Dtos.Management
         [Required(ErrorMessage = "A senha é obrigatória.")]
         [Display(Name = "Senha")]
         public string Password { get; set; }
-        public string DecryptedPassword { get; set; }
 
         [Required(ErrorMessage = "O nome completo é obrigatório.")]
         [Display(Name = "Nome Completo")]
@@ -35,7 +32,7 @@ namespace Lumos.Application.Dtos.Management
         public void DecryptPassword()
         {
             var encryptionService = new AesEncryptionService();
-            DecryptedPassword = encryptionService.Decrypt(Password);
+            Password = encryptionService.Decrypt(Password);
         }
     }
 }

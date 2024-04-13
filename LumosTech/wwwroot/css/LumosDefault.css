@@ -23,13 +23,13 @@ hr {
     border-bottom: 0.5px solid #e9ecef;
     font-size: 1.0em;
     font-weight: bold;
-    margin: 25px 15px;
+    margin-bottom: 40px;
     color: #218838;
 }
 
 .container-fluid {
     background: #fff;
-    padding: 10px 0 5px 0;
+    padding: 5px 10px;
 }
 
 .input-label {
@@ -69,6 +69,11 @@ hr {
 .save {
     width: 25%;
     margin: 10px 0 0 0;
+}
+
+.float-right {
+    display: flex;
+    justify-content: flex-end;
 }
 
 .multistep {
@@ -172,149 +177,6 @@ hr {
     font-size: 0.8em !important;
 }
 
-
-/* Kanban board */
-
-.kanban-container {
-    margin: 20px auto;
-    max-width: 1000px;
-}
-
-ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.kanban-list {
-    display: flex;
-    align-items: flex-start;
-}
-
-.kanban-column {
-    flex: 1;
-    margin: 0 10px;
-    position: relative;
-    background: #f8f9fa;
-    overflow: hidden;
-    border-radius: 10px;
-}
-
-.kanban-column-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px;
-}
-
-    .kanban-column-header h2 {
-        font-size: 1.0em;
-        font-weight: bold;
-        color: white;
-    }
-
-.matriz {
-    color: #888;
-    pointer-events: none;
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-
-.header-inprogress {
-    background: #009688;
-}
-
-.header-onhold,
-.header-approved {
-    background: #218838;
-}
-
-.drag-inner-list {
-    min-height: 50px;
-}
-
-.drag-item {
-    margin: 15px 10px;
-    height: 40px;
-    background: #ededed;
-    border-radius: 3px;
-    color: #27a444;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.9em;
-    font-weight: 600;
-}
-
-
-.drop-zone-active {
-    border-color: grey;
-    box-shadow: 0 0 10px grey
-}
-
-
-@media (max-width: 690px) {
-    .kanban-list {
-        display: block;
-    }
-
-    .kanban-column {
-        margin-bottom: 30px;
-    }
-}
-
-
-
-/* Estilos para a treeview */
-#treeview ul {
-    list-style-type: none;
-    padding-left: 20px;
-}
-
-    #treeview ul ul {
-        margin-left: 20px;
-    }
-
-#treeview li {
-    position: relative;
-}
-
-    #treeview li label {
-        cursor: pointer;
-        display: flex;
-        padding: 0;
-        font-size: 0.8em;
-        align-items: center;
-    }
-
-/* Estilos para os checkboxes */
-#treeview input[type="checkbox"] {
-    position: absolute;
-    opacity: 0;
-}
-
-    #treeview input[type="checkbox"] + label:before {
-        content: '';
-        display: inline-block;
-        width: 16px;
-        height: 16px;
-        margin-right: 5px;
-        vertical-align: middle;
-        border: 1px solid #ccc;
-        border-radius: 3px;
-        background-color: #fff;
-    }
-
-    #treeview input[type="checkbox"]:checked + label:before {
-        content: '\2713';
-        color: #fff;
-        background-color: #218838;
-        font-size: 12px;
-        text-align: center;
-        line-height: 16px;
-        border: none;
-        border-radius: 3px;
-    }
 
 .input-group-addon.toggle-password {
     background: none;

@@ -1,4 +1,6 @@
 ﻿@using Lumos.Data.Enums;
+@using Lumos.Mvc.Extensions;
+
 @{
     Layout = null;
 }
@@ -19,31 +21,39 @@
 
         <div class="row">
             <div class="form-group col-md-4">
-                <label for="Name" class="input-label">Nome<span class="input-label-required"></span></label>
-                <input type="text" class="form-control" name="Name" id="Name" placeholder="" value="@Model.Name">
+                @using (Html.MControlGroup(m => m.Name))
+                {
+                    @Html.MTextBoxFor(m => m.Name)
+                }
             </div>
 
             <div class="form-group col-md-5">
-                <label for="CpfCnpj" class="input-label">CNPJ<span class="input-label-required"></span></label>
-                <input type="text" class="form-control" name="CpfCnpj" id="CpfCnpj" placeholder="" value="@Model.CpfCnpj">
+                @using (Html.MControlGroup(m => m.CpfCnpj))
+                {
+                    @Html.MTextBoxFor(m => m.CpfCnpj)
+                }
             </div>
 
             <div class="form-group col-md-3">
-                <label for="Level" class="input-label">Nível de Acesso <span class="input-label-required"></span></label>
-                <input type="text" class="form-control" name="Level" value="@Model.Level" disabled />
+                @using (Html.MControlGroup(m => m.Level))
+                {
+                    @Html.MComboFor(m => m.Level, Html.GetEnumSelectList<ELevelOrganization>())
+                }
             </div>
         </div>
         <hr style="margin: 10px 0!important" />
 
         <div class="row">
-            <div class="col-md-12" style="display: flex; justify-content: flex-end; gap: 20px;">
-                <button class="btn btn-success save float-right" type="submit" id="submitButton">Atualizar Cadastro</button>
-            </div>
+            @Html.MSubmitButton("Atualizar Cadastro", "btn btn-success save", isFloatRight: true)
         </div>
     </form>
 </div>
 
 <script>
+    $(document).ready(function () {
+        $('#Level').prop('disabled', true);
+    });
+
     $("#editUnit").on('submit', function (e) {
         e.preventDefault();
 

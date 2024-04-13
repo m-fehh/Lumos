@@ -35,7 +35,7 @@
 
         <p class="section-identification">Cadastro de Unidade</p>
 
-        <div class="row" style="padding: 0 15px;">
+        <div class="row">
             <div class="col-md-4">
                 @using (Html.MControlGroup(m => m.Name))
                 {
@@ -59,10 +59,8 @@
         </div>
         <hr />
 
-        <div class="row" style="padding: 0 15px;">
-            <div class="col-md-12" style="display: flex; justify-content: flex-end; gap: 20px;">
-                <button class="btn btn-success save float-right" type="submit">Finalizar Cadastro</button>
-            </div>
+        <div class="row">
+            @Html.MSubmitButton("Finalizar Cadastro", "btn btn-success save", isFloatRight: true)
         </div>
     </form>
 </div>
