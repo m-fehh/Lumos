@@ -20,7 +20,7 @@ namespace Lumos.Data.Models.Management
         public string City { get; set; }
 
         [Required]
-        public string State { get; set; }
+        public EStates State { get; set; }
         public virtual List<Units> Units { get; set; }
     }
 }
